@@ -55,7 +55,7 @@ class SHADER_PT_conversion_analysis(bpy.types.Panel):
         # Display statistics
         self._draw_statistics(layout, analysis)
         
-        # Display nodes
+        # Display nodes with conversion steps
         self._draw_node_analysis(layout, analysis, node_mapping)
         
         # Display warnings
@@ -65,6 +65,9 @@ class SHADER_PT_conversion_analysis(bpy.types.Panel):
         # Display conversion recommendations
         if analysis['incompatible_nodes']:
             self._draw_recommendations(layout, analysis)
+        
+        # NEW: Display detailed conversion steps for each node
+        self._draw_conversion_steps(layout, blender_data, node_mapping)
         
         layout.separator()
         
@@ -202,6 +205,80 @@ class SHADER_PT_conversion_analysis(bpy.types.Panel):
         for rec in recommendations[:3]:
             row = box.row()
             row.label(text=f"  • {rec}")
+
+    @staticmethod
+    def _draw_conversion_steps(layout, blender_data, node_mapping):
+        """Draw detailed conversion steps for each node from JSON data"""
+        has_steps = False
+        
+        for node_data in blender_data['nodes']:
+            node_type = node_data['blender_type']
+            mapping = node_mapping.get(node_type, {})
+            unity_chain = mapping.get('unity_chain', None)
+            
+            # Only show steps for nodes that have conversion chain data
+            if unity_chain and unity_chain.get('steps'):
+                has_steps = True
+                box = layout.box()
+                
+                # Node header
+                row = box.row()
+                row.label(text=f"🔄 {node_data['name']}", icon='NODE')
+                row.label(text=f"→ {mapping.get('unity_name', 'Unknown')}")
+                
+                # Compatibility
+                row = box.row()
+                compat = mapping.get('compatibility', '0%')
+                if compat == '100%':
+                    row.label(text=f"✓ Direct ({compat})", icon='CHECKMARK')
+                elif compat in ['90%', '95%']:
+                    row.label(text=f"✓ Good ({compat})", icon='INFO')
+                else:
+                    row.label(text=f"⚠ {compat}", icon='ERROR')
+                
+                # Description
+                desc = unity_chain.get('description', '')
+                if desc:
+                    row = box.row()
+                    row.label(text=f"   {desc}")
+                
+                # Show first few steps
+                steps = unity_chain.get('steps', [])
+                if steps:
+                    row = box.row()
+                    row.label(text="   Steps:", icon='LISTBOX')
+                    
+                    for i, step in enumerate(steps[:4]):  # Show max 4 steps
+                        step_action = step.get('action', '')
+                        step_node = step.get('node', '')
+                        step_note = step.get('note', '')
+                        step_from = step.get('from', '')
+                        step_to = step.get('to', '')
+                        
+                        step_row = box.row()
+                        step_row.label(text=f"     {i+1}. {step_action}", icon='DOT')
+                        
+                        if step_node:
+                            step_row.label(text=step_node)
+                        elif step_from and step_to:
+                            step_row.label(text=f"{step_from} → {step_to}")
+                        elif step_note:
+                            step_row.label(text=step_note)
+                    
+                    if len(steps) > 4:
+                        more_row = box.row()
+                        more_row.label(text=f"     ... and {len(steps) - 4} more steps")
+                
+                # Blender conversion notes
+                blender_notes = unity_chain.get('blender_conversion_notes', '')
+                if blender_notes:
+                    note_row = box.row()
+                    note_row.label(text=f"   💡 {blender_notes}", icon='INFO')
+        
+        # If no nodes have steps, show a message
+        if not has_steps:
+            box = layout.box()
+            box.label(text="No detailed conversion steps needed", icon='INFO')
 
 
 class SHADER_UL_node_list(bpy.types.UIList):

@@ -78,15 +78,22 @@ def menu_func(self, context):
     self.layout.operator(SHADER_OT_convert_to_unity.bl_idname)
 
 
+def export_menu_func(self, context):
+    """Add operator to File > Export menu"""
+    self.layout.operator(SHADER_OT_convert_to_unity.bl_idname, text="Unity Shader Graph (.shadergraph)")
+
+
 def register():
-    """Register operator and menu"""
+    """Register operator and menus"""
     bpy.utils.register_class(SHADER_OT_convert_to_unity)
     bpy.types.VIEW3D_MT_object.append(menu_func)
+    bpy.types.INFO_MT_file_export.append(export_menu_func)
     print("  ✓ Operator registered")
 
 
 def unregister():
-    """Unregister operator and menu"""
+    """Unregister operator and menus"""
     bpy.utils.unregister_class(SHADER_OT_convert_to_unity)
     bpy.types.VIEW3D_MT_object.remove(menu_func)
+    bpy.types.INFO_MT_file_export.remove(export_menu_func)
     print("  ✓ Operator unregistered")

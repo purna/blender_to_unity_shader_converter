@@ -36,7 +36,8 @@ class UnityExporter:
             'groups': [],
             'pinnedNodes': [],
             'activeTargets': 0,
-            'targetData': []
+            'targetData': [],
+            'conversion_chains': unity_graph.conversion_chains  # Include conversion steps
         }
         
         with open(shader_path, 'w') as f:
