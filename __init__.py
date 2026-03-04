@@ -6,7 +6,7 @@ Multi-file addon package with JSON node database
 bl_info = {
     "name": "Blender to Unity Shader Converter",
     "author": "Shader Converter Team",
-    "version": (0, 4, 0),
+    "version": (0, 5, 0),
     "blender": (3, 0, 0),
     "location": "View3D > Object > Convert to Unity",
     "description": "Convert Blender shader graphs to Unity shader graphs. Supports 78+ nodes with JSON-based conversion strategies.",
