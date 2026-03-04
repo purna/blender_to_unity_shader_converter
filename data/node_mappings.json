@@ -1,0 +1,573 @@
+{
+  "ShaderNodeMath": {
+    "unity_name": "Math",
+    "unity_type": "Vector1",
+    "category": "Utility",
+    "strategy": "direct",
+    "compatibility": "100%",
+    "description": "Basic math operations",
+    "operations": ["ADD", "SUBTRACT", "MULTIPLY", "DIVIDE", "POWER", "LOGARITHM", "SQRT", "ABSOLUTE", "MINIMUM", "MAXIMUM", "MODULO", "SNAP", "FLOOR", "CEIL", "FRACTION"]
+  },
+  "ShaderNodeVectorMath": {
+    "unity_name": "Vector",
+    "unity_type": "Vector3",
+    "category": "Vector",
+    "strategy": "direct",
+    "compatibility": "100%",
+    "description": "Vector math operations",
+    "operations": ["ADD", "SUBTRACT", "MULTIPLY", "DIVIDE", "CROSS_PRODUCT", "DOT_PRODUCT", "DISTANCE", "LENGTH", "SCALE", "NORMALIZE", "SNAP"]
+  },
+  "ShaderNodeSeparateXYZ": {
+    "unity_name": "Split",
+    "unity_type": "Split",
+    "category": "Vector",
+    "strategy": "direct",
+    "compatibility": "100%",
+    "description": "Split vector into X, Y, Z components"
+  },
+  "ShaderNodeCombineXYZ": {
+    "unity_name": "Combine",
+    "unity_type": "Combine",
+    "category": "Vector",
+    "strategy": "direct",
+    "compatibility": "100%",
+    "description": "Combine X, Y, Z into vector"
+  },
+  "ShaderNodeSeparateRGB": {
+    "unity_name": "Split",
+    "unity_type": "Split",
+    "category": "Color",
+    "strategy": "direct",
+    "compatibility": "100%",
+    "description": "Split color into R, G, B channels"
+  },
+  "ShaderNodeCombineRGB": {
+    "unity_name": "Combine",
+    "unity_type": "Combine",
+    "category": "Color",
+    "strategy": "direct",
+    "compatibility": "100%",
+    "description": "Combine R, G, B into color"
+  },
+  "ShaderNodeValue": {
+    "unity_name": "Float",
+    "unity_type": "Float",
+    "category": "Input",
+    "strategy": "direct",
+    "compatibility": "100%",
+    "description": "Float constant value"
+  },
+  "ShaderNodeRGB": {
+    "unity_name": "Color",
+    "unity_type": "Color",
+    "category": "Input",
+    "strategy": "direct",
+    "compatibility": "100%",
+    "description": "Color constant RGBA"
+  },
+  "ShaderNodeTexImage": {
+    "unity_name": "Sample Texture 2D",
+    "unity_type": "SampleTexture2D",
+    "category": "Texture",
+    "strategy": "texture_reference",
+    "compatibility": "95%",
+    "description": "Sample 2D texture image"
+  },
+  "ShaderNodeTexEnvironment": {
+    "unity_name": "Sample Cubemap",
+    "unity_type": "SampleCubemap",
+    "category": "Texture",
+    "strategy": "texture_reference",
+    "compatibility": "95%",
+    "description": "Sample environment/cubemap texture"
+  },
+  "ShaderNodeTexCoord": {
+    "unity_name": "UV",
+    "unity_type": "UV",
+    "category": "Input",
+    "strategy": "direct",
+    "compatibility": "95%",
+    "description": "Texture coordinates (UV, Position, Normal, etc.)"
+  },
+  "ShaderNodeUVMap": {
+    "unity_name": "UV (Custom)",
+    "unity_type": "UV",
+    "category": "Input",
+    "strategy": "attribute_mapping",
+    "compatibility": "95%",
+    "description": "Custom UV map selection"
+  },
+  "ShaderNodeAttribute": {
+    "unity_name": "Vertex Attribute",
+    "unity_type": "VertexAttribute",
+    "category": "Input",
+    "strategy": "attribute_mapping",
+    "compatibility": "85%",
+    "description": "Custom vertex attribute"
+  },
+  "ShaderNodeFresnel": {
+    "unity_name": "Fresnel",
+    "unity_type": "Fresnel",
+    "category": "Input",
+    "strategy": "direct",
+    "compatibility": "95%",
+    "description": "Fresnel effect based on view angle"
+  },
+  "ShaderNodeNormalMap": {
+    "unity_name": "Normal From Texture",
+    "unity_type": "NormalFromTexture",
+    "category": "Vector",
+    "strategy": "normal_mapping",
+    "compatibility": "90%",
+    "description": "Convert height map to normal map"
+  },
+  "ShaderNodeMapping": {
+    "unity_name": "Tiling and Offset",
+    "unity_type": "TilingAndOffset",
+    "category": "Vector",
+    "strategy": "uv_mapping",
+    "compatibility": "90%",
+    "description": "Transform UV coordinates (scale, offset, rotate)"
+  },
+  "ShaderNodeMixRGB": {
+    "unity_name": "Lerp",
+    "unity_type": "Lerp",
+    "category": "Color",
+    "strategy": "blend_mapping",
+    "compatibility": "90%",
+    "description": "Blend between two colors with modes"
+  },
+  "ShaderNodeClamp": {
+    "unity_name": "Clamp",
+    "unity_type": "Clamp",
+    "category": "Utility",
+    "strategy": "direct",
+    "compatibility": "100%",
+    "description": "Clamp value between min and max"
+  },
+  "ShaderNodeInvert": {
+    "unity_name": "Invert",
+    "unity_type": "Invert",
+    "category": "Color",
+    "strategy": "direct",
+    "compatibility": "100%",
+    "description": "Invert color or value (1 - x)"
+  },
+  "ShaderNodeBsdfPrincipled": {
+    "unity_name": "Principled BSDF",
+    "unity_type": "Custom PBR",
+    "category": "Shader",
+    "strategy": "decompose",
+    "compatibility": "50%",
+    "description": "Master shader decomposed into Color, Metallic, Roughness, Normal, Emission",
+    "components": ["Color", "Metallic", "Roughness", "Normal", "Emission"]
+  },
+  "ShaderNodeBsdfDiffuse": {
+    "unity_name": "Diffuse",
+    "unity_type": "Color",
+    "category": "Shader",
+    "strategy": "direct",
+    "compatibility": "85%",
+    "description": "Diffuse shader (matte surface)"
+  },
+  "ShaderNodeBsdfGlossy": {
+    "unity_name": "Glossy",
+    "unity_type": "Custom",
+    "category": "Shader",
+    "strategy": "decompose",
+    "compatibility": "70%",
+    "description": "Glossy shader decomposed to metallic+roughness"
+  },
+  "ShaderNodeBsdfGlass": {
+    "unity_name": "Glass",
+    "unity_type": "Custom",
+    "category": "Shader",
+    "strategy": "decompose",
+    "compatibility": "70%",
+    "description": "Glass shader decomposed to transparent+specular"
+  },
+  "ShaderNodeBsdfTransparent": {
+    "unity_name": "Transparent",
+    "unity_type": "Transparent",
+    "category": "Shader",
+    "strategy": "direct",
+    "compatibility": "85%",
+    "description": "Transparent shader"
+  },
+  "ShaderNodeEmission": {
+    "unity_name": "Emission",
+    "unity_type": "Emission",
+    "category": "Shader",
+    "strategy": "direct",
+    "compatibility": "85%",
+    "description": "Emissive shader (self-illuminating)"
+  },
+  "ShaderNodeBump": {
+    "unity_name": "Bump",
+    "unity_type": "Custom Normal",
+    "category": "Vector",
+    "strategy": "bump_to_normal",
+    "compatibility": "75%",
+    "description": "Height map to normal map conversion (approximation)"
+  },
+  "ShaderNodeTexNoise": {
+    "unity_name": "Noise Texture",
+    "unity_type": "Noise",
+    "category": "Texture",
+    "strategy": "procedural_texture",
+    "compatibility": "75%",
+    "description": "Procedural noise pattern (can bake)"
+  },
+  "ShaderNodeTexVoronoi": {
+    "unity_name": "Voronoi",
+    "unity_type": "Procedural",
+    "category": "Texture",
+    "strategy": "procedural_texture",
+    "compatibility": "50%",
+    "description": "Voronoi cellular pattern"
+  },
+  "ShaderNodeTexGradient": {
+    "unity_name": "Gradient",
+    "unity_type": "Procedural",
+    "category": "Texture",
+    "strategy": "procedural_texture",
+    "compatibility": "70%",
+    "description": "Procedural gradient pattern"
+  },
+  "ShaderNodeTexWave": {
+    "unity_name": "Wave",
+    "unity_type": "Procedural",
+    "category": "Texture",
+    "strategy": "procedural_texture",
+    "compatibility": "60%",
+    "description": "Procedural wave pattern"
+  },
+  "ShaderNodeTexMusgrave": {
+    "unity_name": "Musgrave",
+    "unity_type": "Procedural",
+    "category": "Texture",
+    "strategy": "procedural_texture",
+    "compatibility": "60%",
+    "description": "Fractal Brownian motion texture"
+  },
+  "ShaderNodeTexBrick": {
+    "unity_name": "Brick",
+    "unity_type": "Procedural",
+    "category": "Texture",
+    "strategy": "procedural_texture",
+    "compatibility": "50%",
+    "description": "Procedural brick pattern"
+  },
+  "ShaderNodeTexChecker": {
+    "unity_name": "Checker",
+    "unity_type": "Procedural",
+    "category": "Texture",
+    "strategy": "procedural_texture",
+    "compatibility": "70%",
+    "description": "Procedural checkerboard pattern"
+  },
+  "ShaderNodeVertexColor": {
+    "unity_name": "Vertex Color",
+    "unity_type": "VertexColor",
+    "category": "Input",
+    "strategy": "direct",
+    "compatibility": "90%",
+    "description": "Per-vertex color data"
+  },
+  "ShaderNodeTangent": {
+    "unity_name": "Tangent",
+    "unity_type": "Tangent",
+    "category": "Input",
+    "strategy": "direct",
+    "compatibility": "90%",
+    "description": "Vertex tangent space vector"
+  },
+  "ShaderNodeLayerWeight": {
+    "unity_name": "Fresnel/Facing",
+    "unity_type": "Custom",
+    "category": "Input",
+    "strategy": "approximation",
+    "compatibility": "75%",
+    "description": "Blend weight based on view angle or facing"
+  },
+  "ShaderNodeMapRange": {
+    "unity_name": "Map Range",
+    "unity_type": "MapRange",
+    "category": "Utility",
+    "strategy": "direct",
+    "compatibility": "90%",
+    "description": "Remap value from one range to another"
+  },
+  "ShaderNodeAddShader": {
+    "unity_name": "Add",
+    "unity_type": "Add",
+    "category": "Shader",
+    "strategy": "direct",
+    "compatibility": "90%",
+    "description": "Add two values or shaders"
+  },
+  "ShaderNodeMixShader": {
+    "unity_name": "Mix Shader",
+    "unity_type": "Lerp",
+    "category": "Shader",
+    "strategy": "blend_mapping",
+    "compatibility": "85%",
+    "description": "Blend between two shaders"
+  },
+  "ShaderNodeBlackbody": {
+    "unity_name": "Blackbody",
+    "unity_type": "Custom",
+    "category": "Color",
+    "strategy": "direct",
+    "compatibility": "85%",
+    "description": "Kelvin temperature to RGB color"
+  },
+  "ShaderNodeColorRamp": {
+    "unity_name": "Gradient Ramp",
+    "unity_type": "Custom",
+    "category": "Color",
+    "strategy": "bake_only",
+    "compatibility": "75%",
+    "description": "Color gradient ramp (must bake to texture)"
+  },
+  "ShaderNodeCurveRGB": {
+    "unity_name": "Curve (RGB)",
+    "unity_type": "Custom",
+    "category": "Color",
+    "strategy": "approximation",
+    "compatibility": "50%",
+    "description": "RGB color curve (complex, approximation)"
+  },
+  "ShaderNodeCurveFloat": {
+    "unity_name": "Curve (Float)",
+    "unity_type": "Custom",
+    "category": "Utility",
+    "strategy": "approximation",
+    "compatibility": "50%",
+    "description": "Float value curve (complex, approximation)"
+  },
+  "ShaderNodeGamma": {
+    "unity_name": "Gamma",
+    "unity_type": "Gamma",
+    "category": "Color",
+    "strategy": "direct",
+    "compatibility": "90%",
+    "description": "Gamma correction"
+  },
+  "ShaderNodeBrightContrast": {
+    "unity_name": "Brightness-Contrast",
+    "unity_type": "Custom",
+    "category": "Color",
+    "strategy": "approximation",
+    "compatibility": "80%",
+    "description": "Adjust brightness and contrast"
+  },
+  "ShaderNodeHueSaturation": {
+    "unity_name": "Hue-Saturation",
+    "unity_type": "Custom",
+    "category": "Color",
+    "strategy": "approximation",
+    "compatibility": "70%",
+    "description": "Adjust hue, saturation, value"
+  },
+  "ShaderNodeLightPath": {
+    "unity_name": "N/A",
+    "unity_type": "N/A",
+    "category": "Input",
+    "strategy": "incompatible",
+    "compatibility": "0%",
+    "description": "Ray tracing logic (impossible in real-time)"
+  },
+  "ShaderNodeAmbientOcclusion": {
+    "unity_name": "N/A",
+    "unity_type": "N/A",
+    "category": "Input",
+    "strategy": "bake_only",
+    "compatibility": "10%",
+    "description": "Ambient occlusion (must pre-bake in Blender)"
+  },
+  "ShaderNodeParticleInfo": {
+    "unity_name": "N/A",
+    "unity_type": "N/A",
+    "category": "Input",
+    "strategy": "custom_attribute",
+    "compatibility": "10%",
+    "description": "Particle system metadata"
+  },
+  "ShaderNodeHairInfo": {
+    "unity_name": "N/A",
+    "unity_type": "N/A",
+    "category": "Input",
+    "strategy": "incompatible",
+    "compatibility": "20%",
+    "description": "Hair system specific (not applicable)"
+  },
+  "ShaderNodeCryptomatte": {
+    "unity_name": "N/A",
+    "unity_type": "N/A",
+    "category": "Input",
+    "strategy": "incompatible",
+    "compatibility": "0%",
+    "description": "Compositor feature only"
+  },
+  "ShaderNodeVolumeAbsorption": {
+    "unity_name": "N/A",
+    "unity_type": "N/A",
+    "category": "Shader",
+    "strategy": "incompatible",
+    "compatibility": "0%",
+    "description": "Volumetric rendering (Cycles only)"
+  },
+  "ShaderNodeVolumeScatter": {
+    "unity_name": "N/A",
+    "unity_type": "N/A",
+    "category": "Shader",
+    "strategy": "incompatible",
+    "compatibility": "0%",
+    "description": "Volumetric scattering (Cycles only)"
+  },
+  "ShaderNodeDisplacement": {
+    "unity_name": "Vertex Offset",
+    "unity_type": "Custom",
+    "category": "Vector",
+    "strategy": "vertex_displacement",
+    "compatibility": "60%",
+    "description": "Height displacement (approximated as vertex offset)"
+  },
+  "ShaderNodeNormal": {
+    "unity_name": "Normal",
+    "unity_type": "Normal",
+    "category": "Input",
+    "strategy": "direct",
+    "compatibility": "90%",
+    "description": "Per-vertex normal"
+  },
+  "ShaderNodeVectorRotate": {
+    "unity_name": "Rotate Vector",
+    "unity_type": "Custom",
+    "category": "Vector",
+    "strategy": "approximation",
+    "compatibility": "80%",
+    "description": "Rotate vector around axis"
+  },
+  "ShaderNodeVectorTransform": {
+    "unity_name": "Vector Transform",
+    "unity_type": "Custom",
+    "category": "Vector",
+    "strategy": "approximation",
+    "compatibility": "70%",
+    "description": "Transform vector between coordinate spaces"
+  },
+  "ShaderNodeTexMagic": {
+    "unity_name": "Magic Texture",
+    "unity_type": "Procedural",
+    "category": "Texture",
+    "strategy": "procedural_texture",
+    "compatibility": "40%",
+    "description": "Magic procedural texture"
+  },
+  "ShaderNodeTexStucci": {
+    "unity_name": "Stucci Texture",
+    "unity_type": "Procedural",
+    "category": "Texture",
+    "strategy": "procedural_texture",
+    "compatibility": "40%",
+    "description": "Stucci procedural texture"
+  },
+  "ShaderNodeTexWhiteNoise": {
+    "unity_name": "White Noise",
+    "unity_type": "Procedural",
+    "category": "Texture",
+    "strategy": "procedural_texture",
+    "compatibility": "80%",
+    "description": "White noise pattern"
+  },
+  "ShaderNodeTexPointDensity": {
+    "unity_name": "N/A",
+    "unity_type": "N/A",
+    "category": "Texture",
+    "strategy": "bake_only",
+    "compatibility": "10%",
+    "description": "Point density texture (special bake feature)"
+  },
+  "ShaderNodeTexIES": {
+    "unity_name": "IES Light",
+    "unity_type": "Custom",
+    "category": "Texture",
+    "strategy": "bake_only",
+    "compatibility": "50%",
+    "description": "IES light profile (must pre-bake)"
+  },
+  "ShaderNodeBsdfRefraction": {
+    "unity_name": "Refraction",
+    "unity_type": "Custom",
+    "category": "Shader",
+    "strategy": "approximation",
+    "compatibility": "60%",
+    "description": "Refraction shader (approximated)"
+  },
+  "ShaderNodeBsdfTranslucent": {
+    "unity_name": "Translucent",
+    "unity_type": "Custom",
+    "category": "Shader",
+    "strategy": "approximation",
+    "compatibility": "40%",
+    "description": "Translucent shader (approximated)"
+  },
+  "ShaderNodeBsdfSheen": {
+    "unity_name": "Sheen",
+    "unity_type": "Custom",
+    "category": "Shader",
+    "strategy": "approximation",
+    "compatibility": "30%",
+    "description": "Sheen shader (complex approximation)"
+  },
+  "ShaderNodeBsdfAnisotropic": {
+    "unity_name": "Anisotropic",
+    "unity_type": "Custom",
+    "category": "Shader",
+    "strategy": "approximation",
+    "compatibility": "30%",
+    "description": "Anisotropic shader (requires custom code)"
+  },
+  "ShaderNodeBsdfToon": {
+    "unity_name": "Toon",
+    "unity_type": "Custom",
+    "category": "Shader",
+    "strategy": "approximation",
+    "compatibility": "40%",
+    "description": "Toon shader (ramp-based)"
+  },
+  "ShaderNodeSubsurfaceScattering": {
+    "unity_name": "SSS",
+    "unity_type": "Custom",
+    "category": "Shader",
+    "strategy": "approximation",
+    "compatibility": "30%",
+    "description": "Subsurface scattering (complex custom)"
+  },
+  "ShaderNodeHoldout": {
+    "unity_name": "N/A",
+    "unity_type": "N/A",
+    "category": "Shader",
+    "strategy": "incompatible",
+    "compatibility": "5%",
+    "description": "Holdout shader (compositor only)"
+  },
+  "ShaderNodeLightFalloff": {
+    "unity_name": "N/A",
+    "unity_type": "N/A",
+    "category": "Shader",
+    "strategy": "incompatible",
+    "compatibility": "0%",
+    "description": "Light falloff (rendering pipeline only)"
+  },
+  "ShaderNodeArrayInfo": {
+    "unity_name": "N/A",
+    "unity_type": "N/A",
+    "category": "Input",
+    "strategy": "incompatible",
+    "compatibility": "0%",
+    "description": "Instance array metadata"
+  }
+}
