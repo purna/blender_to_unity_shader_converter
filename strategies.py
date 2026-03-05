@@ -23,7 +23,7 @@ class ConversionStrategy:
         components = {
             'base_color': base_color,
             'metallic': float(metallic) if metallic else 0.0,
-            'roughness': max(0.05, min(1.0, float(roughness))) if roughness else 0.5,
+            'roughness': max(0.0, min(1.0, float(roughness))) if roughness else 0.5,
             'normal': normal,
             'emission': emission,
             'ior': float(ior) if ior else 1.45

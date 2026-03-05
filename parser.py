@@ -66,20 +66,73 @@ class BlenderShaderParser:
                     'type': str(output_socket.type)
                 }
 
-        # Node-specific properties
+        # Node-specific properties - extract all relevant settings
         if node_type == 'ShaderNodeMath':
             node_data['properties']['operation'] = node.operation
+            node_data['properties']['use_clamp'] = node.use_clamp
+        elif node_type == 'ShaderNodeVectorMath':
+            node_data['properties']['operation'] = node.operation
         elif node_type == 'ShaderNodeMixRGB':
+            node_data['properties']['blend_mode'] = node.blend_type
             node_data['properties']['use_clamp'] = node.use_clamp
         elif node_type == 'ShaderNodeTexImage':
             if node.image:
                 node_data['properties']['image_name'] = node.image.name
                 node_data['properties']['image_path'] = node.image.filepath
+                node_data['properties']['projection'] = node.projection
+                node_data['properties']['extension'] = node.extension
+                # Store image colorspace for reference
+                if hasattr(node.image, 'colorspace_settings'):
+                    node_data['properties']['colorspace'] = node.image.colorspace_settings.name
         elif node_type == 'ShaderNodeMapping':
             # Store mapping values
             node_data['properties']['location'] = list(node.inputs['Location'].default_value)
             node_data['properties']['rotation'] = list(node.inputs['Rotation'].default_value)
             node_data['properties']['scale'] = list(node.inputs['Scale'].default_value)
+        elif node_type == 'ShaderNodeTexCoord':
+            node_data['properties']['from_dupli'] = node.from_dupli
+        elif node_type == 'ShaderNodeUVMap':
+            node_data['properties']['uv_map'] = node.uv_map
+            node_data['properties']['from_instancer'] = node.from_instancer
+        elif node_type == 'ShaderNodeBsdfPrincipled':
+            # Store all BSDF inputs as properties for decomposition
+            for input_name in ['Base Color', 'Metallic', 'Roughness', 'Normal', 
+                              'Emission', 'Emission Strength', 'IOR', 'Transmission',
+                              'Transmission Roughness', 'Alpha', 'Subsurface',
+                              'Subsurface Radius', 'Subsurface Color']:
+                if input_name in node.inputs:
+                    sock = node.inputs[input_name]
+                    node_data['properties'][input_name] = self._get_socket_value(sock)
+        elif node_type == 'ShaderNodeMix':
+            node_data['properties']['data_type'] = node.data_type
+            node_data['properties']['blend_type'] = node.blend_type
+            node_data['properties']['clamp_result'] = node.clamp_result
+            node_data['properties']['clamp_factor'] = node.clamp_factor
+        elif node_type == 'ShaderNodeSeparateColor':
+            node_data['properties']['mode'] = node.mode
+        elif node_type == 'ShaderNodeCombineColor':
+            node_data['properties']['mode'] = node.mode
+        elif node_type == 'ShaderNodeClamp':
+            node_data['properties']['clamp_type'] = node.clamp_type
+            node_data['properties']['use_clamp'] = node.use_clamp
+        elif node_type == 'ShaderNodeMapRange':
+            node_data['properties']['data_type'] = node.data_type
+            node_data['properties']['clamp'] = node.clamp
+            node_data['properties']['interpolation_type'] = node.interpolation_type
+        elif node_type == 'ShaderNodeValToRGB':
+            node_data['properties']['color_ramp'] = node.color_ramp.name if node.color_ramp else None
+            node_data['properties']['clamp'] = node.clamp
+        elif node_type == 'ShaderNodeRGBToBW':
+            pass  # No special properties
+        elif node_type == 'ShaderNodeHueSaturation':
+            node_data['properties']['hue'] = node.inputs['Hue'].default_value
+            node_data['properties']['saturation'] = node.inputs['Saturation'].default_value
+            node_data['properties']['value'] = node.inputs['Value'].default_value
+            node_data['properties']['factor'] = node.inputs['Fac'].default_value
+        elif node_type == 'ShaderNodeInvert':
+            node_data['properties']['clamp_result'] = node.inputs['Fac'].default_value
+        elif node_type == 'ShaderNodeBrightContrast':
+            node_data['properties']['use_clamp'] = node.use_clamp
 
         return node_data
 
@@ -105,6 +158,6 @@ class BlenderShaderParser:
                 elif hasattr(val, '__iter__'):
                     return list(val)
                 return val
-        except:
+        except (AttributeError, TypeError) as e:
             pass
         return None

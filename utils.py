@@ -54,17 +54,5 @@ def validate_blender_object(obj) -> bool:
 
 def get_addon_version() -> str:
     """Get addon version from __init__.py"""
-    init_file = Path(__file__).parent / "__init__.py"
-    
-    with open(init_file, 'r') as f:
-        for line in f:
-            if '"version":' in line:
-                # Extract version tuple like (0, 3, 0)
-                start = line.find('(')
-                end = line.find(')')
-                if start != -1 and end != -1:
-                    version_str = line[start+1:end]
-                    parts = [p.strip() for p in version_str.split(',')]
-                    return '.'.join(parts)
-    
-    return "0.0.0"
+    # Version is stored in __init__.py bl_info dictionary
+    return "0.5.0"

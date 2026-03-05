@@ -1,305 +1,295 @@
 """
 Blender UI Panels
-Shows conversion analysis and warnings before export
+N-panel sidebar: conversion issues list + export controls
+Properties panel: per-node conversion steps
 """
 
 import bpy
-from . import parser, converter, utils
+from . import parser, utils
+
+# ── Helpers ───────────────────────────────────────────────────────────────────
+
+def _get_node_mapping():
+    try:
+        return utils.load_node_mappings()
+    except Exception:
+        return {}
+
+
+def _analyze_shader(blender_data, node_mapping):
+    """Lightweight analysis used by both panels"""
+    from . import socket_handler
+
+    analysis = {
+        'total': len(blender_data['nodes']),
+        'direct': 0,
+        'decompose': 0,
+        'approx': 0,
+        'incompatible': [],   # list of dicts {name, type, reason}
+        'mismatches': [],     # list of strings
+        'success': 0,
+    }
+
+    for nd in blender_data['nodes']:
+        ntype = nd['blender_type']
+        mapping = node_mapping.get(ntype, {})
+        strategy = mapping.get('strategy', 'incompatible')
+
+        if strategy == 'direct':
+            analysis['direct'] += 1
+        elif strategy == 'decompose':
+            analysis['decompose'] += 1
+        elif strategy in ('approximation', 'blend_mapping', 'normal_mapping',
+                          'uv_mapping', 'texture_reference', 'attribute_mapping',
+                          'procedural_texture'):
+            analysis['approx'] += 1
+        else:
+            analysis['incompatible'].append({
+                'name': nd['name'],
+                'type': ntype,
+                'reason': mapping.get('description', 'No direct Unity equivalent'),
+            })
+
+    for conn in blender_data['connections']:
+        ok, method = socket_handler.SocketTypeHandler.check_compatibility(
+            conn['from_type'], conn['to_type']
+        )
+        if not ok:
+            analysis['mismatches'].append(
+                f"{conn['from_node']} ({conn['from_type']}) → "
+                f"{conn['to_node']} ({conn['to_type']})"
+            )
+
+    convertible = analysis['direct'] + analysis['decompose'] + analysis['approx']
+    if analysis['total']:
+        analysis['success'] = int(convertible / analysis['total'] * 100)
+
+    return analysis
+
+
+# ── N-Panel sidebar (View3D > N > Unity Export) ───────────────────────────────
+
+class SHADER_PT_unity_export(bpy.types.Panel):
+    """Main Unity export panel in the 3D Viewport sidebar"""
+    bl_label = "Unity Export"
+    bl_idname = "SHADER_PT_unity_export"
+    bl_space_type = 'VIEW_3D'
+    bl_region_type = 'UI'
+    bl_category = "Unity Export"
+
+    def draw(self, context):
+        layout = self.layout
+        node_mapping = _get_node_mapping()
+
+        # ── Scene material summary ───────────────────────────────────
+        all_mats = [
+            slot.material
+            for obj in bpy.data.objects if obj.type == 'MESH'
+            for slot in obj.material_slots
+            if slot.material and slot.material.use_nodes
+        ]
+        unique_mats = list({m.name: m for m in all_mats}.values())
+
+        box = layout.box()
+        box.label(text="Scene Materials", icon='MATERIAL')
+        if not unique_mats:
+            box.label(text="No node-based materials found", icon='ERROR')
+        else:
+            box.label(text=f"{len(unique_mats)} material(s) will be exported")
+            for mat in unique_mats:
+                row = box.row()
+                row.label(text=f"  • {mat.name}", icon='MATERIAL_DATA')
+
+        layout.separator()
+
+        # ── Collections summary ──────────────────────────────────────
+        collections = list(bpy.context.scene.collection.children)
+        box2 = layout.box()
+        box2.label(text="Collections (→ FBX)", icon='OUTLINER_COLLECTION')
+        if not collections:
+            box2.label(text="No top-level collections", icon='INFO')
+        else:
+            for col in collections:
+                mesh_count = sum(1 for o in col.all_objects if o.type == 'MESH')
+                row = box2.row()
+                row.label(text=f"  • {col.name}  ({mesh_count} mesh(es))", icon='GROUP')
+
+        layout.separator()
+
+        # ── Issues (active material) ─────────────────────────────────
+        mat = context.active_object.active_material if (
+            context.active_object and context.active_object.type == 'MESH'
+        ) else None
+
+        if mat and mat.use_nodes:
+            try:
+                p = parser.BlenderShaderParser(mat)
+                data = p.parse()
+                analysis = _analyze_shader(data, node_mapping)
+
+                box3 = layout.box()
+                # Header row with success %
+                row = box3.row()
+                row.label(text=f"Active: {mat.name}", icon='SHADING_RENDERED')
+                pct = analysis['success']
+                icon = 'CHECKMARK' if pct == 100 else ('INFO' if pct >= 70 else 'ERROR')
+                row.label(text=f"{pct}%", icon=icon)
+
+                # Counts
+                grid = box3.grid_flow(row_major=True, columns=2, even_columns=True)
+                grid.label(text=f"✓ Direct: {analysis['direct']}")
+                grid.label(text=f"⊕ Decompose: {analysis['decompose']}")
+                grid.label(text=f"≈ Approx: {analysis['approx']}")
+                grid.label(text=f"✗ Incompatible: {len(analysis['incompatible'])}")
+
+                # Incompatible nodes
+                if analysis['incompatible']:
+                    box3.separator()
+                    box3.label(text="Incompatible nodes:", icon='ERROR')
+                    for item in analysis['incompatible']:
+                        row = box3.row()
+                        row.alert = True
+                        row.label(text=f"  {item['name']}  ({item['type']})")
+
+                # Type mismatches
+                if analysis['mismatches']:
+                    box3.separator()
+                    box3.label(text="Type mismatches:", icon='DRIVER_TRANSFORM')
+                    for m in analysis['mismatches'][:5]:
+                        box3.label(text=f"  {m}")
+                    if len(analysis['mismatches']) > 5:
+                        box3.label(text=f"  … and {len(analysis['mismatches']) - 5} more")
+
+            except Exception as e:
+                layout.label(text=f"Analysis error: {e}", icon='ERROR')
+
+        layout.separator()
+
+        # ── Export buttons ───────────────────────────────────────────
+        col = layout.column(align=True)
+        col.scale_y = 1.4
+
+        col.operator("shader.convert_and_export_all",
+                     text="⬆  Export All to Unity",
+                     icon='EXPORT')
+        col.separator()
+        col.operator("shader.convert_to_unity",
+                     text="Export Shaders Only",
+                     icon='NODE_MATERIAL')
+        col.operator("shader.export_collections_fbx",
+                     text="Export Models Only (FBX)",
+                     icon='MESH_DATA')
+
+
+# ── Properties panel (Material context) ──────────────────────────────────────
 
 class SHADER_PT_conversion_analysis(bpy.types.Panel):
-    """Panel showing shader conversion analysis"""
-    bl_label = "Shader Conversion Analysis"
+    """Per-material conversion details in the Material Properties panel"""
+    bl_label = "Unity Conversion Details"
     bl_idname = "SHADER_PT_conversion_analysis"
     bl_space_type = 'PROPERTIES'
     bl_region_type = 'WINDOW'
     bl_context = "material"
-    
+    bl_options = {'DEFAULT_CLOSED'}
+
     @classmethod
     def poll(cls, context):
-        """Show panel only if material with shader nodes is selected"""
-        if not context.material:
-            return False
-        return context.material.use_nodes
-    
+        return context.material and context.material.use_nodes
+
     def draw(self, context):
-        """Draw the panel"""
         layout = self.layout
         material = context.material
-        
-        if not material or not material.use_nodes:
-            layout.label(text="No shader material selected")
-            return
-        
-        # Title
-        layout.label(text="Shader Conversion Preview", icon='INFO')
-        layout.separator()
-        
-        # Load node mappings
+        node_mapping = _get_node_mapping()
+
         try:
-            node_mapping = utils.load_node_mappings()
+            p = parser.BlenderShaderParser(material)
+            blender_data = p.parse()
         except Exception as e:
-            layout.label(text=f"Error loading node data: {str(e)}", icon='ERROR')
+            layout.label(text=f"Parse error: {e}", icon='ERROR')
             return
-        
-        # Parse the shader
-        try:
-            parser_instance = parser.BlenderShaderParser(material)
-            blender_data = parser_instance.parse()
-        except Exception as e:
-            layout.label(text=f"Error parsing shader: {str(e)}", icon='ERROR')
-            return
-        
-        # Analyze compatibility
-        analysis = self._analyze_shader(blender_data, node_mapping)
-        
-        # Display statistics
-        self._draw_statistics(layout, analysis)
-        
-        # Display nodes with conversion steps
-        self._draw_node_analysis(layout, analysis, node_mapping)
-        
-        # Display warnings
-        if analysis['warnings']:
-            self._draw_warnings(layout, analysis)
-        
-        # Display conversion recommendations
-        if analysis['incompatible_nodes']:
-            self._draw_recommendations(layout, analysis)
-        
-        # NEW: Display detailed conversion steps for each node
-        self._draw_conversion_steps(layout, blender_data, node_mapping)
-        
+
+        analysis = _analyze_shader(blender_data, node_mapping)
+
+        # Summary bar
+        box = layout.box()
+        row = box.row()
+        row.label(text="Conversion success:")
+        pct = analysis['success']
+        row.label(
+            text=f"{pct}%",
+            icon='CHECKMARK' if pct == 100 else ('INFO' if pct >= 70 else 'ERROR')
+        )
+
+        grid = box.grid_flow(row_major=True, columns=2, even_columns=True)
+        grid.label(text=f"✓ Direct: {analysis['direct']}")
+        grid.label(text=f"⊕ Decompose: {analysis['decompose']}")
+        grid.label(text=f"≈ Approx: {analysis['approx']}")
+        grid.label(text=f"✗ Incompatible: {len(analysis['incompatible'])}")
+
+        # Per-node conversion steps from JSON
         layout.separator()
-        
-        # Export button
+        layout.label(text="Node Conversion Steps", icon='NODETREE')
+
+        has_steps = False
+        for nd in blender_data['nodes']:
+            ntype = nd['blender_type']
+            mapping = node_mapping.get(ntype, {})
+            chain = mapping.get('unity_chain')
+            if not chain or not chain.get('steps'):
+                continue
+            has_steps = True
+
+            box = layout.box()
+            row = box.row()
+            compat = mapping.get('compatibility', '?')
+            icon = 'CHECKMARK' if compat == '100%' else ('INFO' if compat >= '90%' else 'ERROR')
+            row.label(text=nd['name'], icon='NODE')
+            row.label(text=f"→ {mapping.get('unity_name', ntype)}  [{compat}]", icon=icon)
+
+            desc = chain.get('description', '')
+            if desc:
+                box.label(text=desc)
+
+            steps = chain.get('steps', [])
+            for i, step in enumerate(steps[:5]):
+                r = box.row()
+                r.label(text=f"  {i+1}. {step.get('action', '')}", icon='DOT')
+                detail = step.get('node') or step.get('note') or (
+                    f"{step.get('from', '')} → {step.get('to', '')}" if step.get('from') else ''
+                )
+                if detail:
+                    r.label(text=detail)
+            if len(steps) > 5:
+                box.label(text=f"  … and {len(steps) - 5} more steps")
+
+            note = chain.get('blender_conversion_notes', '')
+            if note:
+                box.label(text=f"💡 {note}", icon='INFO')
+
+        if not has_steps:
+            layout.label(text="No detailed steps needed for this material", icon='INFO')
+
+        layout.separator()
         row = layout.row()
-        row.scale_y = 1.5
+        row.scale_y = 1.4
         row.operator("shader.convert_to_unity", text="Export to Unity", icon='EXPORT')
 
-    @staticmethod
-    def _analyze_shader(blender_data, node_mapping):
-        """Analyze shader and return analysis data"""
-        analysis = {
-            'total_nodes': len(blender_data['nodes']),
-            'direct_nodes': 0,
-            'decompose_nodes': 0,
-            'approximation_nodes': 0,
-            'incompatible_nodes': [],
-            'type_mismatches': [],
-            'warnings': [],
-            'success_rate': 0
-        }
-        
-        # Analyze each node
-        for node_data in blender_data['nodes']:
-            node_type = node_data['blender_type']
-            node_mapping_data = node_mapping.get(node_type, {})
-            strategy = node_mapping_data.get('strategy', 'incompatible')
-            
-            if strategy == 'direct':
-                analysis['direct_nodes'] += 1
-            elif strategy == 'decompose':
-                analysis['decompose_nodes'] += 1
-            elif strategy in ['approximation', 'blend_mapping', 'normal_mapping', 'uv_mapping', 'texture_reference']:
-                analysis['approximation_nodes'] += 1
-            else:
-                analysis['incompatible_nodes'].append({
-                    'name': node_data['name'],
-                    'type': node_type,
-                    'reason': node_mapping_data.get('description', 'Unknown')
-                })
-                analysis['warnings'].append(f"{node_data['name']} ({node_type}) - No direct Unity equivalent")
-        
-        # Analyze connections for type mismatches
-        from . import socket_handler
-        for conn in blender_data['connections']:
-            is_compat, method = socket_handler.SocketTypeHandler.check_compatibility(
-                conn['from_type'], conn['to_type']
-            )
-            if not is_compat:
-                analysis['type_mismatches'].append({
-                    'from': f"{conn['from_node']}.{conn['from_socket']} ({conn['from_type']})",
-                    'to': f"{conn['to_node']}.{conn['to_socket']} ({conn['to_type']})"
-                })
-                analysis['warnings'].append(
-                    f"Type mismatch: {conn['from_type']} → {conn['to_type']}"
-                )
-        
-        # Calculate success rate
-        convertible = analysis['direct_nodes'] + analysis['decompose_nodes'] + analysis['approximation_nodes']
-        if analysis['total_nodes'] > 0:
-            analysis['success_rate'] = int((convertible / analysis['total_nodes']) * 100)
-        
-        return analysis
 
-    @staticmethod
-    def _draw_statistics(layout, analysis):
-        """Draw conversion statistics"""
-        box = layout.box()
-        
-        # Overall success rate
-        row = box.row()
-        row.label(text="Conversion Success Rate:")
-        row.label(text=f"{analysis['success_rate']}%", icon='CHECKMARK')
-        
-        # Node breakdown
-        row = box.row()
-        row.label(text=f"Total Nodes: {analysis['total_nodes']}")
-        
-        col = box.column()
-        col.label(text="Node Breakdown:", icon='NODE')
-        
-        row = col.row()
-        row.label(text=f"  ✓ Direct: {analysis['direct_nodes']}")
-        row.label(text=f"  ⊕ Decompose: {analysis['decompose_nodes']}")
-        
-        row = col.row()
-        row.label(text=f"  ≈ Approximated: {analysis['approximation_nodes']}")
-        row.label(text=f"  ✗ Incompatible: {len(analysis['incompatible_nodes'])}")
+# ── Registration ──────────────────────────────────────────────────────────────
 
-    @staticmethod
-    def _draw_node_analysis(layout, analysis, node_mapping):
-        """Draw detailed node analysis"""
-        if analysis['incompatible_nodes']:
-            box = layout.box()
-            box.label(text="⚠ Incompatible Nodes", icon='ERROR')
-            
-            for node_info in analysis['incompatible_nodes']:
-                row = box.row()
-                row.label(text=f"  • {node_info['name']}", icon='NODE')
-                row.label(text=f"({node_info['type']})")
-
-    @staticmethod
-    def _draw_warnings(layout, analysis):
-        """Draw warnings"""
-        if analysis['warnings']:
-            box = layout.box()
-            box.label(text=f"⚠ Warnings ({len(analysis['warnings'])})", icon='INFO')
-            
-            # Show first few warnings
-            for i, warning in enumerate(analysis['warnings'][:5]):
-                row = box.row()
-                row.label(text=f"  {warning}")
-            
-            if len(analysis['warnings']) > 5:
-                row = box.row()
-                row.label(text=f"  ... and {len(analysis['warnings']) - 5} more warnings")
-
-    @staticmethod
-    def _draw_recommendations(layout, analysis):
-        """Draw recommendations for fixing issues"""
-        box = layout.box()
-        box.label(text="💡 Recommendations", icon='INFO')
-        
-        recommendations = []
-        
-        if analysis['incompatible_nodes']:
-            recommendations.append("Remove or replace incompatible nodes")
-        
-        if analysis['type_mismatches']:
-            recommendations.append("Check socket type connections (may need converter nodes)")
-        
-        if analysis['success_rate'] < 70:
-            recommendations.append("Consider simplifying the shader for better compatibility")
-        
-        for rec in recommendations[:3]:
-            row = box.row()
-            row.label(text=f"  • {rec}")
-
-    @staticmethod
-    def _draw_conversion_steps(layout, blender_data, node_mapping):
-        """Draw detailed conversion steps for each node from JSON data"""
-        has_steps = False
-        
-        for node_data in blender_data['nodes']:
-            node_type = node_data['blender_type']
-            mapping = node_mapping.get(node_type, {})
-            unity_chain = mapping.get('unity_chain', None)
-            
-            # Only show steps for nodes that have conversion chain data
-            if unity_chain and unity_chain.get('steps'):
-                has_steps = True
-                box = layout.box()
-                
-                # Node header
-                row = box.row()
-                row.label(text=f"🔄 {node_data['name']}", icon='NODE')
-                row.label(text=f"→ {mapping.get('unity_name', 'Unknown')}")
-                
-                # Compatibility
-                row = box.row()
-                compat = mapping.get('compatibility', '0%')
-                if compat == '100%':
-                    row.label(text=f"✓ Direct ({compat})", icon='CHECKMARK')
-                elif compat in ['90%', '95%']:
-                    row.label(text=f"✓ Good ({compat})", icon='INFO')
-                else:
-                    row.label(text=f"⚠ {compat}", icon='ERROR')
-                
-                # Description
-                desc = unity_chain.get('description', '')
-                if desc:
-                    row = box.row()
-                    row.label(text=f"   {desc}")
-                
-                # Show first few steps
-                steps = unity_chain.get('steps', [])
-                if steps:
-                    row = box.row()
-                    row.label(text="   Steps:", icon='LISTBOX')
-                    
-                    for i, step in enumerate(steps[:4]):  # Show max 4 steps
-                        step_action = step.get('action', '')
-                        step_node = step.get('node', '')
-                        step_note = step.get('note', '')
-                        step_from = step.get('from', '')
-                        step_to = step.get('to', '')
-                        
-                        step_row = box.row()
-                        step_row.label(text=f"     {i+1}. {step_action}", icon='DOT')
-                        
-                        if step_node:
-                            step_row.label(text=step_node)
-                        elif step_from and step_to:
-                            step_row.label(text=f"{step_from} → {step_to}")
-                        elif step_note:
-                            step_row.label(text=step_note)
-                    
-                    if len(steps) > 4:
-                        more_row = box.row()
-                        more_row.label(text=f"     ... and {len(steps) - 4} more steps")
-                
-                # Blender conversion notes
-                blender_notes = unity_chain.get('blender_conversion_notes', '')
-                if blender_notes:
-                    note_row = box.row()
-                    note_row.label(text=f"   💡 {blender_notes}", icon='INFO')
-        
-        # If no nodes have steps, show a message
-        if not has_steps:
-            box = layout.box()
-            box.label(text="No detailed conversion steps needed", icon='INFO')
-
-
-class SHADER_UL_node_list(bpy.types.UIList):
-    """UIList for displaying nodes"""
-    
-    def draw_item(self, context, layout, data, item, icon, active_data, active_propname, index):
-        """Draw node list item"""
-        row = layout.row()
-        row.label(text=f"{item['name']}", icon='NODE')
-        row.label(text=f"({item['type']})")
+_classes = (
+    SHADER_PT_unity_export,
+    SHADER_PT_conversion_analysis,
+)
 
 
 def register():
-    """Register UI panels"""
-    bpy.utils.register_class(SHADER_PT_conversion_analysis)
-    bpy.utils.register_class(SHADER_UL_node_list)
+    for cls in _classes:
+        bpy.utils.register_class(cls)
     print("  ✓ UI panels registered")
 
 
 def unregister():
-    """Unregister UI panels"""
-    bpy.utils.unregister_class(SHADER_PT_conversion_analysis)
-    bpy.utils.unregister_class(SHADER_UL_node_list)
+    for cls in reversed(_classes):
+        bpy.utils.unregister_class(cls)
     print("  ✓ UI panels unregistered")

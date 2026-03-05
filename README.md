@@ -25,17 +25,18 @@ Then enable the addon in **Edit → Preferences → Add-ons**
 
 ```
 blender_to_unity_shader_converter/
-├─ __init__.py                     # Addon registration
-├─ operators.py                    # Blender operator
-├─ parser.py                       # Shader parser
-├─ converter.py                    # Conversion engine
-├─ socket_handler.py               # Type checking
-├─ strategies.py                   # Conversion strategies
-├─ exporter.py                     # Export functionality
-├─ utils.py                        # Utility functions
-├─ data/
-│  └─ node_mappings.json          # 78 node conversions
-└─ README.md                       # This file
+ ├─ __init__.py                     # Addon registration
+ ├─ operators.py                    # Blender operator
+ ├─ parser.py                       # Shader parser
+ ├─ converter.py                    # Conversion engine
+ ├─ socket_handler.py               # Type checking
+ ├─ strategies.py                   # Conversion strategies
+ ├─ exporter.py                     # Export functionality
+ ├─ utils.py                        # Utility functions
+ ├─ ui.py                          # UI panel
+ ├─ data/
+ │  └─ node_mappings.json          # 78+ node conversions
+ └─ README.md                       # This file
 ```
 
 ## How JSON Loading Works
@@ -79,6 +80,7 @@ To add or update node conversions:
 | `strategies.py` | Implements complex node conversions |
 | `exporter.py` | Writes FBX and shader graphs |
 | `utils.py` | Helper functions (JSON loading, logging) |
+| `ui.py` | UI panel for viewing conversion results |
 
 ## Usage Flow
 
@@ -183,19 +185,20 @@ elif strategy == 'custom_strategy':
 | File | Size |
 |------|------|
 | __init__.py | ~1KB |
-| operators.py | ~3KB |
-| parser.py | ~5KB |
-| converter.py | ~8KB |
+| operators.py | ~17KB |
+| parser.py | ~7KB |
+| converter.py | ~39KB |
 | socket_handler.py | ~2KB |
-| strategies.py | ~8KB |
-| exporter.py | ~5KB |
+| strategies.py | ~4KB |
+| exporter.py | ~15KB |
 | utils.py | ~2KB |
-| node_mappings.json | ~17KB |
-| **Total** | **~51KB** |
+| ui.py | ~11KB |
+| node_mappings.json | ~97KB |
+| **Total** | **~196KB** |
 
 ## Version
 
-- **Version:** 0.3.0
+- **Version:** 0.5.0
 - **Blender:** 3.0+
 - **Python:** 3.9+
 
