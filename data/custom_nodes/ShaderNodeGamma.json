@@ -1,0 +1,14 @@
+{
+  "metadata": {
+    "source_node": "ShaderNodeGamma",
+    "compatibility": "90%",
+    "description": "Gamma correction - applies power curve to color"
+  },
+  "summary": "Gamma correction - applies power curve to color",
+  "inputs": [
+    "Color (Vector4)",
+    "Gamma (Float)"
+  ],
+  "outputs": "Color Out",
+  "formula": "pow(Color, 1/Gamma)"
+}

@@ -1,0 +1,8 @@
+{
+  "metadata": {
+    "source_node": "ShaderNodeTexPointDensity",
+    "compatibility": "10%",
+    "description": "Point density texture - requires geometry data"
+  },
+  "note": "Not available in real-time shading"
+}

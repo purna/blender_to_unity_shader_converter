@@ -1,0 +1,10 @@
+{
+  "metadata": {
+    "source_node": "ShaderNodeBsdfTransparent",
+    "compatibility": "85%",
+    "description": "Transparent shader - simple alpha mapping"
+  },
+  "summary": "Transparent shader - simple alpha mapping",
+  "parameters": "Color (gets alpha from texture or property)",
+  "implementation": "Set Alpha value in material, use transparent blend mode"
+}

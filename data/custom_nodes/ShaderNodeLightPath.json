@@ -1,0 +1,30 @@
+{
+  "metadata": {
+    "source_node": "ShaderNodeLightPath",
+    "compatibility": "0%",
+    "category": "Input",
+    "complexity": "Impossible",
+    "description": "Blender Cycles light path information - completely unavailable in real-time"
+  },
+  "summary": "Blender LightPath outputs ray type information (direct, indirect, diffuse, glossy, etc.) from renderer. No real-time equivalent exists.",
+  "outputs": [
+    "Is Camera Ray",
+    "Is Shadow Ray",
+    "Is Diffuse Ray",
+    "Is Glossy Ray",
+    "Is Singular Ray",
+    "Is Reflection Ray",
+    "Is Transmission Ray",
+    "Ray Length",
+    "Ray Transparency"
+  ],
+  "blender_use": "Used in Cycles to implement context-dependent shading (different appearance depending on how ray was traced)",
+  "unity_equivalent": "NONE - fundamentally incompatible",
+  "why_impossible": [
+    "Real-time rendering doesn't track ray history",
+    "Requires offline rendering paradigm",
+    "No shader access to renderer statistics"
+  ],
+  "recommended_action": "REMOVE this node - use constant values or material properties instead",
+  "compatibility_loss_100_percent": "Completely incompatible - remove from shader graph"
+}

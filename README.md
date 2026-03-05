@@ -4,10 +4,6 @@
 
 Install package via the Addon Preferences in Blender: https://github.com/purna/[Blender to Unity Shader Converter Plugin](https://github.com/purna/blender_to_unity_shader_converter/releases/tag/Blender_to_Unity_Shader_Converter)
 
-**Linux:**
-``` 
-~/.config/blender/[Version]/scripts/addons/
-```
 
 Then enable the addon in **Edit → Preferences → Add-ons**
 
@@ -22,10 +18,14 @@ blender_to_unity_shader_converter/
  ├─ socket_handler.py               # Type checking
  ├─ strategies.py                   # Conversion strategies
  ├─ exporter.py                     # Export functionality
- ├─ utils.py                        # Utility functions
- ├─ ui.py                          # UI panel
+ ├─ utils.py                        # Utility functions & template loading
+ ├─ ui.py                           # UI panel
+ ├─ fbx_helper.py                   # FBX export helper
  ├─ data/
- │  └─ node_mappings.json          # 78+ node conversions
+ │  ├─ node_mappings.json           # 78+ node conversions
+ │  ├─ node_mappings_with_params.json # Extended mappings with parameters
+ │  ├─ shadergraph_template.xml     # Unity ShaderGraph template
+ │  └─ material_template.xml         # Unity Material template
  └─ README.md                       # This file
 ```
 
@@ -37,6 +37,16 @@ blender_to_unity_shader_converter/
 4. **utils.load_node_mappings()** → Reads `data/node_mappings.json`
 5. **JSON is stored** → `NODE_MAPPING` dictionary in operators.py
 6. **Converter uses it** → Passed to `ShaderGraphConverter()`
+
+### Template System
+
+The exporter uses XML templates for generating Unity ShaderGraph and Material files:
+
+1. **utils.py loads templates** → `load_shadergraph_template()` and `load_material_template()`
+2. **Templates populated** → `populate_shadergraph_template()` and `populate_material_template()`
+3. **Exporter uses templates** → Falls back to inline generation if templates unavailable
+
+Templates provide maintainability - edit XML instead of Python code for Unity format changes.
 
 ## Updating Node Mappings
 
@@ -68,8 +78,8 @@ To add or update node conversions:
 | `converter.py` | Routes nodes to strategies, builds output |
 | `socket_handler.py` | Validates socket type compatibility |
 | `strategies.py` | Implements complex node conversions |
-| `exporter.py` | Writes FBX and shader graphs |
-| `utils.py` | Helper functions (JSON loading, logging) |
+| `exporter.py` | Writes FBX, shader graphs, and materials |
+| `utils.py` | Helper functions (JSON loading, template loading, logging) |
 | `ui.py` | UI panel for viewing conversion results |
 
 ## Usage Flow
@@ -175,22 +185,27 @@ elif strategy == 'custom_strategy':
 | File | Size |
 |------|------|
 | __init__.py | ~1KB |
-| operators.py | ~17KB |
+| operators.py | ~19KB |
 | parser.py | ~7KB |
-| converter.py | ~39KB |
+| converter.py | ~36KB |
 | socket_handler.py | ~2KB |
 | strategies.py | ~4KB |
-| exporter.py | ~15KB |
+| exporter.py | ~17KB |
 | utils.py | ~2KB |
 | ui.py | ~11KB |
+| fbx_helper.py | ~3KB |
 | node_mappings.json | ~97KB |
-| **Total** | **~196KB** |
+| node_mappings_with_params.json | ~143KB |
+| shadergraph_template.xml | ~10KB |
+| material_template.xml | ~9KB |
+| **Total** | **~340KB** |
 
 ## Version
 
-- **Version:** 0.6.0
+- **Version:** 0.7.0
 - **Blender:** 5.1+
 - **Python:** 3.9+
+- **Unity:** 2021.1+ (URP supported)
 
 ## License
 

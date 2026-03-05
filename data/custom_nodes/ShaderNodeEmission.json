@@ -1,0 +1,27 @@
+{
+  "metadata": {
+    "source_node": "ShaderNodeEmission",
+    "compatibility": "85%",
+    "category": "Shader",
+    "complexity": "Medium",
+    "description": "Self-illuminating material - maps to Emission in Unity"
+  },
+  "summary": "Makes surface emit light. Blender: emission shader for area lights. Unity: use Base Color + Emission map with emissive material.",
+  "parameters": {
+    "Color": "Emitted color",
+    "Strength": "Emission intensity (HDR value, typically 0-16 or higher)"
+  },
+  "implementation": {
+    "approach": "Use Lit material with Emission",
+    "base_color": "Black (0,0,0) for pure emission, or use color",
+    "emission": "→ Emission input with Color × Strength",
+    "material_type": "Set to Unlit or use Emission keyword"
+  },
+  "strength_handling": {
+    "blender": "Physical luminosity value",
+    "unity": "Multiply color by strength value (Color × Strength)",
+    "hdr": "Enable HDR color property for values > 1"
+  },
+  "compatibility_loss_15_percent": "Blender emission affects global illumination; Unity emission is mostly visual except in baked GI",
+  "typical_use": "Light sources, neon, screens, fire, energy effects"
+}

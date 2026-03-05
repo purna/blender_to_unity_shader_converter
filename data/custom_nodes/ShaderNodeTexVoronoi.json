@@ -1,0 +1,27 @@
+{
+  "metadata": {
+    "source_node": "ShaderNodeTexVoronoi",
+    "compatibility": "50%",
+    "category": "Texture",
+    "complexity": "Very High",
+    "description": "Voronoi diagram procedural - complex algorithm required"
+  },
+  "summary": "Generates Voronoi patterns (cellular). Requires advanced procedural implementation. Very difficult to replicate exactly.",
+  "parameters": {
+    "Vector": "3D input coordinate",
+    "Scale": "Cell size",
+    "Detail": "Number of octaves",
+    "Roughness": "Amplitude variation",
+    "Lacunarity": "Frequency scaling",
+    "Offset": "Coordinate offset",
+    "Feature": "Distance/Color/Position outputs"
+  },
+  "features": {
+    "Distance": "Distance to nearest Voronoi cell",
+    "Color": "Cellular color noise",
+    "Position": "Voronoi cell center position"
+  },
+  "implementation": "Requires Voronoi cell generation algorithm (complex shader math)",
+  "complexity": "Very High - involves distance field calculations and cell identification",
+  "compatibility_loss_50_percent": "Voronoi algorithm is non-trivial; approximations exist but don't match exactly"
+}

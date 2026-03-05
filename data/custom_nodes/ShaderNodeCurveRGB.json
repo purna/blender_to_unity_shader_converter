@@ -1,0 +1,22 @@
+{
+  "metadata": {
+    "source_node": "ShaderNodeCurveRGB",
+    "compatibility": "50%",
+    "category": "Color",
+    "complexity": "High",
+    "description": "Arbitrary tone curve mapping - custom implementation"
+  },
+  "summary": "Maps colors through an arbitrary curve (like Photoshop curves). Requires custom function to evaluate curve points.",
+  "parameters": {
+    "Color": "Input RGB to remap",
+    "Curve": "Spline curve with control points"
+  },
+  "implementation": {
+    "approach_1": "Store control points and interpolate between them",
+    "approach_2": "Use Remap node for approximation (linear segments)",
+    "approach_3": "Custom function evaluating cubic spline"
+  },
+  "curve_evaluation": "For each control point, interpolate based on input value",
+  "complexity": "Depends on number of control points - 2 points is trivial (Lerp), 5+ requires spline math",
+  "compatibility_loss_50_percent": "Accurate spline curve evaluation is complex; linear approximations used instead"
+}

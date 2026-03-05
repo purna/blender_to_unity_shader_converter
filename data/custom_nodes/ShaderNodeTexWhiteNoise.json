@@ -1,0 +1,14 @@
+{
+  "metadata": {
+    "source_node": "ShaderNodeTexWhiteNoise",
+    "compatibility": "80%",
+    "description": "White noise texture - simple random values"
+  },
+  "inputs": [
+    "Vector (Vector3)"
+  ],
+  "outputs": [
+    "Value (Float)",
+    "Color (Vector3)"
+  ]
+}

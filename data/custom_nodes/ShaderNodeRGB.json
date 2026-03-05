@@ -1,0 +1,10 @@
+{
+  "metadata": {
+    "source_node": "ShaderNodeRGB",
+    "compatibility": "100%",
+    "description": "Color constant RGBA - direct property"
+  },
+  "summary": "Color constant RGBA - direct property",
+  "property": "Color (Color/Vector4)",
+  "outputs": "Out (Vector4)"
+}

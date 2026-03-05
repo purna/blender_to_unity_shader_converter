@@ -1,0 +1,16 @@
+{
+  "metadata": {
+    "source_node": "ShaderNodeVectorTransform",
+    "compatibility": "70%",
+    "description": "Transform vector between coordinate spaces"
+  },
+  "inputs": [
+    "Vector (Vector3)",
+    "Type (From/To space)"
+  ],
+  "spaces": [
+    "Object",
+    "World",
+    "Tangent"
+  ]
+}

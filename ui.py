@@ -80,6 +80,18 @@ class SHADER_PT_unity_export(bpy.types.Panel):
     def draw(self, context):
         layout = self.layout
         node_mapping = _get_node_mapping()
+        scene = context.scene
+
+        # ── Shader Type Selection ────────────────────────────────────────
+        box = layout.box()
+        box.label(text="Shader Settings", icon='SETTINGS')
+        
+        row = box.row()
+        row.label(text="Shader Type:")
+        row = box.row()
+        row.prop(scene, "unity_shader_type", text="" )
+
+        layout.separator()
 
         # ── Scene material summary ───────────────────────────────────
         all_mats = [

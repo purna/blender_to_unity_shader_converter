@@ -267,20 +267,11 @@ class SHADER_OT_convert_to_unity(bpy.types.Operator):
         subtype='DIR_PATH',
     )
     filter_folder: bpy.props.BoolProperty(default=True, options={'HIDDEN'})
-    
-    # Shader type selection
-    shader_type: bpy.props.EnumProperty(
-        name="Shader Type",
-        description="Type of Unity shader to generate",
-        items=[
-            ('UNIVERSAL', 'Universal (URP)', 'Universal Render Pipeline - Recommended for most Unity projects'),
-            ('BUILTIN', 'Built-in', 'Built-in Render Pipeline'),
-            ('CUSTOM_RT', 'Custom Render Texture', 'Custom Render Texture shader'),
-        ],
-        default='UNIVERSAL',
-    )
 
     def execute(self, context):
+        # Get shader type from scene property
+        shader_type = getattr(context.scene, 'unity_shader_type', 'UNIVERSAL')
+        
         if not NODE_MAPPING:
             self.report({'ERROR'}, "node_mappings.json failed to load. Check the console.")
             return {'CANCELLED'}
@@ -300,8 +291,8 @@ class SHADER_OT_convert_to_unity(bpy.types.Operator):
                 try:
                     blender_data = parser.BlenderShaderParser(mat).parse()
                     unity_graph = converter.ShaderGraphConverter(blender_data, NODE_MAPPING).convert()
-                    shader_path = exp.export_shader_graph(unity_graph, mat.name, shader_type=self.shader_type)
-                    exp.export_material(mat.name, mat.name + "_Material", shader_guid=unity_graph.guid, shader_type=self.shader_type)
+                    shader_path = exp.export_shader_graph(unity_graph, mat.name, shader_type=shader_type)
+                    exp.export_material(mat.name, mat.name + "_Material", shader_guid=unity_graph.guid, shader_type=shader_type)
                     all_analysis.append(_analyze_conversion(blender_data))
                     converted += 1
                 except Exception as e:
@@ -382,21 +373,12 @@ class SHADER_OT_convert_and_export_all(bpy.types.Operator):
         subtype='DIR_PATH',
     )
     filter_folder: bpy.props.BoolProperty(default=True, options={'HIDDEN'})
-    
-    # Shader type selection
-    shader_type: bpy.props.EnumProperty(
-        name="Shader Type",
-        description="Type of Unity shader to generate",
-        items=[
-            ('UNIVERSAL', 'Universal (URP)', 'Universal Render Pipeline - Recommended for most Unity projects'),
-            ('BUILTIN', 'Built-in', 'Built-in Render Pipeline'),
-            ('CUSTOM_RT', 'Custom Render Texture', 'Custom Render Texture shader'),
-        ],
-        default='UNIVERSAL',
-    )
 
     def execute(self, context):
         # Handle unsaved blend files - use temp directory as fallback
+        # Get shader type from scene property
+        shader_type = getattr(context.scene, 'unity_shader_type', 'UNIVERSAL')
+        
         if self.filepath:
             export_dir = self.filepath
         elif bpy.data.filepath:
@@ -415,11 +397,18 @@ class SHADER_OT_convert_and_export_all(bpy.types.Operator):
         else:
             blend_stem = "UnityExport"
         safe_folder = _sanitize_name(blend_stem) or "UnityExport"
-        export_path = os.path.join(export_dir, safe_folder)
+        
+        # Default export path is the directory containing the blend file, not the blend file itself
+        if bpy.data.filepath:
+            export_base_dir = os.path.dirname(bpy.data.filepath)
+        else:
+            export_base_dir = os.path.join(os.path.expanduser("~"), "Downloads")
+        
+        default_path = os.path.join(export_base_dir, safe_folder)
 
         try:
             # ── 1. Models: export every top-level collection as FBX ──────────
-            models_folder = os.path.join(export_path, "Models")
+            models_folder = os.path.join(default_path, "Models")
             os.makedirs(models_folder, exist_ok=True)
 
             fbx_count = 0
@@ -432,7 +421,7 @@ class SHADER_OT_convert_and_export_all(bpy.types.Operator):
             mat_count, mat_failed, all_analysis = 0, 0, []
 
             if all_materials:
-                exp = exporter.UnityExporter(export_path)
+                exp = exporter.UnityExporter(default_path)
                 exp.setup_folders()
 
                 for mat in all_materials:
@@ -441,8 +430,8 @@ class SHADER_OT_convert_and_export_all(bpy.types.Operator):
                         unity_graph = converter.ShaderGraphConverter(
                             blender_data, NODE_MAPPING
                         ).convert()
-                        exp.export_shader_graph(unity_graph, mat.name, shader_type=self.shader_type)
-                        exp.export_material(mat.name, mat.name + "_Material", shader_guid=unity_graph.guid, shader_type=self.shader_type)
+                        exp.export_shader_graph(unity_graph, mat.name, shader_type=shader_type)
+                        exp.export_material(mat.name, mat.name + "_Material", shader_guid=unity_graph.guid, shader_type=shader_type)
                         all_analysis.append(_analyze_conversion(blender_data))
                         mat_count += 1
                     except Exception as e:
@@ -463,7 +452,7 @@ class SHADER_OT_convert_and_export_all(bpy.types.Operator):
                 parts.append(f"{mat_failed} shader(s) failed - check console")
 
             msg = "Exported to {}: {}".format(
-                export_path, ", ".join(parts) if parts else "nothing exported"
+                default_path, ", ".join(parts) if parts else "nothing exported"
             )
             self.report({'INFO'} if parts else {'WARNING'}, msg)
             print(f"\n{msg}\n")

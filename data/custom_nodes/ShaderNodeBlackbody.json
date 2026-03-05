@@ -1,0 +1,11 @@
+{
+  "metadata": {
+    "source_node": "ShaderNodeBlackbody",
+    "compatibility": "85%",
+    "description": "Temperature color from blackbody radiation - physics-based color"
+  },
+  "summary": "Temperature color from blackbody radiation - physics-based color",
+  "inputs": "Temperature (Float, Kelvin)",
+  "outputs": "Color (Vector3)",
+  "temperature_range": "500K (red) to 10000K (blue-white)"
+}

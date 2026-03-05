@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+    Unity ShaderGraph JSON Template Format
+    Each line is a separate JSON object (multi-object JSON format)
+    
+    This template defines the structure. The exporter populates:
+    - {{GUID}} - Unique 32-char hex ID for each object
+    - {{NODES}} - Array of node IDs in m_Nodes
+    - {{EDGES}} - Array of edge connections
+    - {{VERTEX_BLOCKS}} - Array of vertex block IDs
+    - {{FRAGMENT_BLOCKS}} - Array of fragment block IDs
+    - {{ALL_OBJECTS}} - All JSON objects as array
+-->
+<ShaderGraph>
+<!-- GraphData (must be first line) -->
+{"m_SGVersion": 3, "m_Type": "UnityEditor.ShaderGraph.GraphData", "m_ObjectId": "{{GRAPH_GUID}}", "m_Properties": [], "m_Keywords": [], "m_Dropdowns": [], "m_CategoryData": [{"m_Id": "{{CATEGORY_ID}}"}], "m_Nodes": {{NODES}}, "m_GroupDatas": [], "m_StickyNoteDatas": [], "m_Edges": {{EDGES}}, "m_VertexContext": {"m_Position": {"x": 0.0, "y": 0.0}, "m_Blocks": {{VERTEX_BLOCKS}}}, "m_FragmentContext": {"m_Position": {"x": 0.0, "y": 200.0}, "m_Blocks": {{FRAGMENT_BLOCKS}}}, "m_PreviewData": {"serializedMesh": {"m_SerializedMesh": "{\"mesh\":{\"instanceID\":0}}", "m_Guid": ""}, "preventRotation": false}, "m_Path": "Shader Graphs", "m_GraphPrecision": 1, "m_PreviewMode": 2, "m_OutputNode": {"m_Id": ""}, "m_SubDatas": [], "m_ActiveTargets": [{"m_Id": "{{TARGET_ID}}"}]}
+
+<!-- Vertex Position BlockNode -->
+{"m_SGVersion": 0, "m_Type": "UnityEditor.ShaderGraph.BlockNode", "m_ObjectId": "{{VERTEX_POSITION_ID}}", "m_Group": {"m_Id": ""}, "m_Name": "VertexDescription.Position", "m_DrawState": {"m_Expanded": true, "m_Position": {"serializedVersion": "2", "x": 0.0, "y": 0.0, "width": 0.0, "height": 0.0}}, "m_Slots": [{"m_Id": "{{POSITION_SLOT_ID}}"}], "synonyms": [], "m_Precision": 0, "m_PreviewExpanded": true, "m_DismissedVersion": 0, "m_PreviewMode": 0, "m_CustomColors": {"m_SerializableColors": []}, "m_SerializedDescriptor": "VertexDescription.Position"}
+
+<!-- Position Slot -->
+{"m_SGVersion": 0, "m_Type": "UnityEditor.ShaderGraph.PositionMaterialSlot", "m_ObjectId": "{{POSITION_SLOT_ID}}", "m_Id": 0, "m_DisplayName": "Position", "m_SlotType": 0, "m_Hidden": false, "m_ShaderOutputName": "Position", "m_StageCapability": 1, "m_Value": {"x": 0.0, "y": 0.0, "z": 0.0}, "m_DefaultValue": {"x": 0.0, "y": 0.0, "z": 0.0}, "m_Labels": [], "m_Space": 0}
+
+<!-- Vertex Normal BlockNode -->
+{"m_SGVersion": 0, "m_Type": "UnityEditor.ShaderGraph.BlockNode", "m_ObjectId": "{{VERTEX_NORMAL_ID}}", "m_Group": {"m_Id": ""}, "m_Name": "VertexDescription.Normal", "m_DrawState": {"m_Expanded": true, "m_Position": {"serializedVersion": "2", "x": 0.0, "y": 0.0, "width": 0.0, "height": 0.0}}, "m_Slots": [{"m_Id": "{{NORMAL_SLOT_ID}}"}], "synonyms": [], "m_Precision": 0, "m_PreviewExpanded": true, "m_DismissedVersion": 0, "m_PreviewMode": 0, "m_CustomColors": {"m_SerializableColors": []}, "m_SerializedDescriptor": "VertexDescription.Normal"}
+
+<!-- Normal Slot -->
+{"m_SGVersion": 0, "m_Type": "UnityEditor.ShaderGraph.NormalMaterialSlot", "m_ObjectId": "{{NORMAL_SLOT_ID}}", "m_Id": 0, "m_DisplayName": "Normal", "m_SlotType": 0, "m_Hidden": false, "m_ShaderOutputName": "Normal", "m_StageCapability": 1, "m_Value": {"x": 0.0, "y": 0.0, "z": 0.0}, "m_DefaultValue": {"x": 0.0, "y": 0.0, "z": 0.0}, "m_Labels": [], "m_Space": 0}
+
+<!-- Vertex Tangent BlockNode -->
+{"m_SGVersion": 0, "m_Type": "UnityEditor.ShaderGraph.BlockNode", "m_ObjectId": "{{VERTEX_TANGENT_ID}}", "m_Group": {"m_Id": ""}, "m_Name": "VertexDescription.Tangent", "m_DrawState": {"m_Expanded": true, "m_Position": {"serializedVersion": "2", "x": 0.0, "y": 0.0, "width": 0.0, "height": 0.0}}, "m_Slots": [{"m_Id": "{{TANGENT_SLOT_ID}}"}], "synonyms": [], "m_Precision": 0, "m_PreviewExpanded": true, "m_DismissedVersion": 0, "m_PreviewMode": 0, "m_CustomColors": {"m_SerializableColors": []}, "m_SerializedDescriptor": "VertexDescription.Tangent"}
+
+<!-- Tangent Slot -->
+{"m_SGVersion": 0, "m_Type": "UnityEditor.ShaderGraph.TangentMaterialSlot", "m_ObjectId": "{{TANGENT_SLOT_ID}}", "m_Id": 0, "m_DisplayName": "Tangent", "m_SlotType": 0, "m_Hidden": false, "m_ShaderOutputName": "Tangent", "m_StageCapability": 1, "m_Value": {"x": 0.0, "y": 0.0, "z": 0.0}, "m_DefaultValue": {"x": 0.0, "y": 0.0, "z": 0.0}, "m_Labels": [], "m_Space": 0}
+
+<!-- Fragment BaseColor BlockNode -->
+{"m_SGVersion": 0, "m_Type": "UnityEditor.ShaderGraph.BlockNode", "m_ObjectId": "{{FRAGMENT_BASECOLOR_ID}}", "m_Group": {"m_Id": ""}, "m_Name": "SurfaceDescription.BaseColor", "m_DrawState": {"m_Expanded": true, "m_Position": {"serializedVersion": "2", "x": 0.0, "y": 0.0, "width": 0.0, "height": 0.0}}, "m_Slots": [{"m_Id": "{{BASECOLOR_SLOT_ID}}"}], "synonyms": [], "m_Precision": 0, "m_PreviewExpanded": true, "m_DismissedVersion": 0, "m_PreviewMode": 0, "m_CustomColors": {"m_SerializableColors": []}, "m_SerializedDescriptor": "SurfaceDescription.BaseColor"}
+
+<!-- BaseColor Slot -->
+{"m_SGVersion": 0, "m_Type": "UnityEditor.ShaderGraph.ColorRGBMaterialSlot", "m_ObjectId": "{{BASECOLOR_SLOT_ID}}", "m_Id": 0, "m_DisplayName": "Base Color", "m_SlotType": 0, "m_Hidden": false, "m_ShaderOutputName": "BaseColor", "m_StageCapability": 2, "m_Value": {"x": 0.5, "y": 0.5, "z": 0.5}, "m_DefaultValue": {"x": 0.5, "y": 0.5, "z": 0.5}, "m_Labels": [], "m_ColorMode": 0, "m_DefaultColor": {"r": 0.5, "g": 0.5, "b": 0.5, "a": 1.0}}
+
+<!-- Fragment NormalTS BlockNode -->
+{"m_SGVersion": 0, "m_Type": "UnityEditor.ShaderGraph.BlockNode", "m_ObjectId": "{{FRAGMENT_NORMAL_ID}}", "m_Group": {"m_Id": ""}, "m_Name": "SurfaceDescription.NormalTS", "m_DrawState": {"m_Expanded": true, "m_Position": {"serializedVersion": "2", "x": 0.0, "y": 0.0, "width": 0.0, "height": 0.0}}, "m_Slots": [{"m_Id": "{{NORMALTS_SLOT_ID}}"}], "synonyms": [], "m_Precision": 0, "m_PreviewExpanded": true, "m_DismissedVersion": 0, "m_PreviewMode": 0, "m_CustomColors": {"m_SerializableColors": []}, "m_SerializedDescriptor": "SurfaceDescription.NormalTS"}
+
+<!-- NormalTS Slot -->
+{"m_SGVersion": 0, "m_Type": "UnityEditor.ShaderGraph.NormalMaterialSlot", "m_ObjectId": "{{NORMALTS_SLOT_ID}}", "m_Id": 0, "m_DisplayName": "Normal (Tangent Space)", "m_SlotType": 0, "m_Hidden": false, "m_ShaderOutputName": "NormalTS", "m_StageCapability": 2, "m_Value": {"x": 0.0, "y": 0.0, "z": 1.0}, "m_DefaultValue": {"x": 0.0, "y": 0.0, "z": 1.0}, "m_Labels": [], "m_Space": 3}
+
+<!-- Fragment Metallic BlockNode -->
+{"m_SGVersion": 0, "m_Type": "UnityEditor.ShaderGraph.BlockNode", "m_ObjectId": "{{FRAGMENT_METALLIC_ID}}", "m_Group": {"m_Id": ""}, "m_Name": "SurfaceDescription.Metallic", "m_DrawState": {"m_Expanded": true, "m_Position": {"serializedVersion": "2", "x": 0.0, "y": 0.0, "width": 0.0, "height": 0.0}}, "m_Slots": [{"m_Id": "{{METALLIC_SLOT_ID}}"}], "synonyms": [], "m_Precision": 0, "m_PreviewExpanded": true, "m_DismissedVersion": 0, "m_PreviewMode": 0, "m_CustomColors": {"m_SerializableColors": []}, "m_SerializedDescriptor": "SurfaceDescription.Metallic"}
+
+<!-- Metallic Slot -->
+{"m_SGVersion": 0, "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot", "m_ObjectId": "{{METALLIC_SLOT_ID}}", "m_Id": 0, "m_DisplayName": "Metallic", "m_SlotType": 0, "m_Hidden": false, "m_ShaderOutputName": "Metallic", "m_StageCapability": 2, "m_Value": 0.0, "m_DefaultValue": 0.0, "m_Labels": [], "m_LiteralMode": false}
+
+<!-- Fragment Smoothness BlockNode -->
+{"m_SGVersion": 0, "m_Type": "UnityEditor.ShaderGraph.BlockNode", "m_ObjectId": "{{FRAGMENT_SMOOTHNESS_ID}}", "m_Group": {"m_Id": ""}, "m_Name": "SurfaceDescription.Smoothness", "m_DrawState": {"m_Expanded": true, "m_Position": {"serializedVersion": "2", "x": 0.0, "y": 0.0, "width": 0.0, "height": 0.0}}, "m_Slots": [{"m_Id": "{{SMOOTHNESS_SLOT_ID}}"}], "synonyms": [], "m_Precision": 0, "m_PreviewExpanded": true, "m_DismissedVersion": 0, "m_PreviewMode": 0, "m_CustomColors": {"m_SerializableColors": []}, "m_SerializedDescriptor": "SurfaceDescription.Smoothness"}
+
+<!-- Smoothness Slot -->
+{"m_SGVersion": 0, "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot", "m_ObjectId": "{{SMOOTHNESS_SLOT_ID}}", "m_Id": 0, "m_DisplayName": "Smoothness", "m_SlotType": 0, "m_Hidden": false, "m_ShaderOutputName": "Smoothness", "m_StageCapability": 2, "m_Value": 0.5, "m_DefaultValue": 0.5, "m_Labels": [], "m_LiteralMode": false}
+
+<!-- Fragment Occlusion BlockNode -->
+{"m_SGVersion": 0, "m_Type": "UnityEditor.ShaderGraph.BlockNode", "m_ObjectId": "{{FRAGMENT_OCCLUSION_ID}}", "m_Group": {"m_Id": ""}, "m_Name": "SurfaceDescription.Occlusion", "m_DrawState": {"m_Expanded": true, "m_Position": {"serializedVersion": "2", "x": 0.0, "y": 0.0, "width": 0.0, "height": 0.0}}, "m_Slots": [{"m_Id": "{{OCCLUSION_SLOT_ID}}"}], "synonyms": [], "m_Precision": 0, "m_PreviewExpanded": true, "m_DismissedVersion": 0, "m_PreviewMode": 0, "m_CustomColors": {"m_SerializableColors": []}, "m_SerializedDescriptor": "SurfaceDescription.Occlusion"}
+
+<!-- Occlusion Slot -->
+{"m_SGVersion": 0, "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot", "m_ObjectId": "{{OCCLUSION_SLOT_ID}}", "m_Id": 0, "m_DisplayName": "Ambient Occlusion", "m_SlotType": 0, "m_Hidden": false, "m_ShaderOutputName": "Occlusion", "m_StageCapability": 2, "m_Value": 1.0, "m_DefaultValue": 1.0, "m_Labels": [], "m_LiteralMode": false}
+
+<!-- Fragment Emission BlockNode -->
+{"m_SGVersion": 0, "m_Type": "UnityEditor.ShaderGraph.BlockNode", "m_ObjectId": "{{FRAGMENT_EMISSION_ID}}", "m_Group": {"m_Id": ""}, "m_Name": "SurfaceDescription.Emission", "m_DrawState": {"m_Expanded": true, "m_Position": {"serializedVersion": "2", "x": 0.0, "y": 0.0, "width": 0.0, "height": 0.0}}, "m_Slots": [{"m_Id": "{{EMISSION_SLOT_ID}}"}], "synonyms": [], "m_Precision": 0, "m_PreviewExpanded": true, "m_DismissedVersion": 0, "m_PreviewMode": 0, "m_CustomColors": {"m_SerializableColors": []}, "m_SerializedDescriptor": "SurfaceDescription.Emission"}
+
+<!-- Emission Slot -->
+{"m_SGVersion": 0, "m_Type": "UnityEditor.ShaderGraph.ColorRGBMaterialSlot", "m_ObjectId": "{{EMISSION_SLOT_ID}}", "m_Id": 0, "m_DisplayName": "Emission", "m_SlotType": 0, "m_Hidden": false, "m_ShaderOutputName": "Emission", "m_StageCapability": 2, "m_Value": {"x": 0.0, "y": 0.0, "z": 0.0}, "m_DefaultValue": {"x": 0.0, "y": 0.0, "z": 0.0}, "m_Labels": [], "m_ColorMode": 1, "m_DefaultColor": {"r": 0.0, "g": 0.0, "b": 0.0, "a": 1.0}}
+
+<!-- CategoryData -->
+{"m_SGVersion": 0, "m_Type": "UnityEditor.ShaderGraph.CategoryData", "m_ObjectId": "{{CATEGORY_ID}}", "m_Name": "", "m_ChildObjectList": []}
+
+<!-- Render Target -->
+{"m_SGVersion": 1, "m_Type": "{{TARGET_TYPE}}", "m_ObjectId": "{{TARGET_ID}}", "m_Datas": [], "m_ActiveSubTarget": {"m_Id": "{{SUBTARGET_ID}}"}, "m_AllowMaterialOverride": false, "m_SurfaceType": 0, "m_ZTestMode": 4, "m_ZWriteControl": 0, "m_AlphaMode": 0, "m_RenderFace": 2, "m_AlphaClip": false, "m_CastShadows": true, "m_ReceiveShadows": true, "m_DisableTint": false, "m_Sort3DAs2DCompatible": false, "m_AdditionalMotionVectorMode": 0, "m_AlembicMotionVectors": false, "m_SupportsLODCrossFade": false, "m_CustomEditorGUI": "", "m_SupportVFX": false}
+
+<!-- SubTarget -->
+{"m_SGVersion": 2, "m_Type": "{{SUBTARGET_TYPE}}", "m_ObjectId": "{{SUBTARGET_ID}}", "m_WorkflowMode": 1, "m_NormalDropOffSpace": 0, "m_ClearCoat": false, "m_BlendModePreserveSpecular": true}
+</ShaderGraph>

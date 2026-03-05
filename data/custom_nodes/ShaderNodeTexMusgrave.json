@@ -1,0 +1,17 @@
+{
+  "metadata": {
+    "source_node": "ShaderNodeTexMusgrave",
+    "compatibility": "60%",
+    "description": "Musgrave fractal texture - complex procedural"
+  },
+  "summary": "Musgrave fractal texture - complex procedural",
+  "parameters": [
+    "Scale",
+    "Detail",
+    "Roughness",
+    "Lacunarity",
+    "Offset"
+  ],
+  "implementation": "Custom function with fBm (fractional Brownian motion)",
+  "notes": "Similar to Noise but with more control - very complex to replicate"
+}

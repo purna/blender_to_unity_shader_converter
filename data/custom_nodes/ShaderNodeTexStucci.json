@@ -1,0 +1,17 @@
+{
+  "metadata": {
+    "source_node": "ShaderNodeTexStucci",
+    "compatibility": "40%",
+    "description": "Stucci procedural texture - complex algorithm"
+  },
+  "parameters": [
+    "Scale",
+    "Detail",
+    "Roughness",
+    "Type"
+  ],
+  "types": [
+    "Plastic",
+    "Wall"
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "metadata": {
+    "source_node": "ShaderNodeCurveFloat",
+    "compatibility": "50%",
+    "description": "Arbitrary curve for float values - needs custom implementation"
+  },
+  "summary": "Arbitrary curve for float values - needs custom implementation",
+  "inputs": "Value (Float 0-1)",
+  "property": "Curve (spline with control points)",
+  "outputs": "Out (Float)",
+  "challenge": "Spline evaluation is complex - use linear interpolation as fallback"
+}

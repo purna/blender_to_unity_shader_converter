@@ -1,0 +1,25 @@
+{
+  "metadata": {
+    "source_node": "ShaderNodeTexGradient",
+    "compatibility": "70%",
+    "category": "Texture",
+    "complexity": "Medium",
+    "description": "Procedural gradient pattern - multiple gradient types"
+  },
+  "summary": "Linear, radial, or diagonal gradient patterns. Can be constructed with math or custom function.",
+  "gradient_types": {
+    "Linear": "Interpolate along one axis (UV.x or similar)",
+    "Quadratic": "Quadratic falloff from center",
+    "Easing": "Smoothstep easing function",
+    "Diagonal": "Diagonal gradient across 2D",
+    "Radial": "Circular/radial from center"
+  },
+  "implementation": {
+    "linear": "Directly use UV.x or UV.y",
+    "radial": "Distance(UV, center) normalized",
+    "diagonal": "(UV.x + UV.y) / 2"
+  },
+  "typical_use": "Vignetting, lighting falloff, blend masks, background gradients",
+  "compatibility_loss_30_percent": "Exact gradient curve interpolation may differ for Easing modes",
+  "example": "Radial: gradient_value = 1.0 - saturate(length(UV - 0.5) * 2.0)"
+}

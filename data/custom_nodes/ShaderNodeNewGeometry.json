@@ -1,0 +1,17 @@
+{
+  "metadata": {
+    "source_node": "ShaderNodeNewGeometry",
+    "compatibility": "90%",
+    "description": "Geometry data access - position, normal, UV, etc."
+  },
+  "summary": "Geometry data access - position, normal, UV, etc.",
+  "outputs": [
+    "Position",
+    "Normal",
+    "Tangent",
+    "True Normal",
+    "Incoming (View Direction)",
+    "Parametric (UV)"
+  ],
+  "notes": "Multi-output - creates separate nodes for each needed output"
+}

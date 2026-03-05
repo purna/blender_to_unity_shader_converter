@@ -1,0 +1,9 @@
+{
+  "metadata": {
+    "source_node": "ShaderNodeReroute",
+    "compatibility": "100%",
+    "description": "Reroute/pass-through node - organize graph"
+  },
+  "use": "Clean up messy node connections",
+  "note": "Optional organizational tool"
+}

@@ -1,0 +1,8 @@
+{
+  "metadata": {
+    "source_node": "ShaderNodeComboIs",
+    "compatibility": "100%",
+    "description": "Integer constant value"
+  },
+  "use": "Integer values (enums, indices)"
+}

@@ -1,0 +1,23 @@
+{
+  "metadata": {
+    "source_node": "ShaderNodeAmbientOcclusion",
+    "compatibility": "10%",
+    "category": "Input",
+    "complexity": "Impossible",
+    "description": "Real-time ambient occlusion - requires global scene knowledge"
+  },
+  "summary": "Blender AO reads occluding geometry around surface. Real-time AO requires either baked AO maps or screen-space techniques.",
+  "parameters": {
+    "Distance": "Occlusion search radius",
+    "Samples": "Number of samples for AO calculation"
+  },
+  "blender_behavior": "Raytraces scene geometry to find occlusion",
+  "unity_alternatives": [
+    "Baked AO texture map - pre-calculated offline",
+    "SSAO (Screen Space Ambient Occlusion) - post-process",
+    "HDRP Ambient Occlusion - built-in renderer feature"
+  ],
+  "shader_graph_limitation": "ShaderGraph cannot access scene geometry at runtime",
+  "workaround": "Use baked AO map instead - texture the occlusion offline",
+  "compatibility_loss_90_percent": "Fundamentally incompatible - scene information not available in ShaderGraph"
+}

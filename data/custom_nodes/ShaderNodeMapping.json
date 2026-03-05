@@ -1,0 +1,29 @@
+{
+  "metadata": {
+    "source_node": "ShaderNodeMapping",
+    "compatibility": "90%",
+    "category": "Vector",
+    "complexity": "Medium",
+    "description": "Full UV transformation - location, rotation, scale with 3D support"
+  },
+  "summary": "Transforms UV coordinates (or any Vector3) with Location, Rotation, and Scale. Blender operates in 3D; Unity typically uses 2D UV but supports equivalent transforms.",
+  "parameters": {
+    "Vector": "Input UV (Vector2/Vector3)",
+    "Location": "Translation offset [XYZ]",
+    "Rotation": "Rotation in Euler angles [XYZ degrees]",
+    "Scale": "Scale multiplier [XYZ]"
+  },
+  "implementation": {
+    "approach": "Decompose into separate math nodes or use custom function",
+    "option_1": "Series of Multiply (scale) + Add (location) nodes",
+    "option_2": "Custom function with rotation matrix math",
+    "option_3": "TilingAndOffset node (handles Location+Scale but not rotation)"
+  },
+  "formula": {
+    "scaled": "UV × Scale",
+    "rotated": "UV rotated by Rotation matrix",
+    "translated": "Rotated UV + Location"
+  },
+  "typical_use": "UV animation, texture scrolling, tiling patterns, rotation effects",
+  "compatibility_loss_10_percent": "3D rotation on 2D UV space requires projection; minor precision in very large rotations"
+}

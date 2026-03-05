@@ -1,0 +1,10 @@
+{
+  "metadata": {
+    "source_node": "ShaderNodeSeparateRGB",
+    "compatibility": "100%",
+    "description": "Splits color into R, G, B channels - direct mapping"
+  },
+  "summary": "Splits color into R, G, B channels - direct mapping",
+  "inputs": "Color In (Vector4)",
+  "outputs": "R (Float), G (Float), B (Float), A (Float)"
+}

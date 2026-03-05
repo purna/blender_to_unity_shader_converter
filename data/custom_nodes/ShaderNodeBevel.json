@@ -1,0 +1,15 @@
+{
+  "metadata": {
+    "source_node": "ShaderNodeBevel",
+    "compatibility": "70%",
+    "description": "Bevel edge detection - approximates rounded edges"
+  },
+  "summary": "Bevel edge detection - approximates rounded edges",
+  "inputs": [
+    "Normal",
+    "Distance",
+    "Samples"
+  ],
+  "outputs": "Normal (Vector3)",
+  "approximation": "Approximate with bump mapping or normal offset"
+}

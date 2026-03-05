@@ -1,0 +1,8 @@
+{
+  "metadata": {
+    "source_node": "ShaderNodeLightFalloff",
+    "compatibility": "0%",
+    "description": "Light falloff curve - renderer specific"
+  },
+  "note": "Completely incompatible with real-time rendering"
+}

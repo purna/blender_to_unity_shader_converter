@@ -1,0 +1,31 @@
+{
+  "metadata": {
+    "source_node": "ShaderNodeMixRGB",
+    "compatibility": "90%",
+    "category": "Color",
+    "complexity": "Low-Medium",
+    "description": "Color blending with multiple modes - nearly complete Unity equivalents"
+  },
+  "summary": "Blends two colors using various blend modes (Mix, Darken, Lighten, etc.). Most modes map directly; Screen/Overlay/Soft Light have minor shader differences.",
+  "blender_modes_to_unity": {
+    "Mix": "Lerp",
+    "Darken": "Min(Color1, Color2)",
+    "Multiply": "Color1 * Color2",
+    "Burn": "1 - (1-Color1)/(Color2+0.001)",
+    "Lighten": "Max(Color1, Color2)",
+    "Screen": "1 - (1-Color1)*(1-Color2)",
+    "Dodge": "Color1 / (1-Color2+0.001)",
+    "Add": "Color1 + Color2",
+    "Overlay": "Conditional blend (custom function)",
+    "Soft Light": "Conditional blend (custom function)",
+    "Linear Light": "Color1 + 2*Color2 - 1"
+  },
+  "parameters": {
+    "Fac": "Blend factor [0, 1]",
+    "Color1": "First color",
+    "Color2": "Second color",
+    "Mode": "Blend operation"
+  },
+  "implementation_notes": "Most modes use standard math; Overlay and Soft Light require custom functions for exact match",
+  "compatibility_loss_5_percent": "Overlay and Soft Light shader precision differences"
+}

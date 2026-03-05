@@ -1,0 +1,8 @@
+{
+  "metadata": {
+    "source_node": "ShaderNodeShaderToRGB",
+    "compatibility": "0%",
+    "description": "Convert shader to RGB - compositor only"
+  },
+  "note": "Completely incompatible - not applicable in shaders"
+}

@@ -1,0 +1,13 @@
+{
+  "metadata": {
+    "source_node": "ShaderNodeBsdfAnisotropic",
+    "compatibility": "30%",
+    "description": "Anisotropic specular highlights - directional roughness"
+  },
+  "parameters": [
+    "Color",
+    "Roughness X/Y",
+    "Rotation"
+  ],
+  "note": "Very limited support - use custom shader"
+}

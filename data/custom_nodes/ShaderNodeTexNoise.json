@@ -1,0 +1,25 @@
+{
+  "metadata": {
+    "source_node": "ShaderNodeTexNoise",
+    "compatibility": "75%",
+    "category": "Texture",
+    "complexity": "High",
+    "description": "Perlin noise procedural texture - custom implementation required"
+  },
+  "summary": "Generates Perlin noise pattern procedurally. Unity has no native Perlin noise node - requires custom function or approximation.",
+  "parameters": {
+    "Vector": "3D coordinate input (typically UV expanded to 3D)",
+    "Scale": "Noise frequency/detail level",
+    "Detail": "Number of octaves for fractal brownian motion (fBm)",
+    "Roughness": "Amplitude multiplier for octaves",
+    "Distortion": "Displacement of noise coordinates"
+  },
+  "implementation": {
+    "approach_1": "Use Unity Noise package (com.unity.shadergraph) if available",
+    "approach_2": "Custom HLSL function implementing Perlin-like noise",
+    "approach_3": "Approximate with sine waves or simpler patterns"
+  },
+  "complexity": "High - Perlin noise implementation is non-trivial in HLSL",
+  "compatibility_loss_25_percent": "Exact noise algorithm differs; visual appearance similar but not identical to Blender",
+  "typical_use": "Clouds, stone, marble, procedural terrain, organic variation"
+}

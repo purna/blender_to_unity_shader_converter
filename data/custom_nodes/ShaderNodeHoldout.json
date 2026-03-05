@@ -1,0 +1,8 @@
+{
+  "metadata": {
+    "source_node": "ShaderNodeHoldout",
+    "compatibility": "5%",
+    "description": "Holdout shader - compositing only"
+  },
+  "note": "Not applicable to surface shading - use alpha cutout instead"
+}

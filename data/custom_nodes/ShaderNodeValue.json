@@ -1,0 +1,10 @@
+{
+  "metadata": {
+    "source_node": "ShaderNodeValue",
+    "compatibility": "100%",
+    "description": "Float constant value - direct property"
+  },
+  "summary": "Float constant value - direct property",
+  "property": "Value (Float)",
+  "outputs": "Out (Float)"
+}

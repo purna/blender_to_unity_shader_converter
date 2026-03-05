@@ -1,0 +1,27 @@
+{
+  "metadata": {
+    "source_node": "ShaderNodeTexWave",
+    "compatibility": "60%",
+    "category": "Texture",
+    "complexity": "High",
+    "description": "Wave/ripple procedural pattern - sine wave based"
+  },
+  "summary": "Generates wave patterns (bands, rings, or ripples). Uses sine/cosine math with various wave modes.",
+  "parameters": {
+    "Vector": "Input 3D coordinate",
+    "Scale": "Wave frequency",
+    "Detail": "Number of waves/octaves",
+    "Roughness": "Amplitude variation",
+    "Phase": "Wave offset for animation",
+    "Type": "Band/Ring/Plane/Circular waves"
+  },
+  "wave_types": {
+    "Band": "Parallel sine wave stripes",
+    "Ring": "Concentric circular waves",
+    "Plane": "Directional wave pattern",
+    "Circular": "Radial expanding waves"
+  },
+  "implementation": "Math combining sin/cos with coordinate transforms",
+  "complexity": "Medium-High - requires understanding of wave mathematics",
+  "compatibility_loss_40_percent": "Complex fractal wave patterns difficult to replicate; simple waves work well"
+}

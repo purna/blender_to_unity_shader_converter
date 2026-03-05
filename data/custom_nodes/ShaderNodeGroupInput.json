@@ -1,0 +1,8 @@
+{
+  "metadata": {
+    "source_node": "ShaderNodeGroupInput",
+    "compatibility": "100%",
+    "description": "Group input node - for node groups"
+  },
+  "use": "Expose inputs to node group interface"
+}

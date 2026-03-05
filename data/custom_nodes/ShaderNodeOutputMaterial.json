@@ -1,0 +1,13 @@
+{
+  "metadata": {
+    "source_node": "ShaderNodeOutputMaterial",
+    "compatibility": "100%",
+    "description": "Material output - maps to Master node"
+  },
+  "inputs": [
+    "BSDF/Shader",
+    "Displacement",
+    "Normal"
+  ],
+  "note": "Terminal node - always use in graph"
+}

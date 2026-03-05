@@ -1,0 +1,8 @@
+{
+  "metadata": {
+    "source_node": "ShaderNodeScript",
+    "compatibility": "0%",
+    "description": "OSL script node - Cycles only"
+  },
+  "note": "Not supported in real-time rendering"
+}

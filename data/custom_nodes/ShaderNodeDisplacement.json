@@ -1,0 +1,24 @@
+{
+  "metadata": {
+    "source_node": "ShaderNodeDisplacement",
+    "compatibility": "60%",
+    "category": "Vector",
+    "complexity": "High",
+    "description": "Vertex displacement from heightmap - works in geometry passes"
+  },
+  "summary": "Displaces mesh vertices along normals. Requires tessellation or displacement pass (not standard ShaderGraph).",
+  "parameters": {
+    "Height": "Grayscale displacement value",
+    "Midlevel": "Reference height (0.5 typical)",
+    "Scale": "Displacement magnitude",
+    "Normal": "Surface normal direction"
+  },
+  "implementation_approach": {
+    "option_1": "Geometry/Vertex Displacement pass (advanced)",
+    "option_2": "Parallax occlusion mapping (approximation)",
+    "option_3": "Tessellation shader (if available)"
+  },
+  "limitation": "Standard ShaderGraph doesn't support vertex modification - requires custom Vertex modifier",
+  "workaround": "Use normal-based parallax as visual approximation instead of true displacement",
+  "compatibility_loss_40_percent": "True displacement requires vertex processing; ShaderGraph alone cannot modify geometry"
+}

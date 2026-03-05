@@ -1,0 +1,23 @@
+{
+  "metadata": {
+    "source_node": "ShaderNodeBsdfSheen",
+    "compatibility": "30%",
+    "category": "Shader",
+    "complexity": "Very High",
+    "description": "Fabric sheen shader - complex BSDF model with limited Unity support"
+  },
+  "summary": "Sheen effect for fabrics and cloth. Uses complex BSDF model. Limited direct support in Unity.",
+  "parameters": {
+    "Color": "Sheen color",
+    "Roughness": "Sheen roughness"
+  },
+  "blender_model": "Ashikhmin-Shirley BSDF with sheen term",
+  "unity_approximation": "Use Fresnel + custom function to approximate edge sheen",
+  "limitations": [
+    "No native sheen BSDF in Unity",
+    "Requires custom shader code",
+    "Approximations imperfect"
+  ],
+  "workaround": "Use Velvet BSDF approximation (Fresnel edge glow) instead",
+  "compatibility_loss_70_percent": "Fundamentally different rendering model - approximation only"
+}

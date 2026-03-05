@@ -1,0 +1,12 @@
+{
+  "metadata": {
+    "source_node": "ShaderNodeFresnel",
+    "compatibility": "95%",
+    "description": "Fresnel edge effect - direct mapping to Fresnel node"
+  },
+  "summary": "Fresnel edge effect - direct mapping to Fresnel node",
+  "inputs": "Normal (Vector3)",
+  "property": "IOR (Float, typical 1.45)",
+  "outputs": "Fresnel (Float)",
+  "formula": "Fresnel equation based on view angle"
+}

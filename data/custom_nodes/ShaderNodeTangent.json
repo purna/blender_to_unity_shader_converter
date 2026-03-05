@@ -1,0 +1,10 @@
+{
+  "metadata": {
+    "source_node": "ShaderNodeTangent",
+    "compatibility": "90%",
+    "description": "Vertex tangent vector - direct mapping"
+  },
+  "summary": "Vertex tangent vector - direct mapping",
+  "outputs": "Tangent (Vector3)",
+  "requirement": "Mesh must have tangents computed/exported"
+}

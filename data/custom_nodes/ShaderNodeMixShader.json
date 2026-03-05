@@ -1,0 +1,27 @@
+{
+  "metadata": {
+    "source_node": "ShaderNodeMixShader",
+    "compatibility": "85%",
+    "category": "Shader",
+    "complexity": "Medium-High",
+    "description": "Blends two shaders with a factor - maps to Lerp in shader graph"
+  },
+  "summary": "Blends between two complete shaders (e.g., diffuse + glossy, or metal + plastic). Unity achieves this by blending material properties.",
+  "parameters": {
+    "Fac": "Blend factor [0, 1] - 0=Shader1, 1=Shader2",
+    "Shader1": "First shader (could be Diffuse, Glossy, etc.)",
+    "Shader2": "Second shader"
+  },
+  "implementation": {
+    "approach": "Decompose shaders to base properties and blend",
+    "color_blend": "Lerp(Shader1_Color, Shader2_Color, Fac)",
+    "smoothness_blend": "Lerp(Shader1_Smoothness, Shader2_Smoothness, Fac)",
+    "metallic_blend": "Lerp(Shader1_Metallic, Shader2_Metallic, Fac)"
+  },
+  "example": {
+    "blender": "Mix rough diffuse (Roughness=0.8) with shiny glossy (Roughness=0.1)",
+    "unity": "Lerp Smoothness: (1-0.8)=0.2 to (1-0.1)=0.9 with factor T"
+  },
+  "limitations": "Cannot blend complex shader features (subsurface, anisotropy) - only base PBR properties",
+  "compatibility_loss_15_percent": "Complex shader layering not fully supported; works for simple material transitions"
+}

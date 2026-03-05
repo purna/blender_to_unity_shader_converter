@@ -1,0 +1,11 @@
+{
+  "metadata": {
+    "source_node": "ShaderNodeUVMap",
+    "compatibility": "95%",
+    "description": "Specific UV channel selection - maps to UV node with channel"
+  },
+  "summary": "Specific UV channel selection - maps to UV node with channel",
+  "property": "UVMap (String/Channel index)",
+  "outputs": "UV (Vector2)",
+  "channels": "0-3 (UV, UV2, UV3, UV4)"
+}

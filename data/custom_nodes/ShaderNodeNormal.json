@@ -1,0 +1,13 @@
+{
+  "metadata": {
+    "source_node": "ShaderNodeNormal",
+    "compatibility": "90%",
+    "description": "Normal vector input node - direct mapping"
+  },
+  "outputs": "Normal (Vector3)",
+  "spaces": [
+    "Object",
+    "World",
+    "Tangent"
+  ]
+}

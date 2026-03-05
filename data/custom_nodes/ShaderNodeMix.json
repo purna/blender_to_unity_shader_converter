@@ -1,0 +1,18 @@
+{
+  "metadata": {
+    "source_node": "ShaderNodeMix",
+    "compatibility": "100%",
+    "description": "Blends two values (Lerp) - direct operation"
+  },
+  "summary": "Blends two values (Lerp) - direct operation",
+  "inputs": "A (any), B (any), Factor (Float 0-1)",
+  "outputs": "Result (same type)",
+  "modes": [
+    "Mix (Lerp)",
+    "Add",
+    "Subtract",
+    "Multiply",
+    "Screen",
+    "Overlay"
+  ]
+}

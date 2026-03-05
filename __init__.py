@@ -17,6 +17,8 @@ bl_info = {
 }
 
 # Import all modules when addon loads
+import bpy
+
 from . import operators
 from . import parser
 from . import converter
@@ -29,6 +31,19 @@ from . import ui
 
 def register():
     """Register the addon - called when addon is enabled"""
+    
+    # Register scene properties for shader type selection
+    bpy.types.Scene.unity_shader_type = bpy.props.EnumProperty(
+        name="Unity Shader Type",
+        description="Type of Unity shader to generate",
+        items=[
+            ('UNIVERSAL', 'Universal (URP)', 'Universal Render Pipeline'),
+            ('BUILTIN', 'Built-in', 'Built-in Render Pipeline'),
+            ('CUSTOM_RT', 'Custom Render Texture', 'Custom Render Texture'),
+        ],
+        default='UNIVERSAL',
+    )
+    
     operators.register()
     ui.register()
     print("✓ Blender to Unity Shader Converter addon registered")
@@ -37,6 +52,10 @@ def unregister():
     """Unregister the addon - called when addon is disabled"""
     operators.unregister()
     ui.unregister()
+    
+    # Remove scene property
+    del bpy.types.Scene.unity_shader_type
+    
     print("✓ Blender to Unity Shader Converter addon unregistered")
 
 if __name__ == "__main__":

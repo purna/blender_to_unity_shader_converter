@@ -1,0 +1,8 @@
+{
+  "metadata": {
+    "source_node": "ShaderNodeCameraData",
+    "compatibility": "0%",
+    "description": "Camera information - renderer specific"
+  },
+  "note": "Not available in ShaderGraph"
+}

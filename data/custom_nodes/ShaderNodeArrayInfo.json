@@ -1,0 +1,8 @@
+{
+  "metadata": {
+    "source_node": "ShaderNodeArrayInfo",
+    "compatibility": "0%",
+    "description": "Geometry array information - not available"
+  },
+  "note": "Blender specific - no equivalent in Unity"
+}

@@ -1,0 +1,8 @@
+{
+  "metadata": {
+    "source_node": "ShaderNodeHairInfo",
+    "compatibility": "20%",
+    "description": "Hair strand information - Blender Eevee/Cycles specific"
+  },
+  "note": "No hair shader support in Unity - use separate hair shader system"
+}

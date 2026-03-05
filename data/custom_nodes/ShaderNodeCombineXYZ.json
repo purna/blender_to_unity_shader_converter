@@ -1,0 +1,10 @@
+{
+  "metadata": {
+    "source_node": "ShaderNodeCombineXYZ",
+    "compatibility": "100%",
+    "description": "Combines X, Y, Z floats into vector - direct mapping"
+  },
+  "summary": "Combines X, Y, Z floats into vector - direct mapping",
+  "inputs": "X, Y, Z (Float)",
+  "outputs": "Vector3 Out"
+}

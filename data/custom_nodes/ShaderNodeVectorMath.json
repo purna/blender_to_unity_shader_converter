@@ -1,0 +1,28 @@
+{
+  "metadata": {
+    "source_node": "ShaderNodeVectorMath",
+    "compatibility": "100%",
+    "category": "Vector",
+    "description": "Vector mathematical operations - perfect 1:1 mapping"
+  },
+  "summary": "All vector operations (ADD, SUBTRACT, MULTIPLY, DOT, CROSS, NORMALIZE, etc.) map directly to Unity Vector node.",
+  "operations": {
+    "ADD": "Vector addition",
+    "SUBTRACT": "Vector subtraction",
+    "MULTIPLY": "Element-wise multiplication",
+    "DIVIDE": "Element-wise division",
+    "CROSS_PRODUCT": "Cross product",
+    "DOT_PRODUCT": "Dot product (returns float)",
+    "DISTANCE": "Distance between vectors",
+    "LENGTH": "Vector magnitude",
+    "SCALE": "Multiply by scalar",
+    "NORMALIZE": "Unit vector",
+    "SNAP": "Snap to nearest multiple",
+    "FLOOR": "Floor each component",
+    "CEIL": "Ceil each component",
+    "MODULO": "Modulo each component"
+  },
+  "inputs": ["Vector A (Vector3)", "Vector B (Vector3)"],
+  "outputs": ["Result (Vector3 or Float)"],
+  "notes": "Some operations return float (DOT, DISTANCE, LENGTH) while others return vectors"
+}

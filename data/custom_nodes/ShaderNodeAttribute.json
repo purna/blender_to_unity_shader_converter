@@ -1,0 +1,30 @@
+{
+  "metadata": {
+    "source_node": "ShaderNodeAttribute",
+    "compatibility": "85%",
+    "category": "Input",
+    "complexity": "Medium",
+    "description": "Access mesh custom attributes (vertex color, UVs, etc.)"
+  },
+  "summary": "Reads custom mesh attributes (e.g., vertex color, custom data). Unity equivalent uses Vertex Color or Custom Attributes.",
+  "blender_attributes": {
+    "name": "Attribute name to read",
+    "typical_examples": ["Col (vertex color)", "UVMap (UV coordinates)", "CustomData"]
+  },
+  "unity_implementation": {
+    "vertex_color": "VertexColor node → reads Mesh.colors",
+    "uv_coordinates": "UV node → reads Mesh.uv, Mesh.uv2, etc.",
+    "custom_data": "Custom Function or Property Block from C#"
+  },
+  "implementation_approach": {
+    "step_1": "Identify attribute name in Blender",
+    "step_2": "Map to Unity equivalent (VertexColor, UV, etc.)",
+    "step_3": "If custom attribute: use Material Property Block from C# script"
+  },
+  "compatibility_loss_15_percent": "Custom attributes not native to ShaderGraph - require C# scripting or predefined inputs",
+  "common_mappings": {
+    "Col": "VertexColor",
+    "UVMap": "UV (channel 0)",
+    "UV2": "UV (channel 1)"
+  }
+}

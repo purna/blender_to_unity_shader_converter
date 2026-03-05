@@ -1,0 +1,12 @@
+{
+  "metadata": {
+    "source_node": "ShaderNodeBsdfTranslucent",
+    "compatibility": "40%",
+    "description": "Translucent shader - light passes through"
+  },
+  "parameters": [
+    "Color",
+    "Normal"
+  ],
+  "approximation": "Use transparent with subsurface approximation"
+}

@@ -1,0 +1,12 @@
+{
+  "metadata": {
+    "source_node": "ShaderNodeBsdfToon",
+    "compatibility": "40%",
+    "description": "Toon/cartoon shader - stylized rendering"
+  },
+  "parameters": [
+    "Color",
+    "Size"
+  ],
+  "implementation": "Custom ramp-based shader"
+}

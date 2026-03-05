@@ -1,0 +1,8 @@
+{
+  "metadata": {
+    "source_node": "ShaderNodeGroupOutput",
+    "compatibility": "100%",
+    "description": "Group output node - for node groups"
+  },
+  "use": "Expose outputs from node group"
+}

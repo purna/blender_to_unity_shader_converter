@@ -1,0 +1,11 @@
+{
+  "metadata": {
+    "source_node": "ShaderNodeInvert",
+    "compatibility": "100%",
+    "description": "Inverts color/vector (1 - value) - direct operation"
+  },
+  "summary": "Inverts color/vector (1 - value) - direct operation",
+  "inputs": "Color (Vector4), Factor (Float, 0-1)",
+  "outputs": "Color Out (Vector4)",
+  "formula": "1 - Color"
+}

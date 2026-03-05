@@ -1,0 +1,13 @@
+{
+  "metadata": {
+    "source_node": "ShaderNodeTexSky",
+    "compatibility": "50%",
+    "description": "Sky texture - procedural atmosphere"
+  },
+  "parameters": [
+    "Rotation",
+    "Turbidity",
+    "Sun Elevation"
+  ],
+  "workaround": "Use HDRI cubemap or gradient approximation"
+}

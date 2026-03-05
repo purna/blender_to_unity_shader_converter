@@ -1,0 +1,15 @@
+{
+  "metadata": {
+    "source_node": "ShaderNodeTexCoord",
+    "compatibility": "95%",
+    "description": "UV coordinates and normals - maps to multiple Input nodes"
+  },
+  "summary": "UV coordinates and normals - maps to multiple Input nodes",
+  "outputs": [
+    "UV (Vector2)",
+    "Normal (Vector3)",
+    "Position (Vector3)",
+    "Tangent (Vector3)"
+  ],
+  "notes": "Multi-output node - select which data needed"
+}

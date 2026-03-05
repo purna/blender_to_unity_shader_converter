@@ -1,0 +1,8 @@
+{
+  "metadata": {
+    "source_node": "ShaderNodeVolumeScatter",
+    "compatibility": "0%",
+    "description": "Volume scattering shader - volumetric rendering only"
+  },
+  "note": "Requires volumetric rendering pipeline - not supported in ShaderGraph"
+}

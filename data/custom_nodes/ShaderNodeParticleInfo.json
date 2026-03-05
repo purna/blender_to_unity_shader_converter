@@ -1,0 +1,8 @@
+{
+  "metadata": {
+    "source_node": "ShaderNodeParticleInfo",
+    "compatibility": "10%",
+    "description": "Particle system information - very limited in real-time"
+  },
+  "note": "Particle data not accessible in ShaderGraph - use particle properties instead"
+}

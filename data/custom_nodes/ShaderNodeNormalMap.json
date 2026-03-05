@@ -1,0 +1,28 @@
+{
+  "metadata": {
+    "source_node": "ShaderNodeNormalMap",
+    "compatibility": "90%",
+    "category": "Vector",
+    "complexity": "Medium",
+    "description": "Converts normal map texture to proper normal vector with strength control"
+  },
+  "summary": "Takes a normal map texture and converts RGB to normal vector in world/object space. Strength parameter controls effect intensity.",
+  "implementation": {
+    "node_type": "NormalFromTexture or NormalStrength",
+    "inputs": ["Texture (RGB)", "Strength (Float)"],
+    "outputs": ["Normal (Vector3)"],
+    "space_options": ["Tangent", "Object", "World"]
+  },
+  "parameter_mapping": {
+    "Color": "Texture asset (sample first, then apply)",
+    "Strength": "Multiply normal effect - formula: Normal = lerp(DefaultNormal, TextureNormal, Strength)",
+    "Space": "Tangent/Object/World space selection"
+  },
+  "typical_setup": [
+    "1. Sample normal map texture (SampleTexture2D with Type=Normal)",
+    "2. Connect RGB output to Normal input",
+    "3. Set Strength property (typically 0.0-2.0)",
+    "4. Output to material Normal input"
+  ],
+  "compatibility_loss_10_percent": "Minor differences in OpenGL vs DirectX normal encoding for some edge cases"
+}

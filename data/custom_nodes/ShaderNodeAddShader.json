@@ -1,0 +1,14 @@
+{
+  "metadata": {
+    "source_node": "ShaderNodeAddShader",
+    "compatibility": "90%",
+    "description": "Combines two shaders additively - blend shader properties"
+  },
+  "summary": "Combines two shaders additively - blend shader properties",
+  "inputs": [
+    "Shader1",
+    "Shader2"
+  ],
+  "implementation": "Add material property values: Color1 + Color2, etc.",
+  "outputs": "Combined shader result"
+}

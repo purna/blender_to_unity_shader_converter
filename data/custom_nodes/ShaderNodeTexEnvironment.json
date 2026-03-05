@@ -1,0 +1,12 @@
+{
+  "metadata": {
+    "source_node": "ShaderNodeTexEnvironment",
+    "compatibility": "95%",
+    "description": "Sample environment/HDRI texture - maps to Sample Cubemap"
+  },
+  "summary": "Sample environment/HDRI texture - maps to Sample Cubemap",
+  "inputs": "Vector (Vector3 direction)",
+  "property": "Texture (Cubemap)",
+  "outputs": "Color (Vector4), Alpha (Float)",
+  "notes": "Blender samples panoramic image; Unity uses cubemap"
+}

@@ -1,0 +1,8 @@
+{
+  "metadata": {
+    "source_node": "ShaderNodeTexIES",
+    "compatibility": "50%",
+    "description": "IES light profile texture - specialized lighting"
+  },
+  "note": "Can use texture-based IES approximation"
+}

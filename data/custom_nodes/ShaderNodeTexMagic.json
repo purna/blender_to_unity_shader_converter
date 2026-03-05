@@ -1,0 +1,20 @@
+{
+  "metadata": {
+    "source_node": "ShaderNodeTexMagic",
+    "compatibility": "40%",
+    "category": "Texture",
+    "complexity": "Very High",
+    "description": "Blender magic texture - complex proprietary algorithm"
+  },
+  "summary": "Blender's 'magic' procedural texture generates complex color patterns. Difficult to replicate exactly.",
+  "parameters": {
+    "Vector": "3D input coordinate",
+    "Scale": "Pattern frequency",
+    "Distortion": "Pattern distortion amount"
+  },
+  "algorithm": "Proprietary Blender algorithm combining sine/cosine with various transforms",
+  "implementation": "Approximation using sin/cos combinations and color interpolation",
+  "complexity": "Very High - exact algorithm not well-documented",
+  "compatibility_loss_60_percent": "Can only approximate - exact algorithm proprietary to Blender",
+  "alternative": "Use other noise textures (Noise, Voronoi, Wave) as substitutes"
+}

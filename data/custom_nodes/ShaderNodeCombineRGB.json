@@ -1,0 +1,10 @@
+{
+  "metadata": {
+    "source_node": "ShaderNodeCombineRGB",
+    "compatibility": "100%",
+    "description": "Combines R, G, B into color - direct mapping"
+  },
+  "summary": "Combines R, G, B into color - direct mapping",
+  "inputs": "R, G, B (Float)",
+  "outputs": "Color Out (Vector4)"
+}

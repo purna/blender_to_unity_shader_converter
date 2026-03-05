@@ -1,0 +1,24 @@
+{
+  "metadata": {
+    "source_node": "ShaderNodeSubsurfaceScattering",
+    "compatibility": "30%",
+    "category": "Shader",
+    "complexity": "Very High",
+    "description": "Subsurface scattering - light penetrating translucent materials"
+  },
+  "summary": "Light passes through and scatters inside translucent materials (skin, wax, marble). Complex raytracing required.",
+  "parameters": {
+    "Color": "Subsurface color",
+    "Radius": "Scattering radius / mean free path",
+    "IOR": "Index of refraction",
+    "Anisotropy": "Scattering anisotropy"
+  },
+  "blender_implementation": "Uses BSSRDF model (bidirectional subsurface scattering reflection distribution function)",
+  "unity_limitations": [
+    "No native BSSRDF in standard ShaderGraph",
+    "Requires screen-space or approximation techniques",
+    "Only works in specific render pipelines (HDRP)"
+  ],
+  "approximation": "Use Translucency with custom shaders or fake SSS",
+  "compatibility_loss_70_percent": "Fundamental rendering technique difference - approximation only"
+}

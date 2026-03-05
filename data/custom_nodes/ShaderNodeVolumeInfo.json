@@ -1,0 +1,8 @@
+{
+  "metadata": {
+    "source_node": "ShaderNodeVolumeInfo",
+    "compatibility": "0%",
+    "description": "Volume information - Cycles only"
+  },
+  "note": "Completely incompatible with surface shading"
+}

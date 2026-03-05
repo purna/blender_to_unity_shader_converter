@@ -1,0 +1,14 @@
+{
+  "metadata": {
+    "source_node": "ShaderNodeTexBrick",
+    "compatibility": "50%",
+    "description": "Procedural brick pattern - requires complex algorithm"
+  },
+  "parameters": [
+    "Scale",
+    "Detail",
+    "Offset",
+    "Squash"
+  ],
+  "implementation": "Custom function with brick generation math"
+}

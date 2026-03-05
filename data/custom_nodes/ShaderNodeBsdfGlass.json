@@ -1,0 +1,15 @@
+{
+  "metadata": {
+    "source_node": "ShaderNodeBsdfGlass",
+    "compatibility": "70%",
+    "description": "Glass/transparent shader - complex approximation"
+  },
+  "summary": "Glass/transparent shader - complex approximation",
+  "parameters": [
+    "Color",
+    "Roughness",
+    "IOR"
+  ],
+  "implementation": "Use transparent material with IOR-based refraction approximation",
+  "challenge": "Full IOR-based refraction is difficult in real-time"
+}

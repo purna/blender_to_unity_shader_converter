@@ -1,0 +1,8 @@
+{
+  "metadata": {
+    "source_node": "ShaderNodeVolumeAbsorption",
+    "compatibility": "0%",
+    "description": "Volume absorption shader - volumetric rendering only"
+  },
+  "note": "Requires volumetric rendering pipeline - not supported in ShaderGraph"
+}

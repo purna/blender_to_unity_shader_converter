@@ -1,0 +1,8 @@
+{
+  "metadata": {
+    "source_node": "ShaderNodeCryptomatte",
+    "compatibility": "0%",
+    "description": "Cryptomatte ID pass - Blender Cycles compositing only"
+  },
+  "note": "Completely incompatible - remove from shader"
+}

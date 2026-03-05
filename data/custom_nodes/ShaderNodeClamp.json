@@ -1,0 +1,11 @@
+{
+  "metadata": {
+    "source_node": "ShaderNodeClamp",
+    "compatibility": "100%",
+    "description": "Clamps value to [0, 1] or custom range - direct operation"
+  },
+  "summary": "Clamps value to [0, 1] or custom range - direct operation",
+  "inputs": "Value (Float), Min (Float), Max (Float)",
+  "outputs": "Out (Float)",
+  "formula": "saturate(Value) or clamp(Value, Min, Max)"
+}

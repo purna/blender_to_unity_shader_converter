@@ -1,14 +1,14 @@
 """
 Unity Exporter
 Exports converted shader graph and FBX files to Unity project structure.
-The .shadergraph JSON now contains the proper URP multi-object format.
+The .shadergraph JSON format matches Unity's multi-object JSON format.
 """
 
 import json
 import os
 import uuid
 from pathlib import Path
-from . import fbx_helper
+from . import fbx_helper, utils
 
 
 class UnityExporter:
@@ -20,6 +20,31 @@ class UnityExporter:
         self.shader_folder   = self.output_dir / "Shaders"
         self.model_folder    = self.output_dir / "Models"
         self.texture_folder  = self.output_dir / "Textures"
+        
+        # Load templates
+        self._shadergraph_template = None
+        self._material_template = None
+        self._load_templates()
+    
+    def _load_templates(self):
+        """Load XML templates for shadergraph and material files."""
+        try:
+            self._shadergraph_template = utils.load_shadergraph_template()
+            if self._shadergraph_template:
+                print(f"✓ Loaded shadergraph template with {len(self._shadergraph_template)} objects")
+            else:
+                print("[WARN] Using fallback shadergraph generation")
+        except Exception as e:
+            print(f"[WARN] Failed to load shadergraph template: {e}")
+        
+        try:
+            self._material_template = utils.load_material_template()
+            if self._material_template:
+                print("✓ Loaded material template")
+            else:
+                print("[WARN] Using fallback material generation")
+        except Exception as e:
+            print(f"[WARN] Failed to load material template: {e}")
 
     def setup_folders(self):
         for folder in [self.material_folder, self.shader_folder,
@@ -30,7 +55,7 @@ class UnityExporter:
     # ── Shader graph export ───────────────────────────────────────────────────
 
     def export_shader_graph(self, unity_graph, name: str, shader_type: str = 'UNIVERSAL'):
-        """Export a Unity ShaderGraph in the proper URP multi-object JSON format.
+        """Export a Unity ShaderGraph in the proper format.
         
         Args:
             unity_graph: The converted UnityShaderGraph object
@@ -43,7 +68,7 @@ class UnityExporter:
         print(f"[DEBUG] Exporting shader: {name} -> {shader_path}")
 
         # Generate GUIDs for all required objects
-        graph_guid = unity_graph.guid or self._generate_guid()
+        graph_guid = self._generate_guid()
         
         # Generate GUIDs for block nodes and slots
         vertex_position_block_id = self._generate_guid()
@@ -72,10 +97,119 @@ class UnityExporter:
         target_id = self._generate_guid()
         subtarget_id = self._generate_guid()
         
-        # Build the list of JSON objects (multi-object format)
+        # Extract values from converted graph
+        basecolor_value = self._extract_basecolor_value(unity_graph)
+        metallic_value = self._extract_metallic_value(unity_graph)
+        smoothness_value = self._extract_smoothness_value(unity_graph)
+        emission_value = self._extract_emission_value(unity_graph)
+        
+        # Try to use template if available
+        if self._shadergraph_template:
+            self._export_using_template(
+                shader_path, graph_guid, category_id, target_id, subtarget_id,
+                vertex_position_block_id, vertex_normal_block_id, vertex_tangent_block_id,
+                fragment_basecolor_block_id, fragment_normal_block_id, fragment_metallic_block_id,
+                fragment_smoothness_block_id, fragment_emission_block_id, fragment_occlusion_block_id,
+                position_slot_id, normal_slot_id, tangent_slot_id, basecolor_slot_id,
+                normalts_slot_id, metallic_slot_id, smoothness_slot_id, emission_slot_id, occlusion_slot_id,
+                basecolor_value, metallic_value, smoothness_value, emission_value,
+                shader_type
+            )
+        else:
+            # Fallback to inline generation
+            self._export_inline(
+                shader_path, graph_guid, category_id, target_id, subtarget_id,
+                vertex_position_block_id, vertex_normal_block_id, vertex_tangent_block_id,
+                fragment_basecolor_block_id, fragment_normal_block_id, fragment_metallic_block_id,
+                fragment_smoothness_block_id, fragment_emission_block_id, fragment_occlusion_block_id,
+                position_slot_id, normal_slot_id, tangent_slot_id, basecolor_slot_id,
+                normalts_slot_id, metallic_slot_id, smoothness_slot_id, emission_slot_id, occlusion_slot_id,
+                basecolor_value, metallic_value, smoothness_value, emission_value,
+                shader_type
+            )
+
+        print(f"✓ Exported shader graph: {shader_path}")
+        return shader_path
+    
+    def _export_using_template(self, shader_path, graph_guid, category_id, target_id, subtarget_id,
+                               vert_pos_id, vert_norm_id, vert_tan_id, frag_base_id, frag_norm_id,
+                               frag_met_id, frag_smooth_id, frag_emit_id, frag_occ_id,
+                               pos_slot_id, norm_slot_id, tan_slot_id, base_slot_id,
+                               normts_slot_id, met_slot_id, smooth_slot_id, emit_slot_id, occ_slot_id,
+                               basecolor_val, metallic_val, smoothness_val, emission_val, shader_type):
+        """Export using XML template."""
+        # Determine target types based on shader_type
+        if shader_type == 'UNIVERSAL':
+            target_type = "UnityEditor.Rendering.Universal.ShaderGraph.UniversalTarget"
+            subtarget_type = "UnityEditor.Rendering.Universal.ShaderGraph.UniversalLitSubTarget"
+        elif shader_type == 'BUILTIN':
+            target_type = "UnityEditor.Rendering.BuiltIn.ShaderGraph.BuiltInTarget"
+            subtarget_type = "UnityEditor.Rendering.BuiltIn.ShaderGraph.BuiltInLitSubTarget"
+        else:
+            target_type = "UnityEditor.Rendering.CustomRenderTexture.ShaderGraph.CustomRenderTextureTarget"
+            subtarget_type = "UnityEditor.Rendering.CustomRenderTexture.ShaderGraph.CustomTextureSubTarget"
+        
+        # Prepare values dictionary
+        values = {
+            'GRAPH_GUID': graph_guid,
+            'CATEGORY_ID': category_id,
+            'TARGET_ID': target_id,
+            'SUBTARGET_ID': subtarget_id,
+            'TARGET_TYPE': target_type,
+            'SUBTARGET_TYPE': subtarget_type,
+            'VERTEX_POSITION_ID': vert_pos_id,
+            'VERTEX_NORMAL_ID': vert_norm_id,
+            'VERTEX_TANGENT_ID': vert_tan_id,
+            'FRAGMENT_BASECOLOR_ID': frag_base_id,
+            'FRAGMENT_NORMAL_ID': frag_norm_id,
+            'FRAGMENT_METALLIC_ID': frag_met_id,
+            'FRAGMENT_SMOOTHNESS_ID': frag_smooth_id,
+            'FRAGMENT_EMISSION_ID': frag_emit_id,
+            'FRAGMENT_OCCLUSION_ID': frag_occ_id,
+            'POSITION_SLOT_ID': pos_slot_id,
+            'NORMAL_SLOT_ID': norm_slot_id,
+            'TANGENT_SLOT_ID': tan_slot_id,
+            'BASECOLOR_SLOT_ID': base_slot_id,
+            'NORMALTS_SLOT_ID': normts_slot_id,
+            'METALLIC_SLOT_ID': met_slot_id,
+            'SMOOTHNESS_SLOT_ID': smooth_slot_id,
+            'EMISSION_SLOT_ID': emit_slot_id,
+            'OCCLUSION_SLOT_ID': occ_slot_id,
+            'NODES': json.dumps([
+                {"m_Id": vert_pos_id}, {"m_Id": vert_norm_id}, {"m_Id": vert_tan_id},
+                {"m_Id": frag_base_id}, {"m_Id": base_slot_id}, {"m_Id": frag_norm_id},
+                {"m_Id": normts_slot_id}, {"m_Id": frag_met_id}, {"m_Id": met_slot_id},
+                {"m_Id": frag_smooth_id}, {"m_Id": smooth_slot_id}, {"m_Id": frag_occ_id},
+                {"m_Id": occ_slot_id}, {"m_Id": frag_emit_id}, {"m_Id": emit_slot_id}
+            ]),
+            'EDGES': json.dumps([]),
+            'VERTEX_BLOCKS': json.dumps([
+                {"m_Id": vert_pos_id}, {"m_Id": vert_norm_id}, {"m_Id": vert_tan_id}
+            ]),
+            'FRAGMENT_BLOCKS': json.dumps([
+                {"m_Id": frag_base_id}, {"m_Id": frag_norm_id}, {"m_Id": frag_met_id},
+                {"m_Id": frag_smooth_id}, {"m_Id": frag_occ_id}, {"m_Id": frag_emit_id}
+            ])
+        }
+        
+        # Populate template
+        populated_lines = utils.populate_shadergraph_template(self._shadergraph_template, values)
+        
+        # Write to file
+        with open(shader_path, 'w', encoding='utf-8') as f:
+            for line in populated_lines:
+                f.write(line + '\n')
+    
+    def _export_inline(self, shader_path, graph_guid, category_id, target_id, subtarget_id,
+                      vert_pos_id, vert_norm_id, vert_tan_id, frag_base_id, frag_norm_id,
+                      frag_met_id, frag_smooth_id, frag_emit_id, frag_occ_id,
+                      pos_slot_id, norm_slot_id, tan_slot_id, base_slot_id,
+                      normts_slot_id, met_slot_id, smooth_slot_id, emit_slot_id, occ_slot_id,
+                      basecolor_val, metallic_val, smoothness_val, emission_val, shader_type):
+        """Export shadergraph using inline Python code (fallback if template unavailable)."""
         objects = []
         
-        # 1. GraphData (main container)
+        # 1. GraphData
         graph_data = {
             "m_SGVersion": 3,
             "m_Type": "UnityEditor.ShaderGraph.GraphData",
@@ -84,27 +218,43 @@ class UnityExporter:
             "m_Keywords": [],
             "m_Dropdowns": [],
             "m_CategoryData": [{"m_Id": category_id}],
-            "m_Nodes": [],  # Will be filled with node references
+            "m_Nodes": [
+                {"m_Id": vert_pos_id},
+                {"m_Id": vert_norm_id},
+                {"m_Id": vert_tan_id},
+                {"m_Id": frag_base_id},
+                {"m_Id": base_slot_id},
+                {"m_Id": frag_norm_id},
+                {"m_Id": normts_slot_id},
+                {"m_Id": frag_met_id},
+                {"m_Id": met_slot_id},
+                {"m_Id": frag_smooth_id},
+                {"m_Id": smooth_slot_id},
+                {"m_Id": frag_occ_id},
+                {"m_Id": occ_slot_id},
+                {"m_Id": frag_emit_id},
+                {"m_Id": emit_slot_id},
+            ],
             "m_GroupDatas": [],
             "m_StickyNoteDatas": [],
             "m_Edges": [],
             "m_VertexContext": {
                 "m_Position": {"x": 0.0, "y": 0.0},
                 "m_Blocks": [
-                    {"m_Id": vertex_position_block_id},
-                    {"m_Id": vertex_normal_block_id},
-                    {"m_Id": vertex_tangent_block_id}
+                    {"m_Id": vert_pos_id},
+                    {"m_Id": vert_norm_id},
+                    {"m_Id": vert_tan_id}
                 ]
             },
             "m_FragmentContext": {
                 "m_Position": {"x": 0.0, "y": 200.0},
                 "m_Blocks": [
-                    {"m_Id": fragment_basecolor_block_id},
-                    {"m_Id": fragment_normal_block_id},
-                    {"m_Id": fragment_metallic_block_id},
-                    {"m_Id": fragment_smoothness_block_id},
-                    {"m_Id": fragment_occlusion_block_id},
-                    {"m_Id": fragment_emission_block_id}
+                    {"m_Id": frag_base_id},
+                    {"m_Id": frag_norm_id},
+                    {"m_Id": frag_met_id},
+                    {"m_Id": frag_smooth_id},
+                    {"m_Id": frag_occ_id},
+                    {"m_Id": frag_emit_id}
                 ]
             },
             "m_PreviewData": {
@@ -127,14 +277,14 @@ class UnityExporter:
         objects.append({
             "m_SGVersion": 0,
             "m_Type": "UnityEditor.ShaderGraph.BlockNode",
-            "m_ObjectId": vertex_position_block_id,
+            "m_ObjectId": vert_pos_id,
             "m_Group": {"m_Id": ""},
             "m_Name": "VertexDescription.Position",
             "m_DrawState": {
                 "m_Expanded": True,
                 "m_Position": {"serializedVersion": "2", "x": 0.0, "y": 0.0, "width": 0.0, "height": 0.0}
             },
-            "m_Slots": [{"m_Id": position_slot_id}],
+            "m_Slots": [{"m_Id": pos_slot_id}],
             "synonyms": [],
             "m_Precision": 0,
             "m_PreviewExpanded": True,
@@ -148,7 +298,7 @@ class UnityExporter:
         objects.append({
             "m_SGVersion": 0,
             "m_Type": "UnityEditor.ShaderGraph.PositionMaterialSlot",
-            "m_ObjectId": position_slot_id,
+            "m_ObjectId": pos_slot_id,
             "m_Id": 0,
             "m_DisplayName": "Position",
             "m_SlotType": 0,
@@ -165,14 +315,14 @@ class UnityExporter:
         objects.append({
             "m_SGVersion": 0,
             "m_Type": "UnityEditor.ShaderGraph.BlockNode",
-            "m_ObjectId": vertex_normal_block_id,
+            "m_ObjectId": vert_norm_id,
             "m_Group": {"m_Id": ""},
             "m_Name": "VertexDescription.Normal",
             "m_DrawState": {
                 "m_Expanded": True,
                 "m_Position": {"serializedVersion": "2", "x": 0.0, "y": 0.0, "width": 0.0, "height": 0.0}
             },
-            "m_Slots": [{"m_Id": normal_slot_id}],
+            "m_Slots": [{"m_Id": norm_slot_id}],
             "synonyms": [],
             "m_Precision": 0,
             "m_PreviewExpanded": True,
@@ -186,7 +336,7 @@ class UnityExporter:
         objects.append({
             "m_SGVersion": 0,
             "m_Type": "UnityEditor.ShaderGraph.NormalMaterialSlot",
-            "m_ObjectId": normal_slot_id,
+            "m_ObjectId": norm_slot_id,
             "m_Id": 0,
             "m_DisplayName": "Normal",
             "m_SlotType": 0,
@@ -203,14 +353,14 @@ class UnityExporter:
         objects.append({
             "m_SGVersion": 0,
             "m_Type": "UnityEditor.ShaderGraph.BlockNode",
-            "m_ObjectId": vertex_tangent_block_id,
+            "m_ObjectId": vert_tan_id,
             "m_Group": {"m_Id": ""},
             "m_Name": "VertexDescription.Tangent",
             "m_DrawState": {
                 "m_Expanded": True,
                 "m_Position": {"serializedVersion": "2", "x": 0.0, "y": 0.0, "width": 0.0, "height": 0.0}
             },
-            "m_Slots": [{"m_Id": tangent_slot_id}],
+            "m_Slots": [{"m_Id": tan_slot_id}],
             "synonyms": [],
             "m_Precision": 0,
             "m_PreviewExpanded": True,
@@ -224,7 +374,7 @@ class UnityExporter:
         objects.append({
             "m_SGVersion": 0,
             "m_Type": "UnityEditor.ShaderGraph.TangentMaterialSlot",
-            "m_ObjectId": tangent_slot_id,
+            "m_ObjectId": tan_slot_id,
             "m_Id": 0,
             "m_DisplayName": "Tangent",
             "m_SlotType": 0,
@@ -241,14 +391,14 @@ class UnityExporter:
         objects.append({
             "m_SGVersion": 0,
             "m_Type": "UnityEditor.ShaderGraph.BlockNode",
-            "m_ObjectId": fragment_basecolor_block_id,
+            "m_ObjectId": frag_base_id,
             "m_Group": {"m_Id": ""},
             "m_Name": "SurfaceDescription.BaseColor",
             "m_DrawState": {
                 "m_Expanded": True,
                 "m_Position": {"serializedVersion": "2", "x": 0.0, "y": 0.0, "width": 0.0, "height": 0.0}
             },
-            "m_Slots": [{"m_Id": basecolor_slot_id}],
+            "m_Slots": [{"m_Id": base_slot_id}],
             "synonyms": [],
             "m_Precision": 0,
             "m_PreviewExpanded": True,
@@ -259,12 +409,10 @@ class UnityExporter:
         })
         
         # 9. BaseColor MaterialSlot
-        # Check if we have a color value from the converted graph
-        basecolor_value = self._extract_basecolor_value(unity_graph)
         objects.append({
             "m_SGVersion": 0,
             "m_Type": "UnityEditor.ShaderGraph.ColorRGBMaterialSlot",
-            "m_ObjectId": basecolor_slot_id,
+            "m_ObjectId": base_slot_id,
             "m_Id": 0,
             "m_DisplayName": "Base Color",
             "m_SlotType": 0,
@@ -282,14 +430,14 @@ class UnityExporter:
         objects.append({
             "m_SGVersion": 0,
             "m_Type": "UnityEditor.ShaderGraph.BlockNode",
-            "m_ObjectId": fragment_normal_block_id,
+            "m_ObjectId": frag_norm_id,
             "m_Group": {"m_Id": ""},
             "m_Name": "SurfaceDescription.NormalTS",
             "m_DrawState": {
                 "m_Expanded": True,
                 "m_Position": {"serializedVersion": "2", "x": 0.0, "y": 0.0, "width": 0.0, "height": 0.0}
             },
-            "m_Slots": [{"m_Id": normalts_slot_id}],
+            "m_Slots": [{"m_Id": normts_slot_id}],
             "synonyms": [],
             "m_Precision": 0,
             "m_PreviewExpanded": True,
@@ -303,7 +451,7 @@ class UnityExporter:
         objects.append({
             "m_SGVersion": 0,
             "m_Type": "UnityEditor.ShaderGraph.NormalMaterialSlot",
-            "m_ObjectId": normalts_slot_id,
+            "m_ObjectId": normts_slot_id,
             "m_Id": 0,
             "m_DisplayName": "Normal (Tangent Space)",
             "m_SlotType": 0,
@@ -317,18 +465,17 @@ class UnityExporter:
         })
         
         # 12. SurfaceDescription.Metallic BlockNode
-        metallic_value = self._extract_metallic_value(unity_graph)
         objects.append({
             "m_SGVersion": 0,
             "m_Type": "UnityEditor.ShaderGraph.BlockNode",
-            "m_ObjectId": fragment_metallic_block_id,
+            "m_ObjectId": frag_met_id,
             "m_Group": {"m_Id": ""},
             "m_Name": "SurfaceDescription.Metallic",
             "m_DrawState": {
                 "m_Expanded": True,
                 "m_Position": {"serializedVersion": "2", "x": 0.0, "y": 0.0, "width": 0.0, "height": 0.0}
             },
-            "m_Slots": [{"m_Id": metallic_slot_id}],
+            "m_Slots": [{"m_Id": met_slot_id}],
             "synonyms": [],
             "m_Precision": 0,
             "m_PreviewExpanded": True,
@@ -342,7 +489,7 @@ class UnityExporter:
         objects.append({
             "m_SGVersion": 0,
             "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
-            "m_ObjectId": metallic_slot_id,
+            "m_ObjectId": met_slot_id,
             "m_Id": 0,
             "m_DisplayName": "Metallic",
             "m_SlotType": 0,
@@ -356,18 +503,17 @@ class UnityExporter:
         })
         
         # 14. SurfaceDescription.Smoothness BlockNode
-        smoothness_value = self._extract_smoothness_value(unity_graph)
         objects.append({
             "m_SGVersion": 0,
             "m_Type": "UnityEditor.ShaderGraph.BlockNode",
-            "m_ObjectId": fragment_smoothness_block_id,
+            "m_ObjectId": frag_smooth_id,
             "m_Group": {"m_Id": ""},
             "m_Name": "SurfaceDescription.Smoothness",
             "m_DrawState": {
                 "m_Expanded": True,
                 "m_Position": {"serializedVersion": "2", "x": 0.0, "y": 0.0, "width": 0.0, "height": 0.0}
             },
-            "m_Slots": [{"m_Id": smoothness_slot_id}],
+            "m_Slots": [{"m_Id": smooth_slot_id}],
             "synonyms": [],
             "m_Precision": 0,
             "m_PreviewExpanded": True,
@@ -381,7 +527,7 @@ class UnityExporter:
         objects.append({
             "m_SGVersion": 0,
             "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
-            "m_ObjectId": smoothness_slot_id,
+            "m_ObjectId": smooth_slot_id,
             "m_Id": 0,
             "m_DisplayName": "Smoothness",
             "m_SlotType": 0,
@@ -398,14 +544,14 @@ class UnityExporter:
         objects.append({
             "m_SGVersion": 0,
             "m_Type": "UnityEditor.ShaderGraph.BlockNode",
-            "m_ObjectId": fragment_occlusion_block_id,
+            "m_ObjectId": frag_occ_id,
             "m_Group": {"m_Id": ""},
             "m_Name": "SurfaceDescription.Occlusion",
             "m_DrawState": {
                 "m_Expanded": True,
                 "m_Position": {"serializedVersion": "2", "x": 0.0, "y": 0.0, "width": 0.0, "height": 0.0}
             },
-            "m_Slots": [{"m_Id": occlusion_slot_id}],
+            "m_Slots": [{"m_Id": occ_slot_id}],
             "synonyms": [],
             "m_Precision": 0,
             "m_PreviewExpanded": True,
@@ -419,7 +565,7 @@ class UnityExporter:
         objects.append({
             "m_SGVersion": 0,
             "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
-            "m_ObjectId": occlusion_slot_id,
+            "m_ObjectId": occ_slot_id,
             "m_Id": 0,
             "m_DisplayName": "Ambient Occlusion",
             "m_SlotType": 0,
@@ -433,18 +579,17 @@ class UnityExporter:
         })
         
         # 18. SurfaceDescription.Emission BlockNode
-        emission_value = self._extract_emission_value(unity_graph)
         objects.append({
             "m_SGVersion": 0,
             "m_Type": "UnityEditor.ShaderGraph.BlockNode",
-            "m_ObjectId": fragment_emission_block_id,
+            "m_ObjectId": frag_emit_id,
             "m_Group": {"m_Id": ""},
             "m_Name": "SurfaceDescription.Emission",
             "m_DrawState": {
                 "m_Expanded": True,
                 "m_Position": {"serializedVersion": "2", "x": 0.0, "y": 0.0, "width": 0.0, "height": 0.0}
             },
-            "m_Slots": [{"m_Id": emission_slot_id}],
+            "m_Slots": [{"m_Id": emit_slot_id}],
             "synonyms": [],
             "m_Precision": 0,
             "m_PreviewExpanded": True,
@@ -458,7 +603,7 @@ class UnityExporter:
         objects.append({
             "m_SGVersion": 0,
             "m_Type": "UnityEditor.ShaderGraph.ColorRGBMaterialSlot",
-            "m_ObjectId": emission_slot_id,
+            "m_ObjectId": emit_slot_id,
             "m_Id": 0,
             "m_DisplayName": "Emission",
             "m_SlotType": 0,
@@ -558,7 +703,7 @@ class UnityExporter:
                 "m_ObjectId": subtarget_id
             })
 
-        # Write as multi-object JSON (each object on its own line for Unity compatibility)
+        # Write each object on its own line (Unity ShaderGraph multi-object format)
         with open(shader_path, 'w', encoding='utf-8') as f:
             for obj in objects:
                 json.dump(obj, f, ensure_ascii=False)

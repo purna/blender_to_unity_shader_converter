@@ -1,0 +1,11 @@
+{
+  "metadata": {
+    "source_node": "ShaderNodeVertexColor",
+    "compatibility": "90%",
+    "description": "Per-vertex color data - direct mapping"
+  },
+  "summary": "Per-vertex color data - direct mapping",
+  "property": "Color Index (which vertex color stream)",
+  "outputs": "Color (Vector4)",
+  "requirement": "Mesh must have vertex colors exported"
+}

@@ -1,0 +1,25 @@
+{
+  "metadata": {
+    "source_node": "ShaderNodeHueSaturation",
+    "compatibility": "70%",
+    "category": "Color",
+    "complexity": "Medium",
+    "description": "HSV color adjustment - requires RGB↔HSV conversion"
+  },
+  "summary": "Adjusts Hue, Saturation, Value (brightness). Requires converting RGB to HSV, adjusting, then back to RGB.",
+  "parameters": {
+    "Color": "Input RGB color",
+    "Hue": "Rotation in HSV hue space (-0.5 to 0.5 or 0-360°)",
+    "Saturation": "Color intensity multiplier (0 = grayscale, 2 = double saturation)",
+    "Value": "Brightness adjustment"
+  },
+  "implementation": {
+    "step_1": "Convert RGB → HSV",
+    "step_2": "Modify H, S, V values",
+    "step_3": "Convert HSV → RGB"
+  },
+  "complexity": "Requires RGB-HSV conversion functions (non-trivial in shader code)",
+  "custom_function": "Implement RGBtoHSV and HSVtoRGB functions",
+  "compatibility_loss_30_percent": "RGB-HSV conversion precision, extreme color edge cases",
+  "typical_use": "Color grading, tint adjustment, desaturation, creative color effects"
+}

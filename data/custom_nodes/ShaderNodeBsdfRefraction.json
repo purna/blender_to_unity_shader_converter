@@ -1,0 +1,28 @@
+{
+  "metadata": {
+    "source_node": "ShaderNodeBsdfRefraction",
+    "compatibility": "60%",
+    "category": "Shader",
+    "complexity": "High",
+    "description": "Transparent refraction shader - requires complex math"
+  },
+  "summary": "Refractive transparent surfaces (glass, water). Maps to transparent/glass material with IOR.",
+  "parameters": {
+    "Color": "Transparency color (usually white or light tint)",
+    "IOR": "Index of refraction (1.45 for glass, 1.33 for water)",
+    "Roughness": "Surface roughness (transparent or frosted)"
+  },
+  "implementation": {
+    "approach": "Use Transparent Lit or custom refraction shader",
+    "ior_handling": "Affects refraction angle - difficult to implement in standard ShaderGraph",
+    "roughness": "Creates frosted appearance when > 0"
+  },
+  "ior_values": {
+    "1.0": "Vacuum/air",
+    "1.33": "Water",
+    "1.45": "Glass",
+    "2.4": "Diamond"
+  },
+  "limitations": "Accurate refraction requires per-pixel screen reading or complex math",
+  "compatibility_loss_40_percent": "Full IOR-based refraction is complex; simplified approximations used instead"
+}

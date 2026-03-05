@@ -1,0 +1,40 @@
+{
+  "metadata": {
+    "source_node": "ShaderNodeBsdfPrincipled",
+    "compatibility": "50%",
+    "category": "Shader",
+    "complexity": "Very High",
+    "description": "All-in-one physically-based shader - complex but maps to Unity Lit material"
+  },
+  "summary": "Blender's universal shader for all material types. Maps to Unity Lit material with most parameters supported.",
+  "major_parameters": [
+    "Base Color",
+    "Subsurface / Subsurface Radius / Subsurface Color",
+    "Metallic",
+    "Specular / Specular Tint",
+    "Roughness",
+    "Normal Map",
+    "Clearcoat / Clearcoat Roughness",
+    "Coat Weight / Coat Normal",
+    "Sheen / Sheen Roughness / Sheen Tint",
+    "Emission",
+    "IOR",
+    "Transmission / Transmission Roughness",
+    "Alpha (Transparency)"
+  ],
+  "unity_mapping": {
+    "base_color": "Base Color",
+    "metallic": "Metallic",
+    "roughness": "Smoothness (inverted)",
+    "normal": "Normal",
+    "emission": "Emission",
+    "alpha": "Alpha/Transparency"
+  },
+  "unsupported_in_unity": [
+    "Subsurface scattering (30% compatible only)",
+    "Coat/Clearcoat layers",
+    "Sheen variations",
+    "Advanced transmission"
+  ],
+  "compatibility_loss_50_percent": "Advanced features (SSS, coat, sheen) not fully supported - use simplified versions"
+}

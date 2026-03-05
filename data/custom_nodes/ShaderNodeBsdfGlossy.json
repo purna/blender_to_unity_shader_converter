@@ -1,0 +1,28 @@
+{
+  "metadata": {
+    "source_node": "ShaderNodeBsdfGlossy",
+    "compatibility": "70%",
+    "category": "Shader",
+    "complexity": "Medium",
+    "description": "Shiny specular shader - maps to smooth metallic in Unity"
+  },
+  "summary": "Glossy surface with specular highlights. Unity: use metallic or high smoothness non-metallic material.",
+  "parameters": {
+    "Color": "Specular color (often white or slightly tinted)",
+    "Roughness": "Surface roughness (inverse of smoothness)",
+    "Distribution": "Highlight distribution type (GGX, Beckmann, Ashikhmin-Shirley, Multiscatter)"
+  },
+  "implementation": {
+    "base_color": "Color property",
+    "smoothness": "1 - Roughness",
+    "metallic": "Can be 0 (plastic) or 1 (metal)",
+    "normal": "Geometry normal or custom"
+  },
+  "blender_distributions": {
+    "GGX": "Standard (most common in modern rendering)",
+    "Beckmann": "Approximated by GGX",
+    "Ashikhmin": "Custom function (rarely needed)",
+    "Multiscatter": "Advanced - simplified to single scatter"
+  },
+  "compatibility_loss_30_percent": "Different BRDF models; visual match good but not identical, especially in extreme angles"
+}

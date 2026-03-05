@@ -1,0 +1,9 @@
+{
+  "metadata": {
+    "source_node": "ShaderNodeFrame",
+    "compatibility": "100%",
+    "description": "Frame/comment node - organizational only"
+  },
+  "use": "Group and label nodes for clarity",
+  "note": "No functional purpose - visual organization only"
+}

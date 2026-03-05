@@ -1,0 +1,10 @@
+{
+  "metadata": {
+    "source_node": "ShaderNodeSeparateXYZ",
+    "compatibility": "100%",
+    "description": "Splits vector into X, Y, Z components - direct mapping"
+  },
+  "summary": "Splits vector into X, Y, Z components - direct mapping",
+  "inputs": "Vector3 In",
+  "outputs": "X (Float), Y (Float), Z (Float)"
+}

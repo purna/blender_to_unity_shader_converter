@@ -1,0 +1,24 @@
+{
+  "metadata": {
+    "source_node": "ShaderNodeBump",
+    "compatibility": "75%",
+    "category": "Vector",
+    "complexity": "High",
+    "description": "Generates normal map from height/grayscale texture using finite differences"
+  },
+  "summary": "Converts a height map or grayscale texture to normal vectors using bump mapping. Approximates surface detail without actual geometry displacement.",
+  "parameters": {
+    "Strength": "Bump intensity multiplier (0-5 typical)",
+    "Distance": "Finite difference offset for normal calculation",
+    "Height": "Grayscale texture input (0-1)"
+  },
+  "algorithm": "Bump mapping using height gradient approximation - derivative-based normal generation",
+  "implementation": {
+    "approach": "Custom function or series of offset samples",
+    "formula": "Normal = normalize(cross(ddx(height), ddy(height)))",
+    "unity_nodes": ["CustomFunction with ddx/ddy or manual offset sampling"]
+  },
+  "complexity": "Requires shader math knowledge - UV offset sampling or built-in derivatives",
+  "compatibility_loss_25_percent": "Exact algorithm differs between Blender and HLSL; visual results similar but not identical",
+  "typical_use": "Rock texture detail, worn surfaces, fabric weave, fine scratches"
+}

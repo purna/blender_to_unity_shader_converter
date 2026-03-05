@@ -1,0 +1,23 @@
+{
+  "metadata": {
+    "source_node": "ShaderNodeBrightContrast",
+    "compatibility": "80%",
+    "category": "Color",
+    "complexity": "Low-Medium",
+    "description": "Brightness and contrast adjustment - simple math formulas"
+  },
+  "summary": "Adjusts color brightness and contrast. Formulas: Bright = Color + Brightness; Contrast = (Color - 0.5) * Contrast + 0.5",
+  "parameters": {
+    "Color": "Input color to adjust",
+    "Bright": "Brightness value (typically -1 to +1)",
+    "Contrast": "Contrast multiplier (typically 0.5 to 2.0)"
+  },
+  "formulas": {
+    "brightness": "output_color = input_color + bright_value",
+    "contrast": "output_color = (input_color - 0.5) * contrast_value + 0.5"
+  },
+  "implementation": "Two nodes - Add for brightness, then math for contrast",
+  "math_nodes": ["Add(Color, Brightness)", "Multiply((Color - 0.5), Contrast)", "Add(result, 0.5)"],
+  "compatibility_loss_20_percent": "Minor non-linear differences in how extreme values are clamped",
+  "typical_use": "Color correction, lighting adjustment, visibility control"
+}

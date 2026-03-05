@@ -1,0 +1,23 @@
+{
+  "metadata": {
+    "source_node": "ShaderNodeColorRamp",
+    "compatibility": "75%",
+    "category": "Color",
+    "complexity": "Medium-High",
+    "description": "Maps grayscale values to color gradient - complex but achievable"
+  },
+  "summary": "Takes a [0-1] input and maps it through a color gradient. Equivalent to Unity ColorRamp or custom Lerp chain.",
+  "parameters": {
+    "Fac": "Input [0, 1] value to map across gradient",
+    "Color_Ramp": "Gradient stops and colors (multiple positions)"
+  },
+  "implementation": {
+    "approach_1": "Series of Lerp nodes for 2-3 color stops (simple)",
+    "approach_2": "Custom function with color array lookup",
+    "approach_3": "Sample gradient texture if available"
+  },
+  "typical_use": "Two-color: Lerp(Color1, Color2, Fac). Three+ colors: nested Lerp or custom",
+  "complexity": "Increases with number of color stops - 2 colors trivial, 5+ requires custom code",
+  "compatibility_loss_25_percent": "Exact interpolation and gradient curves may differ for advanced setups",
+  "example": "Temperature map: blue(cold) → red(hot) based on value"
+}

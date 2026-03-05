@@ -1,0 +1,25 @@
+{
+  "metadata": {
+    "source_node": "ShaderNodeVectorRotate",
+    "compatibility": "80%",
+    "category": "Vector",
+    "complexity": "Medium-High",
+    "description": "Rotates vectors in 3D space - achievable with rotation matrices"
+  },
+  "summary": "Rotates a 3D vector around axis by angle. Requires rotation matrix math or custom HLSL function.",
+  "parameters": {
+    "Vector": "Input 3D vector to rotate",
+    "Type": "Rotation mode (Euler/Axis-Angle/Matrix)",
+    "Axis": "Rotation axis for axis-angle mode",
+    "Angle": "Rotation in radians"
+  },
+  "rotation_modes": {
+    "Euler": "Rotation by X, Y, Z angles separately",
+    "Axis": "Rotate around arbitrary axis by angle",
+    "Matrix": "Multiply by 3x3 rotation matrix"
+  },
+  "implementation": "Custom HLSL function with rotation matrix multiplication",
+  "complexity": "Requires knowledge of 3D rotation math or use pre-built functions",
+  "compatibility_loss_20_percent": "Angle unit differences (degrees vs radians), rotation order conventions",
+  "typical_use": "Direction vectors, normal rotation, spiral patterns, directional effects"
+}

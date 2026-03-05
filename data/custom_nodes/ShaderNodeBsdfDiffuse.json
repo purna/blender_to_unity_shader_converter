@@ -1,0 +1,28 @@
+{
+  "metadata": {
+    "source_node": "ShaderNodeBsdfDiffuse",
+    "compatibility": "85%",
+    "category": "Shader",
+    "complexity": "Medium",
+    "description": "Blender diffuse BSDF - maps to Unity standard diffuse material"
+  },
+  "summary": "Lambertian diffuse shader. Blender uses BSDF model; Unity Lit shader achieves same result by setting Smoothness=0 and Metallic=0.",
+  "parameters": {
+    "Color": "Diffuse surface color",
+    "Normal": "Surface normal (optional)",
+    "Roughness": "Surface roughness (Unity smoothness = 1 - roughness)"
+  },
+  "implementation": {
+    "approach": "Use Unity Lit shader master node",
+    "base_color": "→ Base Color input",
+    "normal": "→ Normal input (if custom)",
+    "smoothness": "Set to 0.0 (pure diffuse)",
+    "metallic": "Set to 0.0 (non-metallic)"
+  },
+  "blender_to_unity_roughness": {
+    "formula": "Unity_Smoothness = 1.0 - Blender_Roughness",
+    "typical_diffuse": "Roughness 0.5 → Smoothness 0.5 (default)"
+  },
+  "compatibility_loss_15_percent": "Blender BSDF fresnel behavior differs slightly from Lambertian at extreme angles",
+  "typical_use": "Base material, diffuse surfaces, skin, cloth"
+}
