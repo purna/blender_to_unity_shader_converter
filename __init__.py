@@ -5,14 +5,14 @@ Multi-file addon package with JSON node database
 
 bl_info = {
     "name": "Blender to Unity Shader Converter",
-    "author": "Shader Converter Team",
-    "version": (0, 5, 0),
-    "blender": (3, 0, 0),
+    "author": "Pixelgent",
+    "version": (0, 6, 0),
+    "blender": (5, 0, 0),
     "location": "View3D > Object > Convert to Unity",
     "description": "Convert Blender shader graphs to Unity shader graphs. Supports 78+ nodes with JSON-based conversion strategies.",
     "warning": "Production-Ready",
-    "wiki_url": "",
-    "tracker_url": "",
+    "wiki_url": "https://github.com/purna/blender_to_unity_shader_converter/wiki",
+    "tracker_url": "https://github.com/purna/blender_to_unity_shader_converter/issues",
     "category": "Import-Export"
 }
 
@@ -24,6 +24,7 @@ from . import exporter
 from . import socket_handler
 from . import strategies
 from . import utils
+from . import fbx_helper
 from . import ui
 
 def register():

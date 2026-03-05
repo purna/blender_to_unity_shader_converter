@@ -2,20 +2,10 @@
 
 ## Installation
 
-Copy the entire `blender_to_unity_shader_converter/` folder to your Blender addons directory:
-
-**Windows:**
-```
-C:\Users\[YourUsername]\AppData\Roaming\Blender Foundation\Blender\[Version]\scripts\addons\
-```
-
-**macOS:**
-```
-~/Library/Application Support/Blender/[Version]/scripts/addons/
-```
+Install package via the Addon Preferences in Blender: https://github.com/purna/[Blender to Unity Shader Converter Plugin](https://github.com/purna/blender_to_unity_shader_converter/releases/tag/Blender_to_Unity_Shader_Converter)
 
 **Linux:**
-```
+``` 
 ~/.config/blender/[Version]/scripts/addons/
 ```
 
@@ -198,8 +188,8 @@ elif strategy == 'custom_strategy':
 
 ## Version
 
-- **Version:** 0.5.0
-- **Blender:** 3.0+
+- **Version:** 0.6.0
+- **Blender:** 5.1+
 - **Python:** 3.9+
 
 ## License

@@ -11,9 +11,11 @@ def load_node_mappings() -> Dict[str, Any]:
     """
     Load node mappings from JSON file
     
-    This is called by operators.py to load the conversion strategies
+    This is called by operators.py to load the conversion strategies.
+    Uses node_mappings_with_params.json which includes detailed parameter
+    mappings for converting Blender nodes to Unity ShaderGraph.
     """
-    json_file = Path(__file__).parent / "data" / "node_mappings.json"
+    json_file = Path(__file__).parent / "data" / "node_mappings_with_params.json"
     
     if not json_file.exists():
         raise FileNotFoundError(f"Node mappings not found: {json_file}")

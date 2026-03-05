@@ -5,12 +5,11 @@ Handles the "Convert to Unity" operators – accessible via File > Export only.
 
 import bpy
 import os
+import re
 from pathlib import Path
-from . import parser, converter, exporter, utils
+from . import parser, converter, exporter, utils, fbx_helper
 
 # Load node mappings from JSON at addon startup.
-# Wrapped in a try/except so a missing or malformed JSON does not prevent
-# the addon from registering — operators will report the error at execute time.
 try:
     NODE_MAPPING = utils.load_node_mappings()
 except Exception as _load_err:
@@ -23,11 +22,41 @@ except Exception as _load_err:
 # ── Shared helpers ─────────────────────────────────────────────────────────────
 
 def _sanitize_name(name: str) -> str:
-    """Strip file extension then replace path-unsafe characters."""
+    """Strip file extension then replace path-unsafe characters.
+    Preserves Blender's .001, .002 numbering for materials."""
     name = str(name)
-    name = os.path.splitext(name)[0]
+    
+    # Check if it has a known file extension before stripping
+    known_extensions = ('.blend', '.fbx', '.obj', '.png', '.jpg', '.jpeg', 
+                       '.tga', '.exr', '.tif', '.tiff', '.svg', '.psd')
+    
+    lower_name = name.lower()
+    if not any(lower_name.endswith(ext) for ext in known_extensions):
+        # Not a known extension - check if it's Blender numbering (.001, .002)
+        if len(name) >= 4 and re.match(r'\.\d{3}$', name[-4:]):
+            # This is Blender numbering, keep it
+            pass
+        else:
+            # Try to split as normal extension
+            name = os.path.splitext(name)[0]
+    else:
+        name = os.path.splitext(name)[0]
+    
+    # Replace path-unsafe characters (including dots, but we'll restore Blender numbering)
+    # First, save the Blender suffix if present
+    blender_suffix = ''
+    if len(name) >= 4 and re.match(r'.*\.\d{3}$', name):
+        # Extract the .XXX part before replacing
+        blender_suffix = name[-4:]
+        name = name[:-4]
+    
     for ch in r'\/:*?"<>|. ':
         name = name.replace(ch, '_')
+    
+    # Restore the Blender suffix (with underscore instead of dot)
+    if blender_suffix:
+        name = name + blender_suffix.replace('.', '_')
+    
     return name.strip('_') or "Exported"
 
 
@@ -35,6 +64,7 @@ def _collect_all_materials():
     """Return every unique node-based material used by mesh objects in the scene."""
     seen = set()
     materials = []
+    
     for obj in bpy.data.objects:
         if obj.type == 'MESH' and obj.data:
             for slot in obj.material_slots:
@@ -42,6 +72,7 @@ def _collect_all_materials():
                 if mat and mat.use_nodes and mat.name not in seen:
                     seen.add(mat.name)
                     materials.append(mat)
+    
     return materials
 
 
@@ -78,14 +109,9 @@ def _analyze_conversion(blender_data: dict) -> dict:
             analysis['decompose_nodes'] += 1
         elif strategy in APPROX_STRATEGIES:
             analysis['approximation_nodes'] += 1
-            unity_name = node_map.get('unity_name', 'Unknown')
-            # For blend_mapping nodes, include the active blend mode in the detail
-            props = node_data.get('properties', {})
-            blend = props.get('blend_mode') or props.get('blend_type', '')
-            detail = f"{node_data['name']} ({node_type}) → {unity_name}"
-            if blend and blend not in ('MIX', ''):
-                detail += f" [{blend} mode]"
-            analysis['approximation_details'].append(detail)
+            analysis['approximation_details'].append(
+                f"{node_data['name']} ({node_type}) -> {node_map.get('unity_name', 'Unknown')}"
+            )
         else:
             analysis['incompatible_nodes'].append({
                 'name': node_data['name'],
@@ -120,7 +146,6 @@ def _analyze_conversion(blender_data: dict) -> dict:
 def _merge_analysis(analyses: list) -> dict:
     """Merge per-material analysis dicts into one for a combined README."""
     names = [a['material_name'] for a in analyses]
-    # Cap the title to avoid an unreadably long README header
     if len(names) <= 5:
         combined_name = ', '.join(names)
     else:
@@ -178,8 +203,6 @@ def _export_collection_as_fbx(collection, export_dir: str) -> bool:
     temp_col = bpy.data.collections.new(name=f"Temp_{collection.name}")
     bpy.context.scene.collection.children.link(temp_col)
     for obj in duplicated_objects:
-        # Move the duplicate exclusively into the temp collection so it doesn't
-        # appear twice in the scene hierarchy during export
         if obj.name in bpy.context.scene.collection.objects:
             bpy.context.scene.collection.objects.unlink(obj)
         temp_col.objects.link(obj)
@@ -187,31 +210,47 @@ def _export_collection_as_fbx(collection, export_dir: str) -> bool:
     safe_name = _sanitize_name(collection.name)
     fbx_path = os.path.join(export_dir, f"{safe_name}.fbx")
 
-    bpy.ops.object.select_all(action='DESELECT')
-    for obj in duplicated_objects:
-        obj.select_set(True)
-    bpy.context.view_layer.objects.active = duplicated_objects[0]
+    success = False
+    try:
+        bpy.ops.object.select_all(action='DESELECT')
+        for obj in duplicated_objects:
+            obj.select_set(True)
+        bpy.context.view_layer.objects.active = duplicated_objects[0]
 
-    bpy.ops.export_scene.fbx(
-        filepath=fbx_path,
-        use_selection=True,
-        apply_unit_scale=True,
-        apply_scale_options='FBX_SCALE_ALL',
-        object_types={'MESH', 'ARMATURE', 'EMPTY'},
-        bake_space_transform=True,
-        mesh_smooth_type='OFF',
-        add_leaf_bones=False,
-        axis_forward='-Z',
-        axis_up='Y',
-        # Blender 5.0 compatibility - remove potentially unsupported params
-    )
+        fbx_helper.export_collection_fbx(fbx_path, duplicated_objects)
+        success = True
+    except Exception as e:
+        print(f"Error exporting FBX: {e}")
+        import traceback
+        traceback.print_exc()
+    finally:
+        bpy.ops.object.select_all(action='DESELECT')
+        
+        obj_names = [obj.name for obj in duplicated_objects]
+        
+        for obj_name in obj_names:
+            if obj_name in bpy.data.objects:
+                try:
+                    obj = bpy.data.objects[obj_name]
+                    for col in obj.users_collection:
+                        col.objects.unlink(obj)
+                    bpy.data.objects.remove(obj, do_unlink=True)
+                except Exception as cleanup_err:
+                    print(f"Warning: Could not clean up object {obj_name}: {cleanup_err}")
+        
+        if temp_col:
+            try:
+                if temp_col.name in bpy.context.scene.collection.children:
+                    bpy.context.scene.collection.children.unlink(temp_col)
+                if temp_col.name in bpy.data.collections:
+                    bpy.data.collections.remove(temp_col)
+            except Exception as cleanup_err:
+                print(f"Warning: Could not clean up temp collection: {cleanup_err}")
 
-    for obj in duplicated_objects:
-        bpy.data.objects.remove(obj, do_unlink=True)
-    bpy.data.collections.remove(temp_col)
-
-    print(f"Exported FBX: {fbx_path}")
-    return True
+    if success:
+        print(f"Exported FBX: {fbx_path}")
+        return True
+    return False
 
 
 # ── Operators ──────────────────────────────────────────────────────────────────
@@ -228,6 +267,18 @@ class SHADER_OT_convert_to_unity(bpy.types.Operator):
         subtype='DIR_PATH',
     )
     filter_folder: bpy.props.BoolProperty(default=True, options={'HIDDEN'})
+    
+    # Shader type selection
+    shader_type: bpy.props.EnumProperty(
+        name="Shader Type",
+        description="Type of Unity shader to generate",
+        items=[
+            ('UNIVERSAL', 'Universal (URP)', 'Universal Render Pipeline - Recommended for most Unity projects'),
+            ('BUILTIN', 'Built-in', 'Built-in Render Pipeline'),
+            ('CUSTOM_RT', 'Custom Render Texture', 'Custom Render Texture shader'),
+        ],
+        default='UNIVERSAL',
+    )
 
     def execute(self, context):
         if not NODE_MAPPING:
@@ -246,12 +297,11 @@ class SHADER_OT_convert_to_unity(bpy.types.Operator):
             converted, failed, all_analysis = 0, 0, []
 
             for mat in all_materials:
-                print(f"\nParsing shader: {mat.name}")
                 try:
                     blender_data = parser.BlenderShaderParser(mat).parse()
                     unity_graph = converter.ShaderGraphConverter(blender_data, NODE_MAPPING).convert()
-                    exp.export_shader_graph(unity_graph, mat.name)
-                    exp.export_material(mat.name, mat.name + "_Material")
+                    shader_path = exp.export_shader_graph(unity_graph, mat.name, shader_type=self.shader_type)
+                    exp.export_material(mat.name, mat.name + "_Material", shader_guid=unity_graph.guid, shader_type=self.shader_type)
                     all_analysis.append(_analyze_conversion(blender_data))
                     converted += 1
                 except Exception as e:
@@ -332,6 +382,18 @@ class SHADER_OT_convert_and_export_all(bpy.types.Operator):
         subtype='DIR_PATH',
     )
     filter_folder: bpy.props.BoolProperty(default=True, options={'HIDDEN'})
+    
+    # Shader type selection
+    shader_type: bpy.props.EnumProperty(
+        name="Shader Type",
+        description="Type of Unity shader to generate",
+        items=[
+            ('UNIVERSAL', 'Universal (URP)', 'Universal Render Pipeline - Recommended for most Unity projects'),
+            ('BUILTIN', 'Built-in', 'Built-in Render Pipeline'),
+            ('CUSTOM_RT', 'Custom Render Texture', 'Custom Render Texture shader'),
+        ],
+        default='UNIVERSAL',
+    )
 
     def execute(self, context):
         # Handle unsaved blend files - use temp directory as fallback
@@ -347,8 +409,7 @@ class SHADER_OT_convert_and_export_all(bpy.types.Operator):
             self.report({'ERROR'}, "Please save the Blender file first or pick a directory.")
             return {'CANCELLED'}
 
-        # Build a clean subfolder name from the .blend file stem (no extension)
-        # Use a safe default if blend file is unsaved
+        # Build a clean subfolder name from the .blend file stem
         if bpy.data.filepath:
             blend_stem = os.path.splitext(os.path.basename(bpy.data.filepath))[0]
         else:
@@ -371,20 +432,17 @@ class SHADER_OT_convert_and_export_all(bpy.types.Operator):
             mat_count, mat_failed, all_analysis = 0, 0, []
 
             if all_materials:
-                # UnityExporter.setup_folders() creates Shaders/, Materials/, Textures/
                 exp = exporter.UnityExporter(export_path)
                 exp.setup_folders()
 
                 for mat in all_materials:
-                    print(f"\nParsing shader: {mat.name}")
                     try:
                         blender_data = parser.BlenderShaderParser(mat).parse()
                         unity_graph = converter.ShaderGraphConverter(
                             blender_data, NODE_MAPPING
                         ).convert()
-                        safe_mat = _sanitize_name(mat.name)
-                        exp.export_shader_graph(unity_graph, safe_mat)
-                        exp.export_material(safe_mat, safe_mat + "_Material")
+                        exp.export_shader_graph(unity_graph, mat.name, shader_type=self.shader_type)
+                        exp.export_material(mat.name, mat.name + "_Material", shader_guid=unity_graph.guid, shader_type=self.shader_type)
                         all_analysis.append(_analyze_conversion(blender_data))
                         mat_count += 1
                     except Exception as e:
@@ -449,7 +507,6 @@ def register():
     bpy.utils.register_class(SHADER_OT_export_collections_fbx)
     bpy.utils.register_class(SHADER_OT_convert_and_export_all)
 
-    # Blender 4.x uses TOPBAR_MT_file_export; older builds use INFO_MT_file_export
     for menu_name in ('TOPBAR_MT_file_export', 'INFO_MT_file_export'):
         menu = getattr(bpy.types, menu_name, None)
         if menu is not None:
