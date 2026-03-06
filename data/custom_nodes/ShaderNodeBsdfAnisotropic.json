@@ -74,5 +74,8 @@
     "description": "Create custom shader with anisotropic BRDF",
     "unity_equivalent": "Custom shader",
     "simple_setup": "Create custom shader with anisotropic reflections"
-  }
+  },
+  "example_files": [
+    "data/custom_nodes/examples/ShaderNodeEmission/Sprite-Glowing.ShaderGraph"
+  ]
 }

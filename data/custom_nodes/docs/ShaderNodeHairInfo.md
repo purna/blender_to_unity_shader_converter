@@ -3,44 +3,45 @@
 ## Overview
 - **Blender Node**: ShaderNodeHairInfo
 - **Category**: Input
-- **Compatibility**: 20%
+- **Compatibility**: 30%
 
-## Conversion Process
+## ✅ EXAMPLES FOUND!
 
-### Step 1: Identify Hair Information Needs
-- **Description**: Analyze what hair strand information is used in the Blender shader
-- **Blender Input**: Hair strand data (position, tangent, length, etc.)
-- **Unity Output**: Determine which outputs are needed
+Unity ShaderGraph has hair shader examples:
 
-### Step 2: Create Approximation Nodes
-- **Description**: Approximate hair information using available Unity nodes
-- **Blender Input**: Hair Info outputs (Strand Tangent, Intercept, etc.)
-- **Unity Output**: Vertex Color, UV coordinates, or custom attributes
+| Example | Path |
+|---------|------|
+| **NormalBlend** | [`NormalBlend.shadergraph`](../../examples/ShaderNodeHairInfo/NormalBlend.shadergraph) |
 
-### Step 3: Custom Shader Implementation (If Needed)
-- **Description**: For advanced hair rendering, create custom HLSL
-- **Blender Input**: Full hair strand data
-- **Unity Output**: Custom hair shader with vertex attributes
+## Unity Hair Strand Direction
+
+Unity ShaderGraph supports **Hair Strand Direction** in the Vertex Stage:
+
+```
+Vertex Stage > Hair Strand Direction
+```
+
+This provides access to hair strand tangent information for strand-based rendering.
 
 ## Blender to Unity Mapping
 
-| Blender Parameter | Unity Implementation | Compatibility |
-|-------------------|---------------------|---------------|
-| Strand Tangent | Normal Vector or Tangent | 30% |
-| Intercept | UV or custom attribute | 20% |
-| Length | Approximate via scaling | 10% |
-| Random | Vertex Color (randomized) | 20% |
+| Blender Output | Unity Implementation | Compatibility |
+|---------------|---------------------|---------------|
+| Strand Tangent | Hair Strand Direction | ✅ 30% |
+| Intercept | Custom UV or Attribute | 20% |
+| Length | Vertex scaling | 10% |
+| Random | Vertex Color | 20% |
 
-## Build Instructions
+## Conversion Process
 
-1. Analyze hair shader requirements in Blender
-2. Export hair geometry with appropriate vertex colors or UVs
-3. In Unity Shader Graph, use Vertex Color node for randomization
-4. For strand-based effects, use custom HLSL code
-5. Consider using Unity's Hair Render Pipeline or VF graph for complex hair
+### Unity Hair Shader Approach
+
+1. **Use Vertex Stage** - Access Hair Strand Direction property
+2. **Connect to Normal** - Use for strand-based lighting
+3. **Custom Attributes** - Set up custom vertex data for complex hair
 
 ## Notes
-- Limited compatibility - hair strand information is specific to Blender's hair system
-- Unity does not have a direct Hair Info node
-- Use vertex colors or custom attributes to approximate
-- Consider using Unity's dedicated hair solutions for production
+- Unity has built-in Hair Strand Direction in Vertex Stage
+- Cannot access Blender's live hair simulation
+- Use Vertex Color for randomization
+- Consider Unity's Hair Render Pipeline for production

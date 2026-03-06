@@ -10,7 +10,7 @@
   },
   "summary": "Vertex color input - direct mapping to Unity",
   "unity_equivalent": "Vertex Color",
-  "implementation_notes": "Use Unity's Vertex Color node",
+  "implementation_notes": "Use Unity's Vertex Color node - 100% compatible!",
   "approximation": "1:1 conversion",
   "blender_parameters": [
     {
@@ -34,7 +34,7 @@
       "unity_implementation": "Vertex Color node",
       "conversion_formula": "Direct mapping",
       "compatibility_percentage": "100%",
-      "notes": "Connect Vertex Color node"
+      "notes": "Connect Vertex Color node - 1:1 match!"
     }
   ],
   "build_instructions": [
@@ -56,8 +56,11 @@
   },
   "limitations": [],
   "unity_recreation": {
-    "description": "Use Unity's Vertex Color node",
+    "description": "Use Unity's Vertex Color node - 100% compatible!",
     "unity_equivalent": "Vertex Color node",
     "simple_setup": "[Vertex Color] → [Output]"
-  }
+  },
+  "example_files": [
+    "examples/ShaderNodeVertexColor/VertexColor.shadergraph"
+  ]
 }

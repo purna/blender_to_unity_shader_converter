@@ -8,6 +8,9 @@
 - **Category**: Utility
 - **Compatibility**: 100%
 
+## Example
+See example: `data/custom_nodes/examples/Converter/BlenderMath.shadersubgraph`
+
 ## Blender Node Description
 Clamps value to range. Direct mathematical operation with minimum and maximum bounds.
 

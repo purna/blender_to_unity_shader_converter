@@ -74,5 +74,8 @@
     "description": "Create custom toon shader in Unity",
     "unity_equivalent": "Custom Toon Shader",
     "simple_setup": "[Create Custom Shader] → [Toon Ramp]"
-  }
+  },
+  "example_files": [
+    "data/custom_nodes/examples/ShaderNodeMixRGB/Procedural-Noise-ColorBlend.ShaderGraph"
+  ]
 }

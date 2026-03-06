@@ -62,5 +62,8 @@
     "description": "Manual recreation required - analyze the shader effect and recreate using available nodes",
     "unity_equivalent": "Manual",
     "simple_setup": "Manual recreation required"
-  }
+  },
+  "example_files": [
+    "data/custom_nodes/examples/ShaderNodeEmission/Sprite-Glowing.ShaderGraph"
+  ]
 }

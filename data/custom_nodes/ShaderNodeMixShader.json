@@ -167,5 +167,8 @@
     "description": "Use Unity's Add node to blend shaders",
     "unity_equivalent": "Add node",
     "simple_setup": "[Shader1, Shader2, Factor] → [Add] → [Output]"
-  }
+  },
+  "example_files": [
+    "data/custom_nodes/examples/ShaderNodeEmission/Sprite-Glowing.ShaderGraph"
+  ]
 }

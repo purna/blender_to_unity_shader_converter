@@ -255,5 +255,8 @@
     "description": "Implement RGB-to-HSV conversion using custom code function",
     "unity_equivalent": "Split + Custom Function",
     "simple_setup": "Split Color → Code Function (RGBtoHSV) → Split outputs"
-  }
+  },
+  "example_files": [
+    "data/custom_nodes/examples/Color/HueSaturationValue.shadersubgraph"
+  ]
 }

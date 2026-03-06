@@ -92,5 +92,8 @@
     "description": "Use Unity's Lit shader with Transparent surface type",
     "unity_equivalent": "Lit Shader (Transparent)",
     "simple_setup": "[Color, Roughness] → [Transparent Surface]"
-  }
+  },
+  "example_files": [
+    "data/custom_nodes/examples/ShaderNodeEmission/Sprite-Glowing.ShaderGraph"
+  ]
 }

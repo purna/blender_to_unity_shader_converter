@@ -113,5 +113,8 @@
     "description": "Sheen fabric effect",
     "unity_equivalent": "Sheen in PBR Master (URP/HDRP)",
     "simple_setup": "PBR Master → enable Sheen"
-  }
+  },
+  "example_files": [
+    "data/custom_nodes/examples/ShaderNodeEmission/Sprite-Glowing.ShaderGraph"
+  ]
 }

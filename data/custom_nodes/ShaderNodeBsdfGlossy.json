@@ -72,5 +72,8 @@
     "description": "Use Unity's Lit shader with smoothness",
     "unity_equivalent": "Lit Shader",
     "simple_setup": "[Color, Roughness] → [Lit Shader]"
-  }
+  },
+  "example_files": [
+    "data/custom_nodes/examples/ShaderNodeEmission/Sprite-Glowing.ShaderGraph"
+  ]
 }

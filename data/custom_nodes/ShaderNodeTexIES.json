@@ -4,14 +4,14 @@
     "source_engine": "Blender Cycles",
     "target_engine": "Unity",
     "target_version": "URP/HDRP",
-    "conversion_rate": "75%",
-    "description": "IES light texture - limited support in ShaderGraph",
+    "conversion_rate": "50%",
+    "description": "IES light texture - NOT a ShaderGraph feature in Unity",
     "category": "Texture"
   },
-  "summary": "IES light texture - limited support in ShaderGraph",
-  "unity_equivalent": "Not directly supported",
-  "implementation_notes": "Use custom node or import IES as light profile",
-  "approximation": "Not applicable",
+  "summary": "IES light texture - Light Cookies are a Light Component feature, NOT ShaderGraph",
+  "unity_equivalent": "Light Cookies (Light Component property)",
+  "implementation_notes": "Light Cookies are configured on Unity's Light component, NOT in ShaderGraph. No shader example exists.",
+  "approximation": "Pre-bake IES to texture or use Unity's native IES import",
   "blender_parameters": [
     {
       "name": "IES Texture",
@@ -22,45 +22,59 @@
   ],
   "conversion_process": {
     "step_1": {
-      "name": "Manual Conversion",
-      "description": "Import IES file as light or recreate with custom node",
+      "name": "Unity Light Setup",
+      "description": "Apply IES as Light Cookie on Spotlight/Point light",
       "blender_input": "IES Texture",
-      "unity_output": "Custom recreation"
+      "unity_output": "Light Component property"
+    },
+    "step_2": {
+      "name": "Alternative: Pre-bake",
+      "description": "Convert IES to grayscale texture, use as light cookie",
+      "blender_input": "IES Texture",
+      "unity_output": "Cookie texture"
     }
   },
   "blender_to_unity_mapping": [
     {
       "blender_parameter": "IES Texture",
-      "unity_implementation": "Custom node or light profile",
-      "conversion_formula": "Manual conversion",
-      "compatibility_percentage": "25%",
-      "notes": "No direct ShaderGraph support - use light profile"
+      "unity_implementation": "Light Component > Cookie",
+      "conversion_formula": "Manual - apply to light",
+      "compatibility_percentage": "50%",
+      "notes": "NOT a ShaderGraph node - Light component feature"
     }
   ],
   "build_instructions": [
     {
       "step": 1,
-      "action": "IMPORT_IES_LIGHT",
+      "action": "IMPORT_IES_TO_UNITY",
       "nodes": []
     },
     {
       "step": 2,
-      "action": "OR_CREATE_CUSTOM_NODE",
+      "action": "CONFIGURE_LIGHT_COMPONENT",
+      "nodes": []
+    },
+    {
+      "step": 3,
+      "action": "APPLY_COOKIE",
       "nodes": []
     }
   ],
   "compatibility": {
     "fully_compatible": [],
-    "partially_compatible": [],
-    "incompatible": ["IES Texture"]
+    "partially_compatible": ["Workflow - apply to light"],
+    "incompatible": ["ShaderGraph node"]
   },
   "limitations": [
-    "No direct ShaderGraph support for IES textures",
-    "Requires external tool or custom implementation"
+    "NO ShaderGraph node for IES/Light Cookies",
+    "Light Cookies are a Light Component property",
+    "Requires light setup, not material shader",
+    "No example exists in Unity ShaderGraph samples"
   ],
   "unity_recreation": {
-    "description": "Import IES as light profile or create custom node",
-    "unity_equivalent": "Light Profile / Custom Node",
-    "simple_setup": "Import as light or create custom HLSL"
-  }
+    "description": "Apply IES file as Light Cookie on Spotlight/Point light",
+    "unity_equivalent": "Light Component > Cookie property",
+    "simple_setup": "Import IES to Unity, apply to Light component"
+  },
+  "example_files": []
 }

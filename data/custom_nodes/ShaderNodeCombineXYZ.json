@@ -172,5 +172,8 @@
     "description": "Combines X, Y, Z floats into Vector3",
     "unity_equivalent": "Combine node",
     "simple_setup": "[X, Y, Z] → [Combine] → [Vector3]"
-  }
+  },
+  "example_files": [
+    "data/custom_nodes/examples/Converter/BlenderVectorMath.shadersubgraph"
+  ]
 }

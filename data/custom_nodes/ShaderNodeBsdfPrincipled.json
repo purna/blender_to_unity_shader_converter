@@ -193,5 +193,8 @@
     "description": "Use Unity's Lit shader - closest equivalent to Principled BSDF",
     "unity_equivalent": "Lit Shader",
     "simple_setup": "[Base Color, Metallic, Roughness] → [Lit Shader]"
-  }
+  },
+  "example_files": [
+    "data/custom_nodes/examples/ShaderNodeEmission/Sprite-Glowing.ShaderGraph"
+  ]
 }

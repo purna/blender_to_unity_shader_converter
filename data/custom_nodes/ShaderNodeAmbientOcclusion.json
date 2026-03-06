@@ -5,13 +5,13 @@
     "target_engine": "Unity",
     "target_version": "URP/HDRP",
     "conversion_rate": "75%",
-    "description": "Ambient occlusion - limited support in ShaderGraph",
+    "description": "Ambient occlusion - USE Unity's AO node!",
     "category": "Input"
   },
-  "summary": "Ambient occlusion - limited support in ShaderGraph",
-  "unity_equivalent": "Ambient Occlusion (in URP)",
-  "implementation_notes": "Use AO in URP settings or create with math nodes",
-  "approximation": "Partial - different approach",
+  "summary": "Ambient occlusion - USE Unity's Ambient Occlusion node!",
+  "unity_equivalent": "Ambient Occlusion Node (built-in)",
+  "implementation_notes": "Unity ShaderGraph has a built-in Ambient Occlusion node! Use it instead of baking.",
+  "approximation": "Direct use of Unity's AO node",
   "blender_parameters": [
     {
       "name": "Color",
@@ -23,43 +23,51 @@
   "conversion_process": {
     "step_1": {
       "name": "Use AO Node",
-      "description": "Use Unity's Ambient Occlusion or recreate with nodes",
-      "blender_input": "Color",
-      "unity_output": "AO factor"
+      "description": "Use Unity's built-in Ambient Occlusion node in ShaderGraph",
+      "blender_input": "Ambient Occlusion",
+      "unity_output": "Ambient Occlusion Node"
     }
   },
   "blender_to_unity_mapping": [
     {
       "blender_parameter": "Color",
-      "unity_implementation": "Multiply node",
+      "unity_implementation": "Ambient Occlusion Node",
       "conversion_formula": "Direct mapping",
       "compatibility_percentage": "75%",
-      "notes": "Multiply by AO from settings"
+      "notes": "Unity has built-in AO node!"
     }
   ],
   "build_instructions": [
     {
       "step": 1,
-      "action": "ENABLE_AO_IN_URP",
-      "nodes": []
+      "action": "ADD_AMBIENT_OCCLUSION_NODE",
+      "nodes": [
+        {
+          "name": "Ambient Occlusion",
+          "type": "Ambient Occlusion"
+        }
+      ]
     },
     {
       "step": 2,
-      "action": "OR_USE_MULTIPLY",
+      "action": "CONNECT_TO_MULTIPLY",
       "nodes": []
     }
   ],
   "compatibility": {
-    "fully_compatible": [],
-    "partially_compatible": ["Color"],
+    "fully_compatible": ["AO output"],
+    "partially_compatible": ["Color input"],
     "incompatible": []
   },
   "limitations": [
-    "AO is controlled in URP settings, not shader"
+    "Requires baked AO or SSAO in Unity"
   ],
   "unity_recreation": {
-    "description": "Enable AO in URP settings or use custom node setup",
-    "unity_equivalent": "Ambient Occlusion",
-    "simple_setup": "Enable AO in URP Post Processing"
-  }
+    "description": "Use Unity's Ambient Occlusion node - it's built-in!",
+    "unity_equivalent": "Ambient Occlusion Node",
+    "simple_setup": "Add Ambient Occlusion node → Connect to Multiply → Output"
+  },
+  "example_files": [
+    "../../../Downloads/ShaderGraph_Examples/Assets/ShaderGraphs/more_examples/Documentation~/Ambient-Occlusion-Node.md"
+  ]
 }

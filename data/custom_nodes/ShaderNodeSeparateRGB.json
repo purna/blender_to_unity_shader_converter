@@ -69,5 +69,8 @@
     "description": "Splits color into R, G, B channels",
     "unity_equivalent": "Split node",
     "simple_setup": "[Color] → [Split] → [R, G, B, A]"
-  }
+  },
+  "example_files": [
+    "data/custom_nodes/examples/Converter/BlenderVectorMath.shadersubgraph"
+  ]
 }

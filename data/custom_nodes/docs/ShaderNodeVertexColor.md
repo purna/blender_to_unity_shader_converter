@@ -62,3 +62,9 @@ def convert_vertex_color_node(blender_node):
 - **Mesh Dependency**: This node will output black `(0,0,0,0)` if the mesh being rendered does not contain vertex color data.
 - **Import Settings**: When you import your 3D model (e.g., an FBX) into Unity, you must ensure that vertex colors are being imported. In the Model Import Settings in the Inspector, find the **"Vertex Colors"** setting and make sure it is set to **"Import"**.
 - **Multiple Layers**: Blender supports multiple, named vertex color layers on a single object. Unity's default mesh pipeline and the `Vertex Color` node primarily work with a single color channel. While advanced techniques using custom C# scripts and multiple UV channels can access more data, the standard conversion maps to the primary vertex color layer only.
+
+## Example
+
+| Example | Path |
+|---------|------|
+| **Vertex Color** | [`VertexColor.shadergraph`](../../examples/ShaderNodeVertexColor/VertexColor.shadergraph) |

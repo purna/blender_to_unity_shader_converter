@@ -3,39 +3,53 @@
 ## Overview
 - **Blender Node**: ShaderNodeParticleInfo
 - **Category**: Input
-- **Compatibility**: 10%
+- **Compatibility**: 25%
+
+## ✅ EXAMPLES FOUND!
+
+Unity ShaderGraph has particle shader examples:
+
+| Example | Path |
+|---------|------|
+| **Particle Effect** | [`ParticleEffect.shadergraph`](../../examples/ShaderNodeParticleInfo/ParticleEffect.shadergraph) |
+
+## Key Differences
+
+| Blender Particle Info | Unity Particle Shader |
+|----------------------|----------------------|
+| Gets live simulation data | Uses Particle System properties |
+| Random, Age, Lifetime, Location | Particle ID, Age, Color, Size |
+| Per-particle simulation | Pre-defined system properties |
 
 ## Conversion Process
 
-### Step 1: Identify Particle Usage
-- **Description**: Particle system information is not accessible in Shader Graph
-- **Blender Input**: Particle position, velocity, age, etc.
-- **Unity Output**: N/A
+### Unity Particle Shader Approach
 
-### Step 2: Use Particle Properties
-- **Description**: Use particle system custom data or vertex attributes
-- **Blender Input**: Particle Info outputs
-- **Unity Output**: Custom particle data
+1. **Use Particle Shader Templates** - Unity provides Particle Lit/Unlit templates
+2. **Configure Particle System** - Set up custom data in Particle System
+3. **Use Vertex Stage** - Access particle properties in shader vertex stage
 
-## Blender to Unity Mapping
+### Available Particle Properties in Unity ShaderGraph:
 
-| Blender Output | Unity Implementation | Compatibility |
-|---------------|---------------------|---------------|
-| Index | Not available | 0% |
-| Random | Custom vertex data | 10% |
-| Age | Custom vertex data | 10% |
-| Lifetime | Not available | 0% |
-| Location | Particle position | 10% |
-| Velocity | Particle velocity | 10% |
+| Unity Property | Description | Blender Equivalent |
+|----------------|-------------|-------------------|
+| Particle ID | Unique particle identifier | Index |
+| Particle Age | Time since birth | Age |
+| Particle Lifetime | Total life span | Lifetime |
+| Particle Position | World position | Location |
+| Particle Velocity | Movement direction | Velocity |
+| Particle Color | RGBA from system | Color |
+| Particle Size | Current size | Size |
 
 ## Build Instructions
 
-1. This node has limited Unity equivalent
-2. Use custom vertex data or particle system custom data
-3. For complex particle effects, use VFX Graph or custom shaders
+1. Start with **Particle Lit** or **Particle Unlit** template
+2. Configure Particle System with custom data if needed
+3. Use Vertex Stage to access particle properties
+4. Connect to shader outputs (Base Color, Alpha, etc.)
 
 ## Notes
-- Particle data not directly accessible in Shader Graph
-- Requires particle system integration
-- Limited workaround options available
-- 10% compatibility through custom data approaches
+- Cannot access Blender's live particle simulation
+- Must use Unity Particle System properties instead
+- Compatibility: 25% (different data model)
+- Example files added to JSON configuration

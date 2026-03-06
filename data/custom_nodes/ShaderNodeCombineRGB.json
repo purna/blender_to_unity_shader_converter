@@ -113,5 +113,8 @@
     "description": "Combines RGB to color",
     "unity_equivalent": "Combine node",
     "simple_setup": "[R, G, B] → [Combine] → [Color]"
-  }
+  },
+  "example_files": [
+    "data/custom_nodes/examples/Converter/BlenderVectorMath.shadersubgraph"
+  ]
 }

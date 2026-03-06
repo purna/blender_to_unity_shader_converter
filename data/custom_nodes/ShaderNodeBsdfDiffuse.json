@@ -59,5 +59,8 @@
     "description": "Use Unity's Lit shader with Base Color",
     "unity_equivalent": "Lit Shader",
     "simple_setup": "[Color] → [Base Color Input]"
-  }
+  },
+  "example_files": [
+    "examples/ShaderNodeBsdfDiffuse/Lambert.shadergraph"
+  ]
 }

@@ -7,6 +7,9 @@
 - **Category**: Converter
 - **Compatibility**: 100%
 
+## Example
+See example: `data/custom_nodes/examples/Converter/BlenderVectorMath.shadersubgraph`
+
 ## Unity Equivalent
 - **Primary**: Split node
 

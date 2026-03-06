@@ -79,5 +79,8 @@
     "description": "Use Remap for simple curves, texture lookup for complex",
     "unity_equivalent": "Remap or Texture",
     "simple_setup": "Remap Node per component"
-  }
+  },
+  "example_files": [
+    "data/custom_nodes/examples/Converter/BlenderVectorMath.shadersubgraph"
+  ]
 }

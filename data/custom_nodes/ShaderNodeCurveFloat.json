@@ -66,5 +66,8 @@
     "description": "Recreate curve using Unity Curve node",
     "unity_equivalent": "Curve node",
     "simple_setup": "[Float] → [Curve] → [Float]"
-  }
+  },
+  "example_files": [
+    "data/custom_nodes/examples/Converter/Color Ramp.shadersubgraph"
+  ]
 }

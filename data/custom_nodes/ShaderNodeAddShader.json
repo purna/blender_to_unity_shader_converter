@@ -136,5 +136,8 @@
     "description": "Use Unity's Add node for shader addition",
     "unity_equivalent": "Add node",
     "simple_setup": "[Shader1, Shader2] → [Add] → [Output]"
-  }
+  },
+  "example_files": [
+    "data/custom_nodes/examples/ShaderNodeEmission/Sprite-Glowing.ShaderGraph"
+  ]
 }

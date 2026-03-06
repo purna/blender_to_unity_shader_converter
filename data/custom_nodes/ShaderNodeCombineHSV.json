@@ -285,5 +285,8 @@
     "description": "Implement HSV-to-RGB conversion using custom code function",
     "unity_equivalent": "Combine + Custom Function",
     "simple_setup": "H,S,V Floats → Combine → Code Function (HSVtoRGB) → Color"
-  }
+  },
+  "example_files": [
+    "data/custom_nodes/examples/Color/HueSaturationValue.shadersubgraph"
+  ]
 }

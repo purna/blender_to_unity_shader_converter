@@ -83,3 +83,6 @@ def convert_bsdf_diffuse_node(blender_node):
 ## Limitations
 - No pure diffuse in PBR - always has some specular reflection
 - For exact diffuse, need custom shader (not using PBR Master)
+
+## Example
+See [`Lambert.shadergraph`](../../examples/ShaderNodeBsdfDiffuse/Lambert.shadergraph) for a Unity implementation of diffuse lighting using the dot product between surface normal and light direction - exactly matching Blender's Diffuse BSDF.

@@ -4,14 +4,14 @@
     "source_engine": "Blender Cycles",
     "target_engine": "Unity",
     "target_version": "URP/HDRP",
-    "conversion_rate": "50%",
-    "description": "Hair info for strand-based rendering - limited support",
+    "conversion_rate": "30%",
+    "description": "Hair info - Unity has Hair Strand Direction in shaders",
     "category": "Input"
   },
-  "summary": "Hair info for strand-based rendering - limited support",
-  "unity_equivalent": "Not directly supported",
-  "implementation_notes": "Hair rendering requires custom shader implementation",
-  "approximation": "Manual recreation required",
+  "summary": "Hair info - Unity has Hair Strand Direction in shaders",
+  "unity_equivalent": "Hair Strand Direction (built-in)",
+  "implementation_notes": "Unity ShaderGraph supports Hair Strand Direction in Vertex Stage",
+  "approximation": "Use Vertex Stage Hair properties",
   "blender_parameters": [
     {
       "name": "Hair Type",
@@ -22,40 +22,51 @@
   ],
   "conversion_process": {
     "step_1": {
-      "name": "Custom Shader",
-      "description": "Create custom hair shader",
-      "blender_input": "Hair data",
-      "unity_output": "Custom implementation"
+      "name": "Unity Hair Shader",
+      "description": "Use Unity's built-in Hair Strand Direction",
+      "blender_input": "Hair strand data",
+      "unity_output": "Hair Strand Direction"
     }
   },
   "blender_to_unity_mapping": [
     {
-      "blender_parameter": "Hair Type",
-      "unity_implementation": "Custom shader",
-      "conversion_formula": "Manual conversion",
-      "compatibility_percentage": "25%",
-      "notes": "No direct equivalent - requires custom shader"
+      "blender_parameter": "Strand Tangent",
+      "unity_implementation": "Hair Strand Direction",
+      "conversion_formula": "Use Vertex Stage property",
+      "compatibility_percentage": "30%",
+      "notes": "Available in Vertex Stage"
+    },
+    {
+      "blender_parameter": "Intercept",
+      "unity_implementation": "Custom UV or Attribute",
+      "conversion_formula": "Use vertex data",
+      "compatibility_percentage": "20%",
+      "notes": "Requires custom setup"
     }
   ],
   "build_instructions": [
     {
       "step": 1,
-      "action": "CREATE_HAIR_SHADER",
+      "action": "USE_HAIR_SHADER",
       "nodes": []
     }
   ],
   "compatibility": {
     "fully_compatible": [],
-    "partially_compatible": [],
-    "incompatible": ["Hair Type"]
+    "partially_compatible": ["Hair Strand Direction"],
+    "incompatible": ["Live simulation data"]
   },
   "limitations": [
-    "No direct ShaderGraph support for hair info",
-    "Requires custom shader implementation"
+    "Cannot access Blender's hair simulation",
+    "Limited to Unity's hair system",
+    "Requires matching hair setup"
   ],
   "unity_recreation": {
-    "description": "Create custom hair shader",
-    "unity_equivalent": "Custom shader",
-    "simple_setup": "Custom hair shader required"
-  }
+    "description": "Use Unity's Hair Strand Direction in Vertex Stage",
+    "unity_equivalent": "Hair Strand Direction",
+    "simple_setup": "Use Vertex Stage > Hair Strand Direction"
+  },
+  "example_files": [
+    "examples/ShaderNodeHairInfo/NormalBlend.shadergraph"
+  ]
 }

@@ -139,5 +139,8 @@
     "description": "Splits vector into X, Y, Z components",
     "unity_equivalent": "Split node",
     "simple_setup": "[Vector] → [Split] → [X, Y, Z]"
-  }
+  },
+  "example_files": [
+    "data/custom_nodes/examples/Converter/BlenderVectorMath.shadersubgraph"
+  ]
 }

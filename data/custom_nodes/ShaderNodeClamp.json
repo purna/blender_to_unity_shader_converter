@@ -85,5 +85,8 @@
     "description": "Use Unity's Remap node",
     "unity_equivalent": "Remap",
     "simple_setup": "[Value, Min, Max] → [Remap] → [Clamped]"
-  }
+  },
+  "example_files": [
+    "data/custom_nodes/examples/Converter/BlenderMath.shadersubgraph"
+  ]
 }
