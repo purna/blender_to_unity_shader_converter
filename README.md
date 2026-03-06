@@ -4,7 +4,7 @@
 
 ## Installation
 
-Install package via the Addon Preferences in Blender: https://github.com/purna/[Blender to Unity Shader Converter Plugin](https://github.com/purna/blender_to_unity_shader_converter/releases/tag/Blender_to_Unity_Shader_Converter)
+Install package via the Addon Preferences in Blender: [Blender to Unity Shader Converter Plugin](https://github.com/purna/blender_to_unity_shader_converter/releases/tag/Blender_to_Unity_Shader_Converter)
 
 
 Then enable the addon in **Edit → Preferences → Add-ons**
@@ -21,14 +21,24 @@ blender_to_unity_shader_converter/
  ├─ strategies.py                   # Conversion strategies
  ├─ exporter.py                     # Export functionality
  ├─ utils.py                        # Utility functions & template loading
- ├─ ui.py                           # UI panel
+ ├─ ui.py                          # UI panel
  ├─ fbx_helper.py                   # FBX export helper
- ├─ data/
- │  ├─ node_mappings.json           # 78+ node conversions
- │  ├─ node_mappings_with_params.json # Extended mappings with parameters
- │  ├─ shadergraph_template.xml     # Unity ShaderGraph template
- │  └─ material_template.xml         # Unity Material template
- └─ README.md                       # This file
+ ├─ node_mappings.json             # 78+ node conversions
+ ├─ node_mapping_database.csv       # Node mapping database with examples
+ ├─ JSON_UPGRADE_INSTRUCTIONS.md   # JSON schema documentation
+ ├─ gfx/
+ │  └─ PIXELAGENT.png              # Addon logo
+ └─ data/
+     └─ custom_nodes/
+         ├─ *.json                 # Individual node mappings (80+)
+         ├─ docs/                  # Documentation for each node
+         └─ examples/              # Example Unity ShaderGraphs
+             ├─ Color/             # Color node examples
+             ├─ Converter/         # Converter node examples
+             ├─ Input/             # Input node examples
+             ├─ Texture/           # Texture node examples
+             ├─ Vector/            # Vector node examples
+             └─ ShaderNode*/       # Node-specific examples
 ```
 
 ## How JSON Loading Works
@@ -137,6 +147,34 @@ Each node entry has:
 - **incompatible** - Cannot convert
 - **vertex_displacement** - Vertex offsets
 - **custom_attribute** - Custom setup needed
+
+## Example Files
+
+The addon includes **80+ example Unity ShaderGraphs** in `data/custom_nodes/examples/` that demonstrate how each Blender node maps to Unity.
+
+### Example Categories
+
+| Category | Description | Files |
+|----------|-------------|-------|
+| `Color/` | Color manipulation nodes | Gamma, Hue/Sat, Invert, Mix |
+| `Converter/` | Math & conversion nodes | Math, Vector Math, Color Ramp, Map Range |
+| `Input/` | Geometry & coordinate nodes | UV, Object Info, Tangent |
+| `Texture/` | Procedural textures | Noise, Voronoi, Gradient, Wave, Brick |
+| `Vector/` | Vector operations | Bump, Normal Map, Mapping |
+| `ShaderNode*/` | Specific node examples | Fresnel, Emission, Displacement |
+
+### Using Examples
+
+1. **Import to Unity**: Copy the `.shadergraph` or `.shader` files to your Unity project
+2. **Reference**: See `node_mapping_database.csv` for paths to relevant examples
+3. **Learn**: Study the node connections to understand conversion patterns
+
+### Included Example Types
+
+- **Subgraphs** (`.shadersubgraph`) - Reusable node groups
+- **Shader Graphs** (`.shadergraph`) - Complete shader examples
+- **Shaders** (`.shader`) - Raw HLSL shader code
+- **HLSL Includes** - Utility functions for complex nodes
 
 ## Development
 
