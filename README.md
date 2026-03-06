@@ -267,7 +267,7 @@ This addon is provided as-is for shader conversion from Blender to Unity.
 - Community contributors and testers
 
 ### Third-Party Assets
-- [blender-nodes-for-unity3d](https://github.com/Unity-Technologies/blender-nodes-for-unity3d) - Unity's official Blender node implementations
+- [blender-nodes-for-unity3d](https://github.com/Warwlock/blender-nodes-for-unity3d) - Blender node implementations for Unity
 
 ---
 

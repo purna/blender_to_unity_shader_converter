@@ -359,7 +359,7 @@ Each file is tracked separately, making collaboration easy:
 - Community contributors and testers
 
 ### Third-Party Assets
-- [blender-nodes-for-unity3d](https://github.com/Unity-Technologies/blender-nodes-for-unity3d) - Unity's official Blender node implementations
+- [blender-nodes-for-unity3d](https://github.com/Warwlock/blender-nodes-for-unity3d) - Blender node implementations for Unity
 
 ### License
 This addon is provided as-is for educational and commercial use.
