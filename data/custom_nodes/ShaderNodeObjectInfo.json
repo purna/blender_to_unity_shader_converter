@@ -8,7 +8,9 @@
     "description": "Object info node conversion with fallbacks for missing features",
     "python_interpreter_version": "1.0",
     "category": "Input",
-    "compatibility": "65%"
+    "compatibility": "65%",
+    "reference_implementation": "Subgraphs/Input/Object Info.shadersubgraph",
+    "source_url": "https://github.com/Warwlock/blender-nodes-for-unity3d"
   },
   "summary": "Object info node conversion with fallbacks for missing features",
   "unity_equivalent": "Object property",
@@ -407,6 +409,7 @@
     "available": {
       "Object Index": "Object ID node (if supported)",
       "Random": "Not available in Shader Graph"
-    }
+    },
+    "simple_setup": "Import Subgraphs/Input/Object Info.shadersubgraph from blender-nodes-for-unity3d package"
   }
 }

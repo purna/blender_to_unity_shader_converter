@@ -1,0 +1,36 @@
+# macOS
+.DS_Store
+**/.DS_Store
+
+# Binary files
+*.xlsx
+*.xls
+*.xlsm
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+venv/
+env/
+
+# Unity
+Library/
+Temp/
+obj/
+Assets/External/
+*.unitypackage.meta
+
+# Logs
+*.log
+
+# Build outputs
+build/
+dist/

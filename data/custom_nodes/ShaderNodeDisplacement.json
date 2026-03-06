@@ -75,7 +75,10 @@
   ],
   "compatibility": {
     "fully_compatible": [],
-    "partially_compatible": ["Height", "Scale"],
+    "partially_compatible": [
+      "Height",
+      "Scale"
+    ],
     "incompatible": []
   },
   "limitations": [
@@ -84,6 +87,10 @@
   "unity_recreation": {
     "description": "Use Unity's Displacement node in vertex stage",
     "unity_equivalent": "Displacement node",
-    "simple_setup": "[Height] → [Displacement] → [Vertex Position]"
-  }
+    "simple_setup": "[Height] \u2192 [Displacement] \u2192 [Vertex Position]"
+  },
+  "example_files": [
+    "data/custom_nodes/examples/ShaderNodeDisplacement/Sine Vertex Displacement.shader",
+    "data/custom_nodes/examples/ShaderNodeDisplacement/MeshRenderer-Snow.ShaderGraph"
+  ]
 }

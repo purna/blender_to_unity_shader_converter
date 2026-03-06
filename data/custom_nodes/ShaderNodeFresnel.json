@@ -63,7 +63,10 @@
     }
   ],
   "compatibility": {
-    "fully_compatible": ["Ior Level", "Normal"],
+    "fully_compatible": [
+      "Ior Level",
+      "Normal"
+    ],
     "partially_compatible": [],
     "incompatible": []
   },
@@ -71,6 +74,10 @@
   "unity_recreation": {
     "description": "Use Unity's Fresnel Effect node",
     "unity_equivalent": "Fresnel Effect node",
-    "simple_setup": "[Normal] → [Fresnel Effect] → [Output]"
-  }
+    "simple_setup": "[Normal] \u2192 [Fresnel Effect] \u2192 [Output]"
+  },
+  "example_files": [
+    "data/custom_nodes/examples/ShaderNodeFresnel/Camera Based Outline.shader",
+    "data/custom_nodes/examples/ShaderNodeFresnel/MeshRenderer-ColorRim.ShaderGraph"
+  ]
 }

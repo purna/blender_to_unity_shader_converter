@@ -76,7 +76,11 @@
     }
   ],
   "compatibility": {
-    "fully_compatible": ["Hue", "Saturation", "Value"],
+    "fully_compatible": [
+      "Hue",
+      "Saturation",
+      "Value"
+    ],
     "partially_compatible": [],
     "incompatible": []
   },
@@ -85,5 +89,8 @@
     "description": "Use Unity's Hue/Saturation node",
     "unity_equivalent": "Hue/Saturation node",
     "simple_setup": "[Color] → [Hue/Saturation] → [Output]"
-  }
+  },
+  "example_files": [
+    "data/custom_nodes/examples/Color/HueSaturationValue.shadersubgraph"
+  ]
 }

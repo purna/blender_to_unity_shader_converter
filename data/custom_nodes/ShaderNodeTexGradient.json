@@ -6,7 +6,9 @@
     "target_version": "URP/HDRP",
     "conversion_rate": "100%",
     "description": "Procedural gradient texture - recreate using gradient node",
-    "category": "Texture"
+    "category": "Texture",
+    "reference_implementation": "Subgraphs/Texture/GradientTexture.shadersubgraph",
+    "source_url": "https://github.com/Warwlock/blender-nodes-for-unity3d"
   },
   "summary": "Procedural gradient texture - recreate using gradient node",
   "unity_equivalent": "Gradient (Procedural)",
@@ -50,7 +52,9 @@
     }
   ],
   "compatibility": {
-    "fully_compatible": ["Gradient Type"],
+    "fully_compatible": [
+      "Gradient Type"
+    ],
     "partially_compatible": [],
     "incompatible": []
   },
@@ -58,6 +62,12 @@
   "unity_recreation": {
     "description": "Use Unity's Gradient node",
     "unity_equivalent": "Gradient node",
-    "simple_setup": "[Gradient Node] → [Output]"
-  }
+    "simple_setup": "Import Subgraphs/Texture/GradientTexture.shadersubgraph from blender-nodes-for-unity3d package"
+  },
+  "example_files": [
+    "data/custom_nodes/examples/Texture/GradientTexture.shadersubgraph",
+    "data/custom_nodes/examples/ShaderNodeTexGradient/Procedural-Color-LinearGradient.ShaderGraph",
+    "data/custom_nodes/examples/ShaderNodeTexGradient/Procedural-Color-RadialGradient.ShaderGraph",
+    "data/custom_nodes/examples/ShaderNodeTexGradient/Procedural-Pattern-Rings.ShaderGraph"
+  ]
 }

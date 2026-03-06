@@ -50,7 +50,9 @@
     }
   ],
   "compatibility": {
-    "fully_compatible": ["Color"],
+    "fully_compatible": [
+      "Color"
+    ],
     "partially_compatible": [],
     "incompatible": []
   },
@@ -58,6 +60,10 @@
   "unity_recreation": {
     "description": "Use Unity's Invert node",
     "unity_equivalent": "Invert node",
-    "simple_setup": "[Color] → [Invert] → [Output]"
-  }
+    "simple_setup": "[Color] \u2192 [Invert] \u2192 [Output]"
+  },
+  "example_files": [
+    "data/custom_nodes/examples/Color/Invert.shadersubgraph",
+    "data/custom_nodes/examples/ShaderNodeInvert/2 Tone Dissolve.shader"
+  ]
 }

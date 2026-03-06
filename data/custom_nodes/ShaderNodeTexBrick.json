@@ -6,7 +6,9 @@
     "target_version": "URP/HDRP",
     "conversion_rate": "100%",
     "description": "Procedural brick texture - use Unity's Brick node or custom node graph",
-    "category": "Texture"
+    "category": "Texture",
+    "reference_implementation": "Subgraphs/Texture/BrickTexture.shadersubgraph",
+    "source_url": "https://github.com/Warwlock/blender-nodes-for-unity3d"
   },
   "summary": "Procedural brick texture - use Unity's Brick node or custom node graph",
   "unity_equivalent": "Brick (Procedural)",
@@ -87,7 +89,11 @@
     }
   ],
   "compatibility": {
-    "fully_compatible": ["Offset", "Row Height", "Colors"],
+    "fully_compatible": [
+      "Offset",
+      "Row Height",
+      "Colors"
+    ],
     "partially_compatible": [],
     "incompatible": []
   },
@@ -95,6 +101,11 @@
   "unity_recreation": {
     "description": "Use Unity's procedural Brick node",
     "unity_equivalent": "Brick node",
-    "simple_setup": "[Brick Node] → [Output]"
-  }
+    "simple_setup": "Import Subgraphs/Texture/BrickTexture.shadersubgraph from blender-nodes-for-unity3d package"
+  },
+  "example_files": [
+    "data/custom_nodes/examples/Texture/BrickTexture.shadersubgraph",
+    "data/custom_nodes/examples/ShaderNodeTexBrick/Procedural-Pattern-Shatter.ShaderGraph",
+    "data/custom_nodes/examples/ShaderNodeTexBrick/Procedural-Pattern-Stripes.ShaderGraph"
+  ]
 }

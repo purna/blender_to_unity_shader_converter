@@ -1,5 +1,7 @@
 # Blender to Unity: ShaderNodeValue Conversion Guide
 
+## Conversion Type: 1-1 (Direct Mapping)
+
 ## Overview
 - **Blender Node**: `ShaderNodeValue`
 - **Unity ShaderGraph Node**: `Float` Node or `Float` Property

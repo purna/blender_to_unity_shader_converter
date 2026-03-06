@@ -4,70 +4,89 @@
     "source_engine": "Blender Cycles",
     "target_engine": "Unity",
     "target_version": "URP/HDRP",
-    "conversion_rate": "50%",
-    "description": "Volume absorption shader - limited support",
-    "category": "Shader"
+    "conversion_rate": "0%",
+    "description": "Simulates light absorption in volumetric materials using Beer-Lambert law",
+    "category": "Shader",
+    "complexity_level": "Very High (Volumetric)",
+    "source_url": "https://github.com/Warwlock/blender-nodes-for-unity3d",
+    "notes": "Volumetric effects require HDRP or custom raymarching shader"
   },
-  "summary": "Volume absorption shader - limited support",
-  "unity_equivalent": "Not directly supported",
-  "implementation_notes": "Use custom shader or Volume shader",
-  "approximation": "Not applicable",
+  "summary": "Volume Absorption is computationally expensive - requires raymarching or HDRP volume system. Not possible in real-time without special pipeline support.",
+  "unity_equivalent": "HDRP Volumes or Custom Raymarching Shader",
+  "implementation_notes": "Use HDRP volume system or implement custom raymarching shader with Beer-Lambert absorption.",
   "blender_parameters": [
     {
-      "name": "Color",
-      "type": "Color",
+      "name": "color",
+      "type": "color",
       "description": "Absorption color",
-      "default": "0.0, 0.0, 0.0, 1.0"
+      "default": "[1, 1, 1, 1]"
     },
     {
-      "name": "Density",
-      "type": "Float",
-      "description": "Density",
-      "default": 1.0
+      "name": "density",
+      "type": "float",
+      "description": "Volume density",
+      "default": "1",
+      "range": "0-100"
     }
   ],
-  "conversion_process": {
-    "step_1": {
-      "name": "Use Volume Shader",
-      "description": "Create volume shader with absorption",
-      "blender_input": "Color, Density",
-      "unity_output": "Volume shader"
-    }
-  },
   "blender_to_unity_mapping": [
     {
       "blender_parameter": "Color",
-      "unity_implementation": "Volume color",
-      "conversion_formula": "Direct mapping",
-      "compatibility_percentage": "50%",
-      "notes": "Set volume absorption color"
+      "unity_implementation": "HDRP Volume Absorption / Transparent Tint",
+      "unity_nodes": [
+        "VolumeNode",
+        "StandardShader"
+      ],
+      "conversion_formula": "Direct mapping (limited)",
+      "compatibility_percentage": "0%",
+      "notes": "Full volumetric absorption not available in standard pipelines"
     },
     {
       "blender_parameter": "Density",
-      "unity_implementation": "Density",
-      "conversion_formula": "Direct mapping",
-      "compatibility_percentage": "50%",
-      "notes": "Set volume density"
+      "unity_implementation": "Custom Shader or Post-Processing",
+      "unity_nodes": [
+        "CustomShader"
+      ],
+      "conversion_formula": "Beer-Lambert: exp(-density * distance)",
+      "compatibility_percentage": "0%",
+      "notes": "Requires raymarching"
+    },
+    {
+      "blender_parameter": "Beer-Lambert Law",
+      "unity_implementation": "Custom Raymarching Shader",
+      "unity_nodes": [
+        "Shader"
+      ],
+      "conversion_formula": "I = I0 * exp(-sigma * d)",
+      "compatibility_percentage": "0%",
+      "notes": "Must implement custom volumetric shader"
     }
   ],
   "build_instructions": [
     {
       "step": 1,
-      "action": "CREATE_VOLUME_SHADER",
-      "nodes": []
+      "action": "HDRP: Use Volume system with absorption",
+      "nodes": [
+        {
+          "name": "Volume",
+          "type": "HDRPVolume"
+        }
+      ]
+    },
+    {
+      "step": 2,
+      "action": "Custom: Raymarching shader with Beer-Lambert",
+      "nodes": [
+        {
+          "name": "VolumeAbsorption",
+          "type": "CustomShader"
+        }
+      ]
     }
   ],
-  "compatibility": {
-    "fully_compatible": [],
-    "partially_compatible": ["Color", "Density"],
-    "incompatible": []
-  },
-  "limitations": [
-    "Volume shaders limited in ShaderGraph"
-  ],
   "unity_recreation": {
-    "description": "Create custom volume shader",
-    "unity_equivalent": "Custom volume shader",
-    "simple_setup": "Create custom volume shader with absorption"
+    "description": "HDRP volumes required for full support, custom shader for others",
+    "unity_equivalent": "HDRP Volume or Custom",
+    "simple_setup": "Use transparent material approximation"
   }
 }

@@ -6,7 +6,9 @@
     "target_version": "URP/HDRP",
     "conversion_rate": "75%",
     "description": "Procedural Musgrave noise - recreate using noise nodes",
-    "category": "Texture"
+    "category": "Texture",
+    "reference_implementation": "Subgraphs/Texture/MusgraveTexture.shadersubgraph",
+    "source_url": "https://github.com/Warwlock/blender-nodes-for-unity3d"
   },
   "summary": "Procedural Musgrave noise - recreate using noise nodes",
   "unity_equivalent": "Gradient Noise / Custom Node",
@@ -87,9 +89,15 @@
     }
   ],
   "compatibility": {
-    "fully_compatible": ["Scale"],
-    "partially_compatible": ["Octaves"],
-    "incompatible": ["Musgrave Type"]
+    "fully_compatible": [
+      "Scale"
+    ],
+    "partially_compatible": [
+      "Octaves"
+    ],
+    "incompatible": [
+      "Musgrave Type"
+    ]
   },
   "limitations": [
     "Musgrave algorithm not directly available in Unity",
@@ -98,6 +106,6 @@
   "unity_recreation": {
     "description": "Recreate Musgrave pattern using Gradient Noise with FBM",
     "unity_equivalent": "Gradient Noise with FBM",
-    "simple_setup": "[Gradient Noise] → [Multiply (Loop)] → [Output]"
+    "simple_setup": "Import Subgraphs/Texture/MusgraveTexture.shadersubgraph from blender-nodes-for-unity3d package"
   }
 }

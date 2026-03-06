@@ -71,7 +71,12 @@
     }
   ],
   "compatibility": {
-    "fully_compatible": ["UV", "Object", "Generated", "Normal"],
+    "fully_compatible": [
+      "UV",
+      "Object",
+      "Generated",
+      "Normal"
+    ],
     "partially_compatible": [],
     "incompatible": []
   },
@@ -80,5 +85,10 @@
     "description": "Use Unity's built-in coordinate nodes (UV, Position, Normal)",
     "unity_equivalent": "UV/Position/Normal nodes",
     "simple_setup": "[UV Node] → [Texture Sample]"
-  }
+  },
+  "example_files": [
+    "ShaderGraph_Examples/Assets/ShaderGraphs/Shader Graph - Unlit/UV.shadergraph",
+    "ShaderGraph_Examples/Assets/ShaderGraphs/Procedural/UV/Procedural-UV-AutoScroll.ShaderGraph",
+    "ShaderGraph_Examples/Assets/ShaderGraphs/Procedural/UV/Procedural-UV-OffsetPingPong.ShaderGraph"
+  ]
 }

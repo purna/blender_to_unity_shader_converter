@@ -11,7 +11,9 @@
     "primary_challenge": "Procedural math formula implementation and floating-point precision matching",
     "pattern_type": "Checkerboard (2x2 alternating squares)",
     "compatibility": "70%",
-    "category": "Texture"
+    "category": "Texture",
+    "reference_implementation": "Subgraphs/Texture/CheckerTexture.shadersubgraph",
+    "source_url": "https://github.com/Warwlock/blender-nodes-for-unity3d"
   },
   "summary": "Procedural checkerboard pattern with scale, color, and offset control",
   "unity_equivalent": "Checker",
@@ -1230,6 +1232,11 @@
   "unity_recreation": {
     "description": "Checkerboard pattern",
     "unity_equivalent": "Step node or custom math",
-    "formula": "step(fract(uv.x * 2) * fract(uv.y * 2))"
-  }
+    "formula": "step(fract(uv.x * 2) * fract(uv.y * 2))",
+    "simple_setup": "Import Subgraphs/Texture/CheckerTexture.shadersubgraph from blender-nodes-for-unity3d package"
+  },
+  "example_files": [
+    "data/custom_nodes/examples/Texture/CheckerTexture.shadersubgraph",
+    "data/custom_nodes/examples/ShaderNodeTexChecker/Procedural-Pattern-Checkerboard.ShaderGraph"
+  ]
 }

@@ -6,7 +6,9 @@
     "target_version": "URP/HDRP",
     "conversion_rate": "100%",
     "description": "Procedural Voronoi texture - direct mapping to Unity",
-    "category": "Texture"
+    "category": "Texture",
+    "reference_implementation": "Subgraphs/Texture/VoronoiTexture.shadersubgraph",
+    "source_url": "https://github.com/Warwlock/blender-nodes-for-unity3d"
   },
   "summary": "Procedural Voronoi texture - direct mapping to Unity",
   "unity_equivalent": "Voronoi (Procedural)",
@@ -63,7 +65,10 @@
     }
   ],
   "compatibility": {
-    "fully_compatible": ["Scale", "Randomness"],
+    "fully_compatible": [
+      "Scale",
+      "Randomness"
+    ],
     "partially_compatible": [],
     "incompatible": []
   },
@@ -71,6 +76,11 @@
   "unity_recreation": {
     "description": "Use Unity's built-in Voronoi node",
     "unity_equivalent": "Voronoi node",
-    "simple_setup": "[Voronoi Node] → [Output]"
-  }
+    "simple_setup": "Import Subgraphs/Texture/VoronoiTexture.shadersubgraph from blender-nodes-for-unity3d package"
+  },
+  "example_files": [
+    "data/custom_nodes/examples/Texture/VoronoiTexture.shadersubgraph",
+    "data/custom_nodes/examples/ShaderNodeTexVoronoi/Procedural-Noise-Voronoi.ShaderGraph",
+    "data/custom_nodes/examples/ShaderNodeTexVoronoi/Procedural-Noise-VoronoiShuffle.ShaderGraph"
+  ]
 }

@@ -1,5 +1,7 @@
 # Blender to Unity: ShaderNodeAmbientOcclusion Conversion Guide
 
+## Conversion Type: 4 (No Conversion - Requires Baking)
+
 ## Overview
 - **Blender Node**: `ShaderNodeAmbientOcclusion`
 - **Unity ShaderGraph Equivalent**: Baked Texture Workflow (Not a direct node)

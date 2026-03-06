@@ -6,7 +6,9 @@
     "target_version": "URP/HDRP",
     "conversion_rate": "100%",
     "description": "Procedural wave texture - recreate using Sine node",
-    "category": "Texture"
+    "category": "Texture",
+    "reference_implementation": "Subgraphs/Texture/WaveTexture.shadersubgraph",
+    "source_url": "https://github.com/Warwlock/blender-nodes-for-unity3d"
   },
   "summary": "Procedural wave texture - recreate using Sine node",
   "unity_equivalent": "Sine / Custom Node",
@@ -74,7 +76,10 @@
     }
   ],
   "compatibility": {
-    "fully_compatible": ["Scale", "Distortion"],
+    "fully_compatible": [
+      "Scale",
+      "Distortion"
+    ],
     "partially_compatible": [],
     "incompatible": []
   },
@@ -82,6 +87,12 @@
   "unity_recreation": {
     "description": "Use Unity's Sine math node",
     "unity_equivalent": "Sine node",
-    "simple_setup": "[UV] to [Multiply] to [Sine] to [Output]"
-  }
+    "simple_setup": "Import Subgraphs/Texture/WaveTexture.shadersubgraph from blender-nodes-for-unity3d package"
+  },
+  "example_files": [
+    "data/custom_nodes/examples/Texture/WaveTexture.shadersubgraph",
+    "data/custom_nodes/examples/ShaderNodeTexWave/Procedural-Pattern-Rings.ShaderGraph",
+    "data/custom_nodes/examples/ShaderNodeTexWave/Procedural-Pattern-RingsAutoScroll.ShaderGraph",
+    "data/custom_nodes/examples/ShaderNodeTexWave/Procedural-Pattern-Spiral.ShaderGraph"
+  ]
 }

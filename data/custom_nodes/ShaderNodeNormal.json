@@ -9,8 +9,11 @@
     "category": "Input"
   },
   "summary": "Normal input - direct mapping to Unity",
-  "unity_equivalent": "Normal",
-  "implementation_notes": "Use Unity's Normal node",
+  "unity_node": {
+    "node_type": "NormalVectorNode",
+    "display_name": "Normal",
+    "category": "Input"
+  },
   "approximation": "1:1 conversion",
   "blender_parameters": [
     {
@@ -50,7 +53,9 @@
     }
   ],
   "compatibility": {
-    "fully_compatible": ["Normal"],
+    "fully_compatible": [
+      "Normal"
+    ],
     "partially_compatible": [],
     "incompatible": []
   },
@@ -59,5 +64,8 @@
     "description": "Use Unity's Normal node",
     "unity_equivalent": "Normal node",
     "simple_setup": "[Normal Node] → [Output]"
-  }
+  },
+  "example_files": [
+    "ShaderGraph_Examples/Assets/ShaderGraphs/Shader Graph - Unlit/Normals.shadergraph"
+  ]
 }

@@ -5,7 +5,40 @@ Properties panel: per-node conversion steps
 """
 
 import bpy
+import os
 from . import parser, utils
+
+# ── Preview Collection for Logo ─────────────────────────────────────────────────
+
+_preview_collections = {}
+
+def _get_preview_collection():
+    """Get or create preview collection for addon icons"""
+    global _preview_collections
+    
+    if "addon_previews" in _preview_collections:
+        return _preview_collections["addon_previews"]
+    
+    import bpy.utils.previews
+    
+    pcoll = bpy.utils.previews.new()
+    
+    # Get the addon directory
+    addon_dir = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
+    logo_path = os.path.join(addon_dir, "gfx", "PIXELAGENT_small.png")
+    
+    # Load logo if it exists
+    if os.path.exists(logo_path):
+        pcoll.load("addon_logo", logo_path, 'IMAGE')
+    else:
+        # Fallback: try without _small
+        logo_path = os.path.join(addon_dir, "gfx", "PIXELAGENT.png")
+        if os.path.exists(logo_path):
+            pcoll.load("addon_logo", logo_path, 'IMAGE')
+    
+    _preview_collections["addon_previews"] = pcoll
+    return pcoll
+
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
 
@@ -82,7 +115,16 @@ class SHADER_PT_unity_export(bpy.types.Panel):
         node_mapping = _get_node_mapping()
         scene = context.scene
 
-        # ── Shader Type Selection ────────────────────────────────────────
+        # ── Logo ─────────────────────────────────────────────────────────────
+        try:
+            pcoll = _get_preview_collection()
+            if "addon_logo" in pcoll:
+                layout.label(text="", icon_value=pcoll["addon_logo"].icon_id)
+                layout.separator()
+        except Exception:
+            pass  # Logo not available, continue without it
+
+        # ── Shader Type Selection ────────────────────────────────────────────
         box = layout.box()
         box.label(text="Shader Settings", icon='SETTINGS')
         
@@ -304,4 +346,11 @@ def register():
 def unregister():
     for cls in reversed(_classes):
         bpy.utils.unregister_class(cls)
+    
+    # Clean up preview collection
+    global _preview_collections
+    if "addon_previews" in _preview_collections:
+        bpy.utils.previews.remove(_preview_collections["addon_previews"])
+        del _preview_collections["addon_previews"]
+    
     print("  ✓ UI panels unregistered")

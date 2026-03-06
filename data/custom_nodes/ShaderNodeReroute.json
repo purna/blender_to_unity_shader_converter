@@ -43,7 +43,10 @@
     }
   ],
   "compatibility": {
-    "fully_compatible": ["Input", "Output"],
+    "fully_compatible": [
+      "Input",
+      "Output"
+    ],
     "partially_compatible": [],
     "incompatible": []
   },
@@ -52,5 +55,8 @@
     "description": "Pass-through node for organizing connections",
     "unity_equivalent": "Node Reroute",
     "simple_setup": "Connect input to output through reroute node"
-  }
+  },
+  "example_files": [
+    "data/custom_nodes/examples/ShaderNodeReroute/Procedural-UV-AutoTransformsCombined.ShaderGraph"
+  ]
 }

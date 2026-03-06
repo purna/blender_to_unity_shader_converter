@@ -68,7 +68,10 @@
     }
   ],
   "compatibility": {
-    "fully_compatible": ["Color", "Strength"],
+    "fully_compatible": [
+      "Color",
+      "Strength"
+    ],
     "partially_compatible": [],
     "incompatible": []
   },
@@ -76,6 +79,9 @@
   "unity_recreation": {
     "description": "Use Unity's Emission property in Lit shader",
     "unity_equivalent": "Emission",
-    "simple_setup": "[Color] → [Emission Input]"
-  }
+    "simple_setup": "[Color] \u2192 [Emission Input]"
+  },
+  "example_files": [
+    "data/custom_nodes/examples/ShaderNodeEmission/Sprite-Glowing.ShaderGraph"
+  ]
 }

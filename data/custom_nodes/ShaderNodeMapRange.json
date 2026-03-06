@@ -6,7 +6,9 @@
     "target_version": "URP/HDRP",
     "conversion_rate": "100%",
     "description": "Value remapping - direct mapping to Unity",
-    "category": "Converter"
+    "category": "Converter",
+    "reference_implementation": "Subgraphs/Converter/MapRange.shadersubgraph",
+    "source_url": "https://github.com/Warwlock/blender-nodes-for-unity3d"
   },
   "summary": "Value remapping - direct mapping to Unity",
   "unity_equivalent": "Remap (Value)",
@@ -81,7 +83,13 @@
     }
   ],
   "compatibility": {
-    "fully_compatible": ["Value", "From Min", "From Max", "To Min", "To Max"],
+    "fully_compatible": [
+      "Value",
+      "From Min",
+      "From Max",
+      "To Min",
+      "To Max"
+    ],
     "partially_compatible": [],
     "incompatible": []
   },
@@ -89,6 +97,11 @@
   "unity_recreation": {
     "description": "Use Unity's Remap node",
     "unity_equivalent": "Remap node",
-    "simple_setup": "[Value] → [Remap] → [Output]"
-  }
+    "simple_setup": "Import Subgraphs/Converter/MapRange.shadersubgraph from blender-nodes-for-unity3d package"
+  },
+  "example_files": [
+    "data/custom_nodes/examples/Converter/MapRange.shadersubgraph",
+    "data/custom_nodes/examples/ShaderNodeMapRange/Procedural-Color-PingPong.ShaderGraph",
+    "data/custom_nodes/examples/ShaderNodeMapRange/Procedural-UV-OffsetPingPong.ShaderGraph"
+  ]
 }

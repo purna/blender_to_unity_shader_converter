@@ -1,41 +1,73 @@
-# ShaderNodeDisplacement - Research & Action Plan
+# ShaderNodeDisplacement
+
+## Conversion Type: 4 (No Conversion - Requires Manual Setup)
 
 ## Overview
-- **Source**: Blender Cycles/Eevee
-- **Target**: Unity URP/HDRP
+- **Blender Node**: ShaderNodeDisplacement
 - **Category**: Vector
-- **Compatibility**: 60%
-
-## Blender Node Description
-Vertex displacement from heightmap. Displaces mesh vertices along normals.
+- **Compatibility**: 0%
 
 ## Unity Equivalent
-- **Primary**: Vertex Offset
-- **Implementation**: Requires tessellation or displacement pass
+- **Primary**: Vertex Displacement (not in standard ShaderGraph)
+- **Implementation**: Requires custom shader or geometry shader
 
 ## Conversion Process
 
-### Step 1: Choose Approach
-- Option 1: Geometry/Vertex Displacement (advanced)
-- Option 2: Parallax occlusion mapping (approximation)
-- Option 3: Tessellation shader (if available)
+### Step 1: Not Directly Convertible
+- **Description**: Displacement requires mesh modification
+- **Blender**: Modifies mesh geometry in rendering
+- **Unity**: Cannot displace vertices in standard ShaderGraph
 
-### Step 2: Implement Displacement
-- Use Vertex Position node with displacement
+## Visual Graph Layout
 
-## Parameters
-| Blender | Type | Unity | Notes |
-|---------|------|-------|-------|
-| Height | Float | Height | Grayscale |
-| Midlevel | Float | N/A | Not supported |
-| Scale | Float | Scale | Direct |
-| Normal | Normal | Normal | Direct |
+```
+// NOT POSSIBLE - Displacement requires:
+// 1. Custom geometry shader
+// 2. Compute shader for vertex displacement
+// 3. Or use Unity's terrain/hair displacement systems
+
+// Workaround: Use normal map instead
+[Height Map] ──> [Normal From Height] ──> [Normal Input]
+```
+
+## Pseudocode for Conversion Logic
+
+```python
+def convert_displacement_node(blender_node):
+    """
+    Converts Blender ShaderNodeDisplacement - NOT POSSIBLE.
+    This node modifies actual mesh geometry, which cannot be done in standard ShaderGraph.
+    """
+    # 1. Log critical warning
+    log_error(
+        "Displacement node cannot be converted to Unity ShaderGraph. "
+        "Displacement requires mesh geometry modification which is not supported. "
+        "Consider using:\n"
+        "1. Normal map instead of displacement\n"
+        "2. Custom geometry shader\n"
+        "3. Unity's terrain system"
+    )
+    
+    # 2. Try to convert to normal map as alternative
+    height_input = get_input_connection(blender_node.inputs["Height"])
+    if height_input:
+        # Convert height to normal as workaround
+        normal_from_height = create_shadergraph_node("Normal From Height")
+        
+        if height_input:
+            connect_nodes(height_input, normal_from_height, "In")
+        
+        log_warning("Converting displacement to normal map as alternative")
+        return normal_from_height.outputs["Normal"]
+    
+    return None
+```
 
 ## Compatibility Notes
-- 60% compatible
-- Standard ShaderGraph doesn't support vertex modification
+- 0% compatible
+- Cannot displace mesh vertices in ShaderGraph
 
 ## Limitations
-- True displacement requires vertex processing
-- ShaderGraph alone cannot modify geometry
-- Use parallax as visual approximation
+- True displacement requires geometry shader or compute shader
+- Standard ShaderGraph cannot modify vertex positions
+- Must use normal maps as visual alternative

@@ -4,77 +4,97 @@
     "source_engine": "Blender Cycles",
     "target_engine": "Unity",
     "target_version": "URP/HDRP",
-    "conversion_rate": "50%",
-    "description": "Volume scatter shader - limited support",
-    "category": "Shader"
+    "conversion_rate": "0%",
+    "description": "Simulates light scattering in volumetric materials using Henyey-Greenstein phase function",
+    "category": "Shader",
+    "complexity_level": "Very High (Volumetric)",
+    "source_url": "https://github.com/Warwlock/blender-nodes-for-unity3d",
+    "notes": "Volumetric scatter requires HDRP or custom raymarching"
   },
-  "summary": "Volume scatter shader - limited support",
-  "unity_equivalent": "Not directly supported",
-  "implementation_notes": "Use custom shader or Volume shader",
-  "approximation": "Not applicable",
+  "summary": "Volume Scatter requires raymarching and is computationally expensive. Not possible in standard real-time rendering without HDRP volumes.",
+  "unity_equivalent": "HDRP Volumetrics or Custom Raymarching",
+  "implementation_notes": "Use HDRP volumetric fog or implement custom raymarching shader with Henyey-Greenstein phase function.",
   "blender_parameters": [
     {
-      "name": "Color",
-      "type": "Color",
-      "description": "Scatter color",
-      "default": "0.0, 0.0, 0.0, 1.0"
+      "name": "color",
+      "type": "color",
+      "description": "Scattering color",
+      "default": "[1, 1, 1, 1]"
     },
     {
-      "name": "Density",
-      "type": "Float",
-      "description": "Density",
-      "default": 1.0
+      "name": "density",
+      "type": "float",
+      "description": "Volume density",
+      "default": "1",
+      "range": "0-100"
     },
     {
-      "name": "Anisotropy",
-      "type": "Float",
-      "description": "Scattering anisotropy",
-      "default": 0.0
+      "name": "anisotropy",
+      "type": "float",
+      "description": "Scattering direction bias (-1 to 1)",
+      "default": "0",
+      "range": "-1 to 1"
     }
   ],
-  "conversion_process": {
-    "step_1": {
-      "name": "Use Volume Shader",
-      "description": "Create volume shader with scattering",
-      "blender_input": "Color, Density, Anisotropy",
-      "unity_output": "Volume shader"
-    }
-  },
   "blender_to_unity_mapping": [
     {
       "blender_parameter": "Color",
-      "unity_implementation": "Volume color",
-      "conversion_formula": "Direct mapping",
-      "compatibility_percentage": "50%",
-      "notes": "Set volume scatter color"
+      "unity_implementation": "HDRP Volumetric Fog / Particles",
+      "unity_nodes": [
+        "FogVolume",
+        "ParticleSystem"
+      ],
+      "conversion_formula": "Direct mapping (limited)",
+      "compatibility_percentage": "0%",
+      "notes": "Full volumetric scatter not available in standard pipelines"
     },
     {
       "blender_parameter": "Density",
-      "unity_implementation": "Density",
-      "conversion_formula": "Direct mapping",
-      "compatibility_percentage": "50%",
-      "notes": "Set volume density"
+      "unity_implementation": "Custom Shader or Fog Settings",
+      "unity_nodes": [
+        "Fog",
+        "CustomShader"
+      ],
+      "conversion_formula": "Density affects scatter intensity",
+      "compatibility_percentage": "0%",
+      "notes": "Requires raymarching"
+    },
+    {
+      "blender_parameter": "Anisotropy",
+      "unity_implementation": "Henyey-Greenstein Phase Function",
+      "unity_nodes": [
+        "CustomShader"
+      ],
+      "conversion_formula": "P(theta) = (1-g^2) / (4*pi*(1+g^2-2g*cos(theta))^1.5)",
+      "compatibility_percentage": "0%",
+      "notes": "Requires custom volumetric shader"
     }
   ],
   "build_instructions": [
     {
       "step": 1,
-      "action": "CREATE_VOLUME_SHADER",
-      "nodes": []
+      "action": "HDRP: Use Volumetric Fog",
+      "nodes": [
+        {
+          "name": "VolumetricFog",
+          "type": "HDRPFog"
+        }
+      ]
+    },
+    {
+      "step": 2,
+      "action": "Custom: Raymarching with Henyey-Greenstein phase function",
+      "nodes": [
+        {
+          "name": "VolumeScatter",
+          "type": "CustomShader"
+        }
+      ]
     }
   ],
-  "compatibility": {
-    "fully_compatible": [],
-    "partially_compatible": ["Color", "Density"],
-    "incompatible": []
-  },
-  "limitations": [
-    "Volume shaders limited in ShaderGraph",
-    "Anisotropy not supported"
-  ],
   "unity_recreation": {
-    "description": "Create custom volume shader",
-    "unity_equivalent": "Custom volume shader",
-    "simple_setup": "Create custom volume shader with scattering"
+    "description": "HDRP volumetrics required, particles or custom shader for others",
+    "unity_equivalent": "HDRP Volume or Particles",
+    "simple_setup": "Use Unity Fog system"
   }
 }

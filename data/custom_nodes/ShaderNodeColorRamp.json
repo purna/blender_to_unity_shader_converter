@@ -6,7 +6,9 @@
     "target_version": "URP/HDRP",
     "conversion_rate": "100%",
     "description": "Color ramp - maps grayscale to color gradient",
-    "category": "Converter"
+    "category": "Converter",
+    "reference_implementation": "Subgraphs/Converter/Color Ramp.shadersubgraph",
+    "source_url": "https://github.com/Warwlock/blender-nodes-for-unity3d"
   },
   "summary": "Color ramp - maps grayscale to color gradient",
   "unity_equivalent": "Sample Gradient Node",
@@ -63,7 +65,10 @@
     }
   ],
   "compatibility": {
-    "fully_compatible": ["Fac", "Color"],
+    "fully_compatible": [
+      "Fac",
+      "Color"
+    ],
     "partially_compatible": [],
     "incompatible": []
   },
@@ -71,6 +76,12 @@
   "unity_recreation": {
     "description": "Use Unity's Sample Gradient node",
     "unity_equivalent": "Sample Gradient",
-    "simple_setup": "[Fac] → [Sample Gradient] → [Color]"
-  }
+    "simple_setup": "Import Subgraphs/Converter/Color Ramp.shadersubgraph from blender-nodes-for-unity3d package"
+  },
+  "example_files": [
+    "data/custom_nodes/examples/Converter/Color Ramp.shadersubgraph",
+    "data/custom_nodes/examples/ShaderNodeColorRamp/Procedural-Color-LinearGradient.ShaderGraph",
+    "data/custom_nodes/examples/ShaderNodeColorRamp/Procedural-Color-RadialGradient.ShaderGraph",
+    "data/custom_nodes/examples/ShaderNodeColorRamp/Procedural-Color-SoftSplitPingPong.ShaderGraph"
+  ]
 }

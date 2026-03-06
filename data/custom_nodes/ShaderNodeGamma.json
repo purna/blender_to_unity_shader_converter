@@ -63,7 +63,10 @@
     }
   ],
   "compatibility": {
-    "fully_compatible": ["Color", "Gamma"],
+    "fully_compatible": [
+      "Color",
+      "Gamma"
+    ],
     "partially_compatible": [],
     "incompatible": []
   },
@@ -72,5 +75,8 @@
     "description": "Use Unity's Power node",
     "unity_equivalent": "Power node",
     "simple_setup": "[Color] → [Power] → [Output]"
-  }
+  },
+  "example_files": [
+    "data/custom_nodes/examples/Color/Gamma.shadersubgraph"
+  ]
 }

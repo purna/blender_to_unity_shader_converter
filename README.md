@@ -1,5 +1,7 @@
 # Blender to Unity Shader Converter - Addon Package
 
+![PIXELAGENT Logo](gfx/PIXELAGENT.png)
+
 ## Installation
 
 Install package via the Addon Preferences in Blender: https://github.com/purna/[Blender to Unity Shader Converter Plugin](https://github.com/purna/blender_to_unity_shader_converter/releases/tag/Blender_to_Unity_Shader_Converter)
@@ -210,3 +212,25 @@ elif strategy == 'custom_strategy':
 ## License
 
 This addon is provided as-is for shader conversion from Blender to Unity.
+
+---
+
+## Credits
+
+**Blender to Unity Shader Converter** - A professional addon for converting Blender shader nodes to Unity Shader Graph.
+
+### Development
+- **Lead Developer:** Nigel Morris
+- **Logo Design:** PIXELAGENT
+
+### Special Thanks
+- Blender Foundation for the Cycles shader node system
+- Unity Technologies for Shader Graph
+- Community contributors and testers
+
+### Third-Party Assets
+- [blender-nodes-for-unity3d](https://github.com/Unity-Technologies/blender-nodes-for-unity3d) - Unity's official Blender node implementations
+
+---
+
+*Version 1.0 | Last Updated: March 2026*

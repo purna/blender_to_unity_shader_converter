@@ -6,7 +6,9 @@
     "target_version": "URP/HDRP",
     "conversion_rate": "50%",
     "description": "Procedural magic texture - recreate using node graph",
-    "category": "Texture"
+    "category": "Texture",
+    "reference_implementation": "Subgraphs/Texture/MagicTexture.shadersubgraph",
+    "source_url": "https://github.com/Warwlock/blender-nodes-for-unity3d"
   },
   "summary": "Procedural magic texture - recreate using node graph",
   "unity_equivalent": "Custom Node Graph",
@@ -64,7 +66,10 @@
   ],
   "compatibility": {
     "fully_compatible": [],
-    "partially_compatible": ["Scale", "Distortion"],
+    "partially_compatible": [
+      "Scale",
+      "Distortion"
+    ],
     "incompatible": []
   },
   "limitations": [
@@ -73,6 +78,6 @@
   "unity_recreation": {
     "description": "Recreate magic pattern using mathematical nodes",
     "unity_equivalent": "Custom node graph",
-    "simple_setup": "Manual node graph recreation required"
+    "simple_setup": "Import Subgraphs/Texture/MagicTexture.shadersubgraph from blender-nodes-for-unity3d package"
   }
 }

@@ -6,7 +6,9 @@
     "target_version": "URP/HDRP",
     "conversion_rate": "100%",
     "description": "Normal map - direct mapping to Unity",
-    "category": "Vector"
+    "category": "Vector",
+    "reference_implementation": "Subgraphs/Vector/Normal Map.shadersubgraph",
+    "source_url": "https://github.com/Warwlock/blender-nodes-for-unity3d"
   },
   "summary": "Normal map - direct mapping to Unity",
   "unity_equivalent": "Normal From Texture",
@@ -63,7 +65,10 @@
     }
   ],
   "compatibility": {
-    "fully_compatible": ["Space", "Strength"],
+    "fully_compatible": [
+      "Space",
+      "Strength"
+    ],
     "partially_compatible": [],
     "incompatible": []
   },
@@ -71,6 +76,10 @@
   "unity_recreation": {
     "description": "Use Unity's Normal From Texture node",
     "unity_equivalent": "Normal From Texture",
-    "simple_setup": "[Normal Map] → [Normal From Texture] → [Normal]"
-  }
+    "simple_setup": "Import Subgraphs/Vector/Normal Map.shadersubgraph from blender-nodes-for-unity3d package"
+  },
+  "example_files": [
+    "data/custom_nodes/examples/Vector/Normal Map.shadersubgraph",
+    "data/custom_nodes/examples/ShaderNodeNormalMap/Normals.shader"
+  ]
 }

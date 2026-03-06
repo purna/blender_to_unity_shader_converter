@@ -6,7 +6,9 @@
     "target_version": "URP/HDRP",
     "conversion_rate": "100%",
     "description": "Bump node for normal mapping",
-    "category": "Input"
+    "category": "Input",
+    "reference_implementation": "Subgraphs/Vector/Bump.shadersubgraph",
+    "source_url": "https://github.com/Warwlock/blender-nodes-for-unity3d"
   },
   "summary": "Bump node for normal mapping",
   "unity_equivalent": "Normal From Height Node",
@@ -89,7 +91,12 @@
     }
   ],
   "compatibility": {
-    "fully_compatible": ["Height", "Distance", "Normal", "Invert"],
+    "fully_compatible": [
+      "Height",
+      "Distance",
+      "Normal",
+      "Invert"
+    ],
     "partially_compatible": [],
     "incompatible": []
   },
@@ -97,6 +104,10 @@
   "unity_recreation": {
     "description": "Use Unity's Normal From Height node",
     "unity_equivalent": "Normal From Height",
-    "simple_setup": "[Height] → [Normal From Height] → [Normal]"
-  }
+    "simple_setup": "Import Subgraphs/Vector/Bump.shadersubgraph from blender-nodes-for-unity3d package"
+  },
+  "example_files": [
+    "data/custom_nodes/examples/Vector/Bump.shadersubgraph",
+    "data/custom_nodes/examples/ShaderNodeBump/MeshRenderer-Snow.ShaderGraph"
+  ]
 }

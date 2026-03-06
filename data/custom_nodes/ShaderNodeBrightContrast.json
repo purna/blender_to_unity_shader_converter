@@ -79,7 +79,10 @@
     }
   ],
   "compatibility": {
-    "fully_compatible": ["Bright", "Contrast"],
+    "fully_compatible": [
+      "Bright",
+      "Contrast"
+    ],
     "partially_compatible": [],
     "incompatible": []
   },
@@ -88,5 +91,8 @@
     "description": "Use multiply and add nodes",
     "unity_equivalent": "Multiply/Add",
     "simple_setup": "[Color] → [Add (Brightness)] → [Multiply (Contrast)] → [Output]"
-  }
+  },
+  "example_files": [
+    "data/custom_nodes/examples/Color/BrightContrast.shadersubgraph"
+  ]
 }

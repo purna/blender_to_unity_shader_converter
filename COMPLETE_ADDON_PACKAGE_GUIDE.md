@@ -1,5 +1,7 @@
 # Complete Multi-File Addon Package with JSON Guide
 
+![PIXELAGENT Logo](gfx/PIXELAGENT.png)
+
 ## Your Question Answered
 **"If we want a JSON file of all the blender nodes and the conversion technique for each to be loaded by the .py file, how do we make the plugin a collection of files?"**
 
@@ -340,3 +342,28 @@ Each file is tracked separately, making collaboration easy:
 - Ready to distribute
 
 **The JSON approach makes your addon scalable, maintainable, and future-proof!**
+
+---
+
+## Credits
+
+**Blender to Unity Shader Converter** - A professional addon for converting Blender shader nodes to Unity Shader Graph.
+
+### Development
+- **Lead Developer:** Nigel Morris
+- **Logo Design:** PIXELAGENT
+
+### Special Thanks
+- Blender Foundation for the Cycles shader node system
+- Unity Technologies for Shader Graph
+- Community contributors and testers
+
+### Third-Party Assets
+- [blender-nodes-for-unity3d](https://github.com/Unity-Technologies/blender-nodes-for-unity3d) - Unity's official Blender node implementations
+
+### License
+This addon is provided as-is for educational and commercial use.
+
+---
+
+*Version 1.0 | Last Updated: March 2026*

@@ -1,0 +1,132 @@
+{
+  "metadata": {
+    "source_node": "ShaderNodeHairBsdf",
+    "source_engine": "Blender Cycles",
+    "target_engine": "Unity",
+    "target_version": "URP/HDRP",
+    "conversion_rate": "10%",
+    "description": "Physically-based hair shading with Kajiya-Kay or Marschner model",
+    "category": "Shader",
+    "complexity_level": "Very High"
+  },
+  "summary": "Hair BSDF is highly complex - requires Unity's hair pipeline or custom implementation of Kajiya-Kay/Marschner models.",
+  "unity_equivalent": "URP/HDRP Hair Shader or Custom Implementation",
+  "implementation_notes": "Use Unity's built-in hair shaders in URP/HDRP or implement custom Kajiya-Kay shader.",
+  "blender_parameters": [
+    {
+      "name": "color",
+      "type": "color",
+      "description": "Hair color",
+      "default": "[0.02, 0.02, 0.02, 1]"
+    },
+    {
+      "name": "roughness",
+      "type": "float",
+      "description": "Surface roughness",
+      "default": "0.5",
+      "range": "0-1"
+    },
+    {
+      "name": "radial_roughness",
+      "type": "float",
+      "description": "Radial roughness for anisotropic highlights",
+      "default": "0.5",
+      "range": "0-1"
+    },
+    {
+      "name": "coat",
+      "type": "float",
+      "description": "Additional coat layer intensity",
+      "default": "0",
+      "range": "0-1"
+    },
+    {
+      "name": "offset",
+      "type": "float",
+      "description": "Hair strand offset angle",
+      "default": "0"
+    },
+    {
+      "name": "direct",
+      "type": "float",
+      "description": "Direct lighting strength",
+      "default": "1"
+    },
+    {
+      "name": "indirect",
+      "type": "float",
+      "description": "Indirect lighting strength",
+      "default": "1"
+    }
+  ],
+  "blender_to_unity_mapping": [
+    {
+      "blender_parameter": "Color",
+      "unity_implementation": "URP Hair Base Color / HDRP Hair Tint",
+      "unity_nodes": ["HairMasterNode"],
+      "conversion_formula": "Direct mapping",
+      "compatibility_percentage": "100%"
+    },
+    {
+      "blender_parameter": "Roughness",
+      "unity_implementation": "URP Hair Roughness",
+      "unity_nodes": ["HairMasterNode"],
+      "conversion_formula": "Direct mapping (invert for smoothness)",
+      "compatibility_percentage": "100%"
+    },
+    {
+      "blender_parameter": "Radial Roughness",
+      "unity_implementation": "Custom Shader Required",
+      "unity_nodes": ["CodeFunctionNode"],
+      "conversion_formula": "Anisotropic calculation",
+      "compatibility_percentage": "10%",
+      "notes": "Requires custom shader"
+    },
+    {
+      "blender_parameter": "Kajiya-Kay Model",
+      "unity_implementation": "Custom HLSL Shader",
+      "unity_nodes": ["Shader"],
+      "conversion_formula": "TdotL, TdotV calculations",
+      "compatibility_percentage": "10%",
+      "notes": "Must implement custom Marschner/Kajiya-Kay"
+    }
+  ],
+  "build_instructions": [
+    {
+      "step": 1,
+      "action": "For URP: Use Hair Master Stack",
+      "nodes": [
+        {
+          "name": "HairMaster",
+          "type": "HairMasterNode"
+        }
+      ],
+      "note": "Requires URP 2021.2+"
+    },
+    {
+      "step": 2,
+      "action": "For HDRP: Use Hair Shader Type",
+      "nodes": [
+        {
+          "name": "HairShader",
+          "type": "HDRPHair"
+        }
+      ]
+    },
+    {
+      "step": 3,
+      "action": "For custom: Implement Kajiya-Kay model",
+      "nodes": [
+        {
+          "name": "HairShader",
+          "type": "CustomShader"
+        }
+      ]
+    }
+  ],
+  "unity_recreation": {
+    "description": "Use URP/HDRP hair shaders or implement custom Kajiya-Kay",
+    "unity_equivalent": "Hair Master Stack",
+    "simple_setup": "Use Unity Hair shader (URP/HDRP)"
+  }
+}

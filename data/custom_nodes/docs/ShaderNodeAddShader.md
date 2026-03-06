@@ -1,5 +1,7 @@
 # Blender to Unity: ShaderNodeAddShader Conversion Guide
 
+## Conversion Type: 3 (Multi-Node Conversion)
+
 ## Overview
 - **Blender Node**: `ShaderNodeAddShader`
 - **Unity ShaderGraph Node**: `Add`
