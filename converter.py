@@ -169,6 +169,14 @@ UNITY_TYPE_MAP = {
     'Transparent':       'UnityEditor.ShaderGraph.TransparentNode',
     'Vector3':           'UnityEditor.ShaderGraph.Vector3Node',
     'N/A':               'UnityEditor.ShaderGraph.CustomFunctionNode',  # incompatible nodes
+    # New entries for added node support
+    'Rotate Vector':     'UnityEditor.ShaderGraph.RotateAboutAxisNode',
+    'Vector Transform':  'UnityEditor.ShaderGraph.TransformNode',
+    'Bevel':            'UnityEditor.ShaderGraph.BevelNode',
+    'SSS':              'UnityEditor.ShaderGraph.CustomFunctionNode',
+    'Sheen':            'UnityEditor.ShaderGraph.CustomFunctionNode',
+    'Toon':             'UnityEditor.ShaderGraph.CustomFunctionNode',
+    'Velvet':           'UnityEditor.ShaderGraph.CustomFunctionNode',
 }
 
 MATH_OP_TYPE_MAP = {
@@ -632,6 +640,174 @@ def _build_slots_for_node(node_data: Dict, node_mapping: Dict) -> List[Dict]:
             _float_slot(1, 'Smoothness', smoothness),
             _float_slot(2, 'IOR',        inp('IOR') or 1.45),
             _out_slot(3,  'Out'),
+        ]
+
+    # ── SSS ───────────────────────────────────────────────────────────
+    elif ntype == 'ShaderNodeSubsurfaceScattering':
+        slots = [
+            _color_slot(0, 'BaseColor', inp('Color')),
+            _float_slot(1, 'Subsurface', inp('Subsurface') or 0.0),
+            _float_slot(2, 'Radius', 1.0),
+            _out_slot(3,  'Out'),
+        ]
+
+    # ── Sheen ─────────────────────────────────────────────────────────
+    elif ntype == 'ShaderNodeBsdfSheen':
+        slots = [
+            _color_slot(0, 'BaseColor', inp('Color')),
+            _float_slot(1, 'Sheen', inp('Sheen') or 0.0),
+            _out_slot(2,  'Out'),
+        ]
+
+    # ── Toon ──────────────────────────────────────────────────────────
+    elif ntype == 'ShaderNodeBsdfToon':
+        slots = [
+            _color_slot(0, 'BaseColor', inp('Color')),
+            _float_slot(1, 'Smoothness', inp('Smoothness') or 0.5),
+            _out_slot(2,  'Out'),
+        ]
+
+    # ── Velvet ─────────────────────────────────────────────────────────
+    elif ntype == 'ShaderNodeBsdfVelvet':
+        slots = [
+            _color_slot(0, 'BaseColor', inp('Color')),
+            _float_slot(1, 'Sheen', inp('Sheen') or 0.0),
+            _out_slot(2,  'Out'),
+        ]
+
+    # ── Hair BSDF ──────────────────────────────────────────────────────
+    elif ntype == 'ShaderNodeHairBsdf':
+        slots = [
+            _color_slot(0, 'BaseColor', inp('Color')),
+            _float_slot(1, 'Roughness', inp('Roughness') or 0.5),
+            _out_slot(2,  'Out'),
+        ]
+
+    # ── Separate HSV ───────────────────────────────────────────────────
+    elif ntype == 'ShaderNodeSeparateHSV':
+        slots = [
+            _make_slot(0, 'In', '0', inp('Color') or [0.0, 0.0, 0.0, 1.0]),
+            _out_slot(1, 'H'),
+            _out_slot(2, 'S'),
+            _out_slot(3, 'V'),
+        ]
+
+    # ── Combine HSV ────────────────────────────────────────────────────
+    elif ntype == 'ShaderNodeCombineHSV':
+        slots = [
+            _float_slot(0, 'H', inp('H') or 0.0),
+            _float_slot(1, 'S', inp('S') or 0.0),
+            _float_slot(2, 'V', inp('V') or 1.0),
+            _out_slot(3,  'Out'),
+        ]
+
+    # ── Vector Curve ──────────────────────────────────────────────────
+    elif ntype == 'ShaderNodeVectorCurve':
+        slots = [
+            _make_slot(0, 'Vector', '0', inp('Vector') or [0.0, 0.0, 0.0]),
+            _out_slot(1,  'Out'),
+        ]
+
+    # ── Gradient Texture ───────────────────────────────────────────────
+    elif ntype == 'ShaderNodeTexGradient':
+        slots = [
+            _make_slot(0, 'UV', '0', None),
+            _out_slot(1,  'Fac'),
+        ]
+
+    # ── Wave Texture ───────────────────────────────────────────────────
+    elif ntype == 'ShaderNodeTexWave':
+        slots = [
+            _make_slot(0, 'UV', '0', None),
+            _float_slot(1, 'Scale', inp('Scale') or 5.0),
+            _float_slot(2, 'Distortion', inp('Distortion') or 0.0),
+            _out_slot(3,  'Fac'),
+        ]
+
+    # ── Brick Texture ──────────────────────────────────────────────────
+    elif ntype == 'ShaderNodeTexBrick':
+        slots = [
+            _make_slot(0, 'UV', '0', None),
+            _float_slot(1, 'Scale', inp('Scale') or 5.0),
+            _out_slot(2,  'Fac'),
+            _out_slot(3,  'Color1'),
+            _out_slot(4,  'Color2'),
+        ]
+
+    # ── Checker Texture ────────────────────────────────────────────────
+    elif ntype == 'ShaderNodeTexChecker':
+        slots = [
+            _make_slot(0, 'UV', '0', None),
+            _out_slot(1,  'Fac'),
+        ]
+
+    # ── Magic Texture ──────────────────────────────────────────────────
+    elif ntype == 'ShaderNodeTexMagic':
+        slots = [
+            _make_slot(0, 'UV', '0', None),
+            _float_slot(1, 'Scale', inp('Scale') or 5.0),
+            _out_slot(2,  'Fac'),
+        ]
+
+    # ── Sky Texture ────────────────────────────────────────────────────
+    elif ntype == 'ShaderNodeTexSky':
+        slots = [
+            _out_slot(0,  'Color'),
+        ]
+
+    # ── White Noise Texture ───────────────────────────────────────────
+    elif ntype == 'ShaderNodeTexWhiteNoise':
+        slots = [
+            _make_slot(0, 'UV', '0', None),
+            _float_slot(1, 'W', inp('W') or 1.0),
+            _out_slot(2,  'Fac'),
+        ]
+
+    # ── Bevel ──────────────────────────────────────────────────────────
+    elif ntype == 'ShaderNodeBevel':
+        slots = [
+            _float_slot(0, 'Radius', inp('Radius') or 0.0),
+            _out_slot(1,  'Normal'),
+        ]
+
+    # ── Object Info ────────────────────────────────────────────────────
+    elif ntype == 'ShaderNodeObjectInfo':
+        slots = [
+            _out_slot(0,  'Location'),
+            _out_slot(1,  'Color'),
+            _out_slot(2,  'Random'),
+        ]
+
+    # ── Camera Data ───────────────────────────────────────────────────
+    elif ntype == 'ShaderNodeCameraData':
+        slots = [
+            _out_slot(0,  'View Vector'),
+            _out_slot(1,  'View Distance'),
+        ]
+
+    # ── Vector Rotate ──────────────────────────────────────────────────
+    elif ntype == 'ShaderNodeVectorRotate':
+        slots = [
+            _make_slot(0, 'Vector', '0', inp('Vector') or [0.0, 0.0, 0.0]),
+            _make_slot(1, 'Axis', '0', inp('Axis') or [0.0, 0.0, 1.0]),
+            _float_slot(2, 'Angle', inp('Angle') or 0.0),
+            _out_slot(3,  'Out'),
+        ]
+
+    # ── Vector Transform ────────────────────────────────────────────────
+    elif ntype == 'ShaderNodeVectorTransform':
+        slots = [
+            _make_slot(0, 'Vector', '0', inp('Vector') or [0.0, 0.0, 0.0]),
+            _out_slot(1,  'Out'),
+        ]
+
+    # ── Displacement ───────────────────────────────────────────────────
+    elif ntype == 'ShaderNodeDisplacement':
+        slots = [
+            _make_slot(0, 'Height', '0', None),
+            _float_slot(1, 'Midlevel', inp('Midlevel') or 0.5),
+            _float_slot(2, 'Scale', inp('Scale') or 1.0),
+            _out_slot(3,  'Displacement'),
         ]
 
     # ── Fallback: generic A + B + Out ────────────────────────────────

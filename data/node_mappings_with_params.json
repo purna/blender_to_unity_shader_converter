@@ -4929,5 +4929,32 @@
     "compatibility": "100%",
     "description": "Mix between two values",
     "custom_node_file": "data/custom_nodes/ShaderNodeMix.json"
+  },
+  "ShaderNodeSeparateHSV": {
+    "unity_name": "Separate HSV",
+    "unity_type": "Split",
+    "category": "Color",
+    "strategy": "approximation",
+    "compatibility": "40%",
+    "description": "Separate color into HSV components (requires custom function)",
+    "custom_node_file": "data/custom_nodes/ShaderNodeSeparateHSV.json"
+  },
+  "ShaderNodeCombineHSV": {
+    "unity_name": "Combine HSV",
+    "unity_type": "Combine",
+    "category": "Color",
+    "strategy": "approximation",
+    "compatibility": "40%",
+    "description": "Combine HSV components into color (requires custom function)",
+    "custom_node_file": "data/custom_nodes/ShaderNodeCombineHSV.json"
+  },
+  "ShaderNodeVectorCurve": {
+    "unity_name": "Vector Curve",
+    "unity_type": "Custom",
+    "category": "Vector",
+    "strategy": "approximation",
+    "compatibility": "50%",
+    "description": "Apply curve to vector components",
+    "custom_node_file": "data/custom_nodes/ShaderNodeVectorCurve.json"
   }
 }
