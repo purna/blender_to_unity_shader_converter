@@ -1,11 +1,63 @@
 {
   "metadata": {
     "source_node": "ShaderNodeUVMap",
-    "compatibility": "95%",
-    "description": "Specific UV channel selection - maps to UV node with channel"
+    "source_engine": "Blender Cycles",
+    "target_engine": "Unity",
+    "target_version": "URP/HDRP",
+    "conversion_rate": "100%",
+    "description": "UV coordinate input - direct mapping to Unity",
+    "category": "Input"
   },
-  "summary": "Specific UV channel selection - maps to UV node with channel",
-  "property": "UVMap (String/Channel index)",
-  "outputs": "UV (Vector2)",
-  "channels": "0-3 (UV, UV2, UV3, UV4)"
+  "summary": "UV coordinate input - direct mapping to Unity",
+  "unity_equivalent": "UV (Vertex/Fragment)",
+  "implementation_notes": "Use Unity's UV nodes",
+  "approximation": "1:1 conversion",
+  "blender_parameters": [
+    {
+      "name": "UV Map",
+      "type": "String",
+      "description": "UV map name",
+      "default": "UVMap"
+    }
+  ],
+  "conversion_process": {
+    "step_1": {
+      "name": "Use UV Node",
+      "description": "Use Unity's UV node for specific UV channel",
+      "blender_input": "UV Map name",
+      "unity_output": "UV coordinates"
+    }
+  },
+  "blender_to_unity_mapping": [
+    {
+      "blender_parameter": "UV Map",
+      "unity_implementation": "UV node",
+      "conversion_formula": "Direct mapping",
+      "compatibility_percentage": "100%",
+      "notes": "Select UV channel in Unity node"
+    }
+  ],
+  "build_instructions": [
+    {
+      "step": 1,
+      "action": "CREATE_UV_NODE",
+      "nodes": [
+        {
+          "name": "UV",
+          "type": "UV"
+        }
+      ]
+    }
+  ],
+  "compatibility": {
+    "fully_compatible": ["UV Map"],
+    "partially_compatible": [],
+    "incompatible": []
+  },
+  "limitations": [],
+  "unity_recreation": {
+    "description": "Use Unity's UV node",
+    "unity_equivalent": "UV node",
+    "simple_setup": "[UV Node] → [Texture Sample]"
+  }
 }

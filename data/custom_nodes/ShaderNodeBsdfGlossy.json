@@ -1,28 +1,76 @@
 {
   "metadata": {
     "source_node": "ShaderNodeBsdfGlossy",
-    "compatibility": "70%",
-    "category": "Shader",
-    "complexity": "Medium",
-    "description": "Shiny specular shader - maps to smooth metallic in Unity"
+    "source_engine": "Blender Cycles",
+    "target_engine": "Unity",
+    "target_version": "URP/HDRP",
+    "conversion_rate": "100%",
+    "description": "Glossy BSDF shader - direct mapping to Unity",
+    "category": "Shader"
   },
-  "summary": "Glossy surface with specular highlights. Unity: use metallic or high smoothness non-metallic material.",
-  "parameters": {
-    "Color": "Specular color (often white or slightly tinted)",
-    "Roughness": "Surface roughness (inverse of smoothness)",
-    "Distribution": "Highlight distribution type (GGX, Beckmann, Ashikhmin-Shirley, Multiscatter)"
+  "summary": "Glossy BSDF shader - direct mapping to Unity",
+  "unity_equivalent": "Lit Shader",
+  "implementation_notes": "Use Unity's Lit shader with smoothness",
+  "approximation": "1:1 conversion",
+  "blender_parameters": [
+    {
+      "name": "Color",
+      "type": "Color",
+      "description": "Base color",
+      "default": "0.8, 0.8, 0.8, 1.0"
+    },
+    {
+      "name": "Roughness",
+      "type": "Float",
+      "description": "Surface roughness",
+      "default": 0.5
+    }
+  ],
+  "conversion_process": {
+    "step_1": {
+      "name": "Use Lit Shader",
+      "description": "Use Unity's Lit shader with smoothness",
+      "blender_input": "Color, Roughness",
+      "unity_output": "Lit surface"
+    }
   },
-  "implementation": {
-    "base_color": "Color property",
-    "smoothness": "1 - Roughness",
-    "metallic": "Can be 0 (plastic) or 1 (metal)",
-    "normal": "Geometry normal or custom"
+  "blender_to_unity_mapping": [
+    {
+      "blender_parameter": "Color",
+      "unity_implementation": "Base Color",
+      "conversion_formula": "Direct mapping",
+      "compatibility_percentage": "100%",
+      "notes": "Set base color"
+    },
+    {
+      "blender_parameter": "Roughness",
+      "unity_implementation": "Smoothness",
+      "conversion_formula": "1 - roughness",
+      "compatibility_percentage": "100%",
+      "notes": "Set smoothness (inverse of roughness)"
+    }
+  ],
+  "build_instructions": [
+    {
+      "step": 1,
+      "action": "CREATE_LIT_SHADER",
+      "nodes": [
+        {
+          "name": "Lit Shader",
+          "type": "Fragment"
+        }
+      ]
+    }
+  ],
+  "compatibility": {
+    "fully_compatible": ["Color", "Roughness"],
+    "partially_compatible": [],
+    "incompatible": []
   },
-  "blender_distributions": {
-    "GGX": "Standard (most common in modern rendering)",
-    "Beckmann": "Approximated by GGX",
-    "Ashikhmin": "Custom function (rarely needed)",
-    "Multiscatter": "Advanced - simplified to single scatter"
-  },
-  "compatibility_loss_30_percent": "Different BRDF models; visual match good but not identical, especially in extreme angles"
+  "limitations": [],
+  "unity_recreation": {
+    "description": "Use Unity's Lit shader with smoothness",
+    "unity_equivalent": "Lit Shader",
+    "simple_setup": "[Color, Roughness] → [Lit Shader]"
+  }
 }

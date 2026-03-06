@@ -1,8 +1,66 @@
 {
   "metadata": {
     "source_node": "ShaderNodeTexIES",
-    "compatibility": "50%",
-    "description": "IES light profile texture - specialized lighting"
+    "source_engine": "Blender Cycles",
+    "target_engine": "Unity",
+    "target_version": "URP/HDRP",
+    "conversion_rate": "75%",
+    "description": "IES light texture - limited support in ShaderGraph",
+    "category": "Texture"
   },
-  "note": "Can use texture-based IES approximation"
+  "summary": "IES light texture - limited support in ShaderGraph",
+  "unity_equivalent": "Not directly supported",
+  "implementation_notes": "Use custom node or import IES as light profile",
+  "approximation": "Not applicable",
+  "blender_parameters": [
+    {
+      "name": "IES Texture",
+      "type": "IES File",
+      "description": "IES light profile file",
+      "default": "None"
+    }
+  ],
+  "conversion_process": {
+    "step_1": {
+      "name": "Manual Conversion",
+      "description": "Import IES file as light or recreate with custom node",
+      "blender_input": "IES Texture",
+      "unity_output": "Custom recreation"
+    }
+  },
+  "blender_to_unity_mapping": [
+    {
+      "blender_parameter": "IES Texture",
+      "unity_implementation": "Custom node or light profile",
+      "conversion_formula": "Manual conversion",
+      "compatibility_percentage": "25%",
+      "notes": "No direct ShaderGraph support - use light profile"
+    }
+  ],
+  "build_instructions": [
+    {
+      "step": 1,
+      "action": "IMPORT_IES_LIGHT",
+      "nodes": []
+    },
+    {
+      "step": 2,
+      "action": "OR_CREATE_CUSTOM_NODE",
+      "nodes": []
+    }
+  ],
+  "compatibility": {
+    "fully_compatible": [],
+    "partially_compatible": [],
+    "incompatible": ["IES Texture"]
+  },
+  "limitations": [
+    "No direct ShaderGraph support for IES textures",
+    "Requires external tool or custom implementation"
+  ],
+  "unity_recreation": {
+    "description": "Import IES as light profile or create custom node",
+    "unity_equivalent": "Light Profile / Custom Node",
+    "simple_setup": "Import as light or create custom HLSL"
+  }
 }

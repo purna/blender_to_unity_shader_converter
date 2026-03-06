@@ -1,23 +1,65 @@
 {
   "metadata": {
     "source_node": "ShaderNodeAmbientOcclusion",
-    "compatibility": "10%",
-    "category": "Input",
-    "complexity": "Impossible",
-    "description": "Real-time ambient occlusion - requires global scene knowledge"
+    "source_engine": "Blender Cycles",
+    "target_engine": "Unity",
+    "target_version": "URP/HDRP",
+    "conversion_rate": "75%",
+    "description": "Ambient occlusion - limited support in ShaderGraph",
+    "category": "Input"
   },
-  "summary": "Blender AO reads occluding geometry around surface. Real-time AO requires either baked AO maps or screen-space techniques.",
-  "parameters": {
-    "Distance": "Occlusion search radius",
-    "Samples": "Number of samples for AO calculation"
-  },
-  "blender_behavior": "Raytraces scene geometry to find occlusion",
-  "unity_alternatives": [
-    "Baked AO texture map - pre-calculated offline",
-    "SSAO (Screen Space Ambient Occlusion) - post-process",
-    "HDRP Ambient Occlusion - built-in renderer feature"
+  "summary": "Ambient occlusion - limited support in ShaderGraph",
+  "unity_equivalent": "Ambient Occlusion (in URP)",
+  "implementation_notes": "Use AO in URP settings or create with math nodes",
+  "approximation": "Partial - different approach",
+  "blender_parameters": [
+    {
+      "name": "Color",
+      "type": "Color",
+      "description": "AO color",
+      "default": "1.0, 1.0, 1.0, 1.0"
+    }
   ],
-  "shader_graph_limitation": "ShaderGraph cannot access scene geometry at runtime",
-  "workaround": "Use baked AO map instead - texture the occlusion offline",
-  "compatibility_loss_90_percent": "Fundamentally incompatible - scene information not available in ShaderGraph"
+  "conversion_process": {
+    "step_1": {
+      "name": "Use AO Node",
+      "description": "Use Unity's Ambient Occlusion or recreate with nodes",
+      "blender_input": "Color",
+      "unity_output": "AO factor"
+    }
+  },
+  "blender_to_unity_mapping": [
+    {
+      "blender_parameter": "Color",
+      "unity_implementation": "Multiply node",
+      "conversion_formula": "Direct mapping",
+      "compatibility_percentage": "75%",
+      "notes": "Multiply by AO from settings"
+    }
+  ],
+  "build_instructions": [
+    {
+      "step": 1,
+      "action": "ENABLE_AO_IN_URP",
+      "nodes": []
+    },
+    {
+      "step": 2,
+      "action": "OR_USE_MULTIPLY",
+      "nodes": []
+    }
+  ],
+  "compatibility": {
+    "fully_compatible": [],
+    "partially_compatible": ["Color"],
+    "incompatible": []
+  },
+  "limitations": [
+    "AO is controlled in URP settings, not shader"
+  ],
+  "unity_recreation": {
+    "description": "Enable AO in URP settings or use custom node setup",
+    "unity_equivalent": "Ambient Occlusion",
+    "simple_setup": "Enable AO in URP Post Processing"
+  }
 }

@@ -93,7 +93,8 @@
         "formula": "If true: add Clamp(0,1) node after Math output",
         "note": "No built-in toggle in Unity."
       }
-    ]
+    ],
+    "custom_node_file": "data/custom_nodes/ShaderNodeMath.json"
   },
   "ShaderNodeVectorMath": {
     "unity_name": "Vector",
@@ -114,7 +115,8 @@
       "SCALE",
       "NORMALIZE",
       "SNAP"
-    ]
+    ],
+    "custom_node_file": "data/custom_nodes/ShaderNodeVectorMath.json"
   },
   "ShaderNodeSeparateXYZ": {
     "unity_name": "Split",
@@ -122,7 +124,8 @@
     "category": "Vector",
     "strategy": "direct",
     "compatibility": "100%",
-    "description": "Split vector into X, Y, Z components"
+    "description": "Split vector into X, Y, Z components",
+    "custom_node_file": "data/custom_nodes/ShaderNodeSeparateXYZ.json"
   },
   "ShaderNodeCombineXYZ": {
     "unity_name": "Combine",
@@ -130,7 +133,8 @@
     "category": "Vector",
     "strategy": "direct",
     "compatibility": "100%",
-    "description": "Combine X, Y, Z into vector"
+    "description": "Combine X, Y, Z into vector",
+    "custom_node_file": "data/custom_nodes/ShaderNodeCombineXYZ.json"
   },
   "ShaderNodeSeparateRGB": {
     "unity_name": "Split",
@@ -138,7 +142,8 @@
     "category": "Color",
     "strategy": "direct",
     "compatibility": "100%",
-    "description": "Split color into R, G, B channels"
+    "description": "Split color into R, G, B channels",
+    "custom_node_file": "data/custom_nodes/ShaderNodeSeparateRGB.json"
   },
   "ShaderNodeCombineRGB": {
     "unity_name": "Combine",
@@ -146,7 +151,8 @@
     "category": "Color",
     "strategy": "direct",
     "compatibility": "100%",
-    "description": "Combine R, G, B into color"
+    "description": "Combine R, G, B into color",
+    "custom_node_file": "data/custom_nodes/ShaderNodeCombineRGB.json"
   },
   "ShaderNodeValue": {
     "unity_name": "Float",
@@ -154,7 +160,8 @@
     "category": "Input",
     "strategy": "direct",
     "compatibility": "100%",
-    "description": "Float constant value"
+    "description": "Float constant value",
+    "custom_node_file": "data/custom_nodes/ShaderNodeValue.json"
   },
   "ShaderNodeRGB": {
     "unity_name": "Color",
@@ -162,7 +169,8 @@
     "category": "Input",
     "strategy": "direct",
     "compatibility": "100%",
-    "description": "Color constant RGBA"
+    "description": "Color constant RGBA",
+    "custom_node_file": "data/custom_nodes/ShaderNodeRGB.json"
   },
   "ShaderNodeTexImage": {
     "unity_name": "Sample Texture 2D",
@@ -306,7 +314,8 @@
         "formula": "sRGB \u2192 sRGB checkbox ON | Non-Color \u2192 sRGB checkbox OFF",
         "note": "Set in Unity texture import settings, not on the node itself."
       }
-    ]
+    ],
+    "custom_node_file": "data/custom_nodes/ShaderNodeTexImage.json"
   },
   "ShaderNodeTexEnvironment": {
     "unity_name": "Sample Cubemap",
@@ -340,7 +349,8 @@
         }
       ],
       "blender_conversion_notes": "Bake environment to cubemap in Blender. Export as .hdr and import into Unity as Cubemap texture type."
-    }
+    },
+    "custom_node_file": "data/custom_nodes/ShaderNodeTexEnvironment.json"
   },
   "ShaderNodeTexCoord": {
     "unity_name": "UV",
@@ -399,7 +409,8 @@
         }
       ],
       "blender_conversion_notes": "Identify which TexCoord output is actually used in the Blender graph before mapping."
-    }
+    },
+    "custom_node_file": "data/custom_nodes/ShaderNodeTexCoord.json"
   },
   "ShaderNodeUVMap": {
     "unity_name": "UV (Custom)",
@@ -432,7 +443,8 @@
         }
       ],
       "blender_conversion_notes": "Check Blender UV map name. Match to Unity mesh UV channel (UV0, UV1, etc.)."
-    }
+    },
+    "custom_node_file": "data/custom_nodes/ShaderNodeUVMap.json"
   },
   "ShaderNodeAttribute": {
     "unity_name": "Vertex Attribute",
@@ -463,7 +475,8 @@
         }
       ],
       "blender_conversion_notes": "Identify attribute type in Blender (color, UV, custom). Color attributes map to Vertex Color in Unity."
-    }
+    },
+    "custom_node_file": "data/custom_nodes/ShaderNodeAttribute.json"
   },
   "ShaderNodeFresnel": {
     "unity_name": "Fresnel",
@@ -542,7 +555,8 @@
         "formula": "Direct connection",
         "note": "Pass through unchanged."
       }
-    ]
+    ],
+    "custom_node_file": "data/custom_nodes/ShaderNodeFresnel.json"
   },
   "ShaderNodeNormalMap": {
     "unity_name": "Normal From Texture",
@@ -660,7 +674,8 @@
         "formula": "Match enum value",
         "note": "Blender Object/World map directly. Blender Object/Blender World are Blender-legacy; treat as Object/World."
       }
-    ]
+    ],
+    "custom_node_file": "data/custom_nodes/ShaderNodeNormalMap.json"
   },
   "ShaderNodeMapping": {
     "unity_name": "Tiling and Offset",
@@ -788,7 +803,8 @@
         "formula": "Rotation (degrees) = Rotation.Z (radians) * (180 / \u03c0)",
         "note": "Blender uses radians; Unity Rotate node uses degrees. Convert accordingly."
       }
-    ]
+    ],
+    "custom_node_file": "data/custom_nodes/ShaderNodeMapping.json"
   },
   "ShaderNodeMixRGB": {
     "unity_name": "Lerp",
@@ -949,7 +965,8 @@
         "formula": "If true: add Clamp(0,1) node after blend output",
         "note": "No built-in toggle; add Clamp node."
       }
-    ]
+    ],
+    "custom_node_file": "data/custom_nodes/ShaderNodeMixRGB.json"
   },
   "ShaderNodeClamp": {
     "unity_name": "Clamp",
@@ -1019,7 +1036,8 @@
         "formula": "Max (Unity) = Max (Blender)",
         "note": "Direct."
       }
-    ]
+    ],
+    "custom_node_file": "data/custom_nodes/ShaderNodeClamp.json"
   },
   "ShaderNodeInvert": {
     "unity_name": "Invert",
@@ -1027,7 +1045,8 @@
     "category": "Color",
     "strategy": "direct",
     "compatibility": "100%",
-    "description": "Invert color or value (1 - x)"
+    "description": "Invert color or value (1 - x)",
+    "custom_node_file": "data/custom_nodes/ShaderNodeInvert.json"
   },
   "ShaderNodeBsdfPrincipled": {
     "unity_name": "Principled BSDF",
@@ -1231,7 +1250,8 @@
         "formula": "HDRP only \u2014 use Subsurface Scattering material type",
         "note": "No URP equivalent. Approximate with diffuse + slight translucent addition."
       }
-    ]
+    ],
+    "custom_node_file": "data/custom_nodes/ShaderNodeBsdfPrincipled.json"
   },
   "ShaderNodeBsdfDiffuse": {
     "unity_name": "Diffuse",
@@ -1338,7 +1358,8 @@
         "formula": "Direct",
         "note": ""
       }
-    ]
+    ],
+    "custom_node_file": "data/custom_nodes/ShaderNodeBsdfDiffuse.json"
   },
   "ShaderNodeBsdfGlossy": {
     "unity_name": "Glossy",
@@ -1447,7 +1468,8 @@
         "formula": "Direct",
         "note": ""
       }
-    ]
+    ],
+    "custom_node_file": "data/custom_nodes/ShaderNodeBsdfGlossy.json"
   },
   "ShaderNodeBsdfGlass": {
     "unity_name": "Glass",
@@ -1503,7 +1525,8 @@
         }
       ],
       "blender_conversion_notes": "True refractive glass is not real-time. Use transparent surface + Fresnel opacity + high smoothness as approximation."
-    }
+    },
+    "custom_node_file": "data/custom_nodes/ShaderNodeBsdfGlass.json"
   },
   "ShaderNodeBsdfTransparent": {
     "unity_name": "Transparent",
@@ -1535,7 +1558,8 @@
         }
       ],
       "blender_conversion_notes": "Blender transparent BSDF controls opacity. Set Unity material to Transparent surface and drive Alpha from the Blender Fac input."
-    }
+    },
+    "custom_node_file": "data/custom_nodes/ShaderNodeBsdfTransparent.json"
   },
   "ShaderNodeEmission": {
     "unity_name": "Emission",
@@ -1619,7 +1643,8 @@
         "formula": "Multiply node B input = Strength",
         "note": "Direct scalar."
       }
-    ]
+    ],
+    "custom_node_file": "data/custom_nodes/ShaderNodeEmission.json"
   },
   "ShaderNodeBump": {
     "unity_name": "Bump",
@@ -1722,7 +1747,8 @@
         "formula": "If Invert=true: add One Minus node before Normal From Height input",
         "note": "No Invert toggle in Unity \u2014 use One Minus on the height input."
       }
-    ]
+    ],
+    "custom_node_file": "data/custom_nodes/ShaderNodeBump.json"
   },
   "ShaderNodeTexNoise": {
     "unity_name": "Noise Texture",
@@ -1861,7 +1887,8 @@
         "formula": "UV_distorted = UV + Simple Noise * Distortion",
         "note": "Chain a separate Simple Noise node and add it to the UV before the main noise."
       }
-    ]
+    ],
+    "custom_node_file": "data/custom_nodes/ShaderNodeTexNoise.json"
   },
   "ShaderNodeTexVoronoi": {
     "unity_name": "Voronoi",
@@ -1972,7 +1999,8 @@
         "formula": "AngleOffset = Randomness * 2.0",
         "note": "Approximate. Unity AngleOffset range is 0\u20136.28 (radians); scale Blender 0\u20131 accordingly."
       }
-    ]
+    ],
+    "custom_node_file": "data/custom_nodes/ShaderNodeTexVoronoi.json"
   },
   "ShaderNodeTexGradient": {
     "unity_name": "Gradient",
@@ -2018,7 +2046,8 @@
         }
       ],
       "blender_conversion_notes": "Blender gradient types: Linear uses UV.x, Radial uses distance from center, Spherical uses length. Map accordingly in Unity."
-    }
+    },
+    "custom_node_file": "data/custom_nodes/ShaderNodeTexGradient.json"
   },
   "ShaderNodeTexWave": {
     "unity_name": "Wave",
@@ -2167,7 +2196,8 @@
         "formula": "Direct",
         "note": "Scale a Simple Noise by DistortionStrength and add to UV before Multiply(Frequency)."
       }
-    ]
+    ],
+    "custom_node_file": "data/custom_nodes/ShaderNodeTexWave.json"
   },
   "ShaderNodeTexMusgrave": {
     "unity_name": "Musgrave",
@@ -2319,7 +2349,8 @@
         "formula": "Add Offset constant to final summed result",
         "note": "Add node after sum."
       }
-    ]
+    ],
+    "custom_node_file": "data/custom_nodes/ShaderNodeTexMusgrave.json"
   },
   "ShaderNodeTexBrick": {
     "unity_name": "Brick",
@@ -2391,7 +2422,8 @@
         }
       ],
       "blender_conversion_notes": "Brick pattern: Fraction(UV*scale) -> Step for edges -> Multiply. Add row offset for staggered bricks using Floor(UV.y) * 0.5 mod 1."
-    }
+    },
+    "custom_node_file": "data/custom_nodes/ShaderNodeTexBrick.json"
   },
   "ShaderNodeTexChecker": {
     "unity_name": "Checker",
@@ -2455,7 +2487,8 @@
         }
       ],
       "blender_conversion_notes": "Checker formula: Step(0.5, Fraction(Floor(UV.x) + Floor(UV.y))). This gives a perfect 0/1 checkerboard."
-    }
+    },
+    "custom_node_file": "data/custom_nodes/ShaderNodeTexChecker.json"
   },
   "ShaderNodeVertexColor": {
     "unity_name": "Vertex Color",
@@ -2492,7 +2525,8 @@
         }
       ],
       "blender_conversion_notes": "Vertex colors must be exported in FBX. In Blender FBX export: check Mesh > Vertex Colors. Unity auto-detects vertex color stream."
-    }
+    },
+    "custom_node_file": "data/custom_nodes/ShaderNodeVertexColor.json"
   },
   "ShaderNodeTangent": {
     "unity_name": "Tangent",
@@ -2522,7 +2556,8 @@
         }
       ],
       "blender_conversion_notes": "Tangent vectors must be exported. Enable Tangent Space in Blender FBX export settings."
-    }
+    },
+    "custom_node_file": "data/custom_nodes/ShaderNodeTangent.json"
   },
   "ShaderNodeLayerWeight": {
     "unity_name": "Fresnel/Facing",
@@ -2602,7 +2637,8 @@
         "formula": "Facing \u2248 1 - saturate(dot(Normal, ViewDir))",
         "note": "Use Dot Product of Normal and View Direction, then One Minus, then Power node for sharpness."
       }
-    ]
+    ],
+    "custom_node_file": "data/custom_nodes/ShaderNodeLayerWeight.json"
   },
   "ShaderNodeMapRange": {
     "unity_name": "Map Range",
@@ -2770,7 +2806,8 @@
         "formula": "If true: add Clamp(Out Min, Out Max) after Remap",
         "note": "No built-in clamp toggle."
       }
-    ]
+    ],
+    "custom_node_file": "data/custom_nodes/ShaderNodeMapRange.json"
   },
   "ShaderNodeAddShader": {
     "unity_name": "Add",
@@ -2810,7 +2847,8 @@
         }
       ],
       "blender_conversion_notes": "Blender Add Shader adds two lighting contributions. In Unity, add the color values and output to Emission for additive glow effects."
-    }
+    },
+    "custom_node_file": "data/custom_nodes/ShaderNodeAddShader.json"
   },
   "ShaderNodeMixShader": {
     "unity_name": "Mix Shader",
@@ -2855,7 +2893,8 @@
         }
       ],
       "blender_conversion_notes": "Blender Mix Shader blends two full shader trees. In Unity, Lerp the color outputs. For transparency mixing, also blend alpha values."
-    }
+    },
+    "custom_node_file": "data/custom_nodes/ShaderNodeMixShader.json"
   },
   "ShaderNodeBlackbody": {
     "unity_name": "Blackbody",
@@ -2931,7 +2970,8 @@
         "formula": "Temperature_Normalized = Temperature / 10000.0",
         "note": "Clamp Temperature to [800, 10000] before normalising for best LUT coverage."
       }
-    ]
+    ],
+    "custom_node_file": "data/custom_nodes/ShaderNodeBlackbody.json"
   },
   "ShaderNodeColorRamp": {
     "unity_name": "Gradient Ramp",
@@ -3032,7 +3072,8 @@
         "formula": "Set Unity Gradient Mode to Fixed for step/constant ramps",
         "note": ""
       }
-    ]
+    ],
+    "custom_node_file": "data/custom_nodes/ShaderNodeColorRamp.json"
   },
   "ShaderNodeCurveRGB": {
     "unity_name": "Curve (RGB)",
@@ -3071,7 +3112,8 @@
         }
       ],
       "blender_conversion_notes": "Blender RGB Curve is a non-linear per-channel adjustment. No direct Unity equivalent. LUT bake is most accurate; math chain is an approximation."
-    }
+    },
+    "custom_node_file": "data/custom_nodes/ShaderNodeCurveRGB.json"
   },
   "ShaderNodeCurveFloat": {
     "unity_name": "Curve (Float)",
@@ -3111,7 +3153,8 @@
         }
       ],
       "blender_conversion_notes": "Simple curves can use Smoothstep or Map Range. Complex curves must be baked to a 1D texture LUT."
-    }
+    },
+    "custom_node_file": "data/custom_nodes/ShaderNodeCurveFloat.json"
   },
   "ShaderNodeGamma": {
     "unity_name": "Gamma",
@@ -3190,7 +3233,8 @@
         "formula": "B = Gamma",
         "note": "Direct. pow(Color, Gamma)."
       }
-    ]
+    ],
+    "custom_node_file": "data/custom_nodes/ShaderNodeGamma.json"
   },
   "ShaderNodeBrightContrast": {
     "unity_name": "Brightness-Contrast",
@@ -3289,7 +3333,8 @@
         "formula": "Brightness_Offset = Bright / 100.0",
         "note": "Normalise Blender Bright to 0\u20131 range before using as Add offset."
       }
-    ]
+    ],
+    "custom_node_file": "data/custom_nodes/ShaderNodeBrightContrast.json"
   },
   "ShaderNodeHueSaturation": {
     "unity_name": "Hue-Saturation",
@@ -3429,7 +3474,8 @@
         "formula": "T = Fac",
         "note": "Lerp between original and adjusted."
       }
-    ]
+    ],
+    "custom_node_file": "data/custom_nodes/ShaderNodeHueSaturation.json"
   },
   "ShaderNodeLightPath": {
     "unity_name": "N/A",
@@ -3458,7 +3504,8 @@
         }
       ],
       "blender_conversion_notes": "LightPath outputs are only valid during Cycles path tracing. Skip this node in Unity conversion. Use Unity's material shadow settings instead."
-    }
+    },
+    "custom_node_file": "data/custom_nodes/ShaderNodeLightPath.json"
   },
   "ShaderNodeAmbientOcclusion": {
     "unity_name": "N/A",
@@ -3493,7 +3540,8 @@
         }
       ],
       "blender_conversion_notes": "AO cannot be calculated in real-time in Unity ShaderGraph. Must bake in Blender first, then use as a static texture input."
-    }
+    },
+    "custom_node_file": "data/custom_nodes/ShaderNodeAmbientOcclusion.json"
   },
   "ShaderNodeParticleInfo": {
     "unity_name": "N/A",
@@ -3526,7 +3574,8 @@
         }
       ],
       "blender_conversion_notes": "Blender particle metadata is not directly accessible in Unity ShaderGraph. Pass particle data via Custom Vertex Streams from Unity Particle System."
-    }
+    },
+    "custom_node_file": "data/custom_nodes/ShaderNodeParticleInfo.json"
   },
   "ShaderNodeHairInfo": {
     "unity_name": "N/A",
@@ -3555,7 +3604,8 @@
         }
       ],
       "blender_conversion_notes": "Hair info is Blender-specific. For Unity hair: use HDRP Hair Shader or a dedicated hair rendering plugin. Cannot be directly converted."
-    }
+    },
+    "custom_node_file": "data/custom_nodes/ShaderNodeHairInfo.json"
   },
   "ShaderNodeCryptomatte": {
     "unity_name": "N/A",
@@ -3579,7 +3629,8 @@
         }
       ],
       "blender_conversion_notes": "Cryptomatte is only used for compositing passes in Blender. Cannot be converted. Remove from shader."
-    }
+    },
+    "custom_node_file": "data/custom_nodes/ShaderNodeCryptomatte.json"
   },
   "ShaderNodeVolumeAbsorption": {
     "unity_name": "N/A",
@@ -3608,7 +3659,8 @@
         }
       ],
       "blender_conversion_notes": "Volumetric shaders are not real-time compatible. Use Unity HDRP Fog Volumes for atmospheric effects instead."
-    }
+    },
+    "custom_node_file": "data/custom_nodes/ShaderNodeVolumeAbsorption.json"
   },
   "ShaderNodeVolumeScatter": {
     "unity_name": "N/A",
@@ -3637,7 +3689,8 @@
         }
       ],
       "blender_conversion_notes": "Volumetric scattering has no real-time ShaderGraph equivalent. Use Unity HDRP Global/Local Fog Volumes at scene level."
-    }
+    },
+    "custom_node_file": "data/custom_nodes/ShaderNodeVolumeScatter.json"
   },
   "ShaderNodeDisplacement": {
     "unity_name": "Vertex Offset",
@@ -3678,7 +3731,8 @@
         }
       ],
       "blender_conversion_notes": "HDRP: use Tessellation + Height map. URP: approximate by offsetting Vertex Position along the normal using height * strength."
-    }
+    },
+    "custom_node_file": "data/custom_nodes/ShaderNodeDisplacement.json"
   },
   "ShaderNodeNormal": {
     "unity_name": "Normal",
@@ -3710,7 +3764,8 @@
         }
       ],
       "blender_conversion_notes": "Blender Normal node outputs the vertex normal. Unity Normal Vector node does the same. Match the coordinate space (Object vs World)."
-    }
+    },
+    "custom_node_file": "data/custom_nodes/ShaderNodeNormal.json"
   },
   "ShaderNodeVectorRotate": {
     "unity_name": "Rotate Vector",
@@ -3750,7 +3805,8 @@
         }
       ],
       "blender_conversion_notes": "Blender VectorRotate supports multiple rotation types. Unity Rotate About Axis is the closest equivalent. Angles may need conversion (radians vs degrees)."
-    }
+    },
+    "custom_node_file": "data/custom_nodes/ShaderNodeVectorRotate.json"
   },
   "ShaderNodeVectorTransform": {
     "unity_name": "Vector Transform",
@@ -3799,7 +3855,8 @@
         }
       ],
       "blender_conversion_notes": "Match the coordinate space conversion. Camera space transforms have no Unity ShaderGraph equivalent and must be approximated."
-    }
+    },
+    "custom_node_file": "data/custom_nodes/ShaderNodeVectorTransform.json"
   },
   "ShaderNodeTexMagic": {
     "unity_name": "Magic Texture",
@@ -3859,7 +3916,8 @@
         }
       ],
       "blender_conversion_notes": "Magic texture uses sine wave interference. Scale controls frequency. Chain: Sine(UV.x*scale) + Cosine(UV.y*scale) -> Fraction for 0-1 output."
-    }
+    },
+    "custom_node_file": "data/custom_nodes/ShaderNodeTexMagic.json"
   },
   "ShaderNodeTexStucci": {
     "unity_name": "Stucci Texture",
@@ -3894,7 +3952,8 @@
         }
       ],
       "blender_conversion_notes": "Stucci is used as a bump-noise. Approximate with Simple Noise \u2192 Normal From Height to get similar bumpy normal output."
-    }
+    },
+    "custom_node_file": "data/custom_nodes/ShaderNodeTexStucci.json"
   },
   "ShaderNodeTexWhiteNoise": {
     "unity_name": "White Noise",
@@ -3931,7 +3990,8 @@
         }
       ],
       "blender_conversion_notes": "White noise = per-pixel random value. Best approximated with HLSL hash function in Custom Function node: frac(sin(dot(uv, float2(12.9898,78.233)))*43758.5453)."
-    }
+    },
+    "custom_node_file": "data/custom_nodes/ShaderNodeTexWhiteNoise.json"
   },
   "ShaderNodeTexPointDensity": {
     "unity_name": "N/A",
@@ -3963,7 +4023,8 @@
         }
       ],
       "blender_conversion_notes": "Point Density is baked from particle/point cloud data. Pre-bake in Blender, then use as static texture in Unity."
-    }
+    },
+    "custom_node_file": "data/custom_nodes/ShaderNodeTexPointDensity.json"
   },
   "ShaderNodeTexIES": {
     "unity_name": "IES Light",
@@ -3991,7 +4052,8 @@
         }
       ],
       "blender_conversion_notes": "IES profiles define light distribution. Pre-bake the IES lighting to a lightmap in Blender and sample it in Unity."
-    }
+    },
+    "custom_node_file": "data/custom_nodes/ShaderNodeTexIES.json"
   },
   "ShaderNodeBsdfRefraction": {
     "unity_name": "Refraction",
@@ -4044,7 +4106,8 @@
         }
       ],
       "blender_conversion_notes": "True refraction requires a grab pass / screen-space refraction technique. Approximate with Fresnel-blended transparency + high smoothness."
-    }
+    },
+    "custom_node_file": "data/custom_nodes/ShaderNodeBsdfRefraction.json"
   },
   "ShaderNodeBsdfTranslucent": {
     "unity_name": "Translucent",
@@ -4086,7 +4149,8 @@
         }
       ],
       "blender_conversion_notes": "Blender translucent = light from behind passes through. Approximate in Unity by additive diffuse + partial transparency."
-    }
+    },
+    "custom_node_file": "data/custom_nodes/ShaderNodeBsdfTranslucent.json"
   },
   "ShaderNodeBsdfSheen": {
     "unity_name": "Sheen",
@@ -4137,7 +4201,8 @@
         }
       ],
       "blender_conversion_notes": "Blender Sheen is a fabric BRDF lobe. Unity URP has no direct equivalent; approximate with Fresnel-multiplied rim color added to diffuse."
-    }
+    },
+    "custom_node_file": "data/custom_nodes/ShaderNodeBsdfSheen.json"
   },
   "ShaderNodeBsdfAnisotropic": {
     "unity_name": "Anisotropic",
@@ -4186,7 +4251,8 @@
         }
       ],
       "blender_conversion_notes": "Anisotropy requires either HDRP's Lit node or a custom HLSL approach. In URP, approximate with Tangent-modulated roughness."
-    }
+    },
+    "custom_node_file": "data/custom_nodes/ShaderNodeBsdfAnisotropic.json"
   },
   "ShaderNodeBsdfToon": {
     "unity_name": "Toon",
@@ -4234,7 +4300,8 @@
         }
       ],
       "blender_conversion_notes": "Toon shader needs quantized lighting. Use Step to create hard bands, then Sample Gradient to map bands to colors."
-    }
+    },
+    "custom_node_file": "data/custom_nodes/ShaderNodeBsdfToon.json"
   },
   "ShaderNodeSubsurfaceScattering": {
     "unity_name": "SSS",
@@ -4279,7 +4346,8 @@
         }
       ],
       "blender_conversion_notes": "SSS requires HDRP for proper support. Export Blender SSS thickness map (baked) and use as HDRP Thickness input."
-    }
+    },
+    "custom_node_file": "data/custom_nodes/ShaderNodeSubsurfaceScattering.json"
   },
   "ShaderNodeHoldout": {
     "unity_name": "N/A",
@@ -4303,7 +4371,8 @@
         }
       ],
       "blender_conversion_notes": "Holdout has no Unity equivalent. Use Alpha Clipping or Stencil buffer techniques for similar masking effects in Unity."
-    }
+    },
+    "custom_node_file": "data/custom_nodes/ShaderNodeHoldout.json"
   },
   "ShaderNodeLightFalloff": {
     "unity_name": "N/A",
@@ -4327,7 +4396,8 @@
         }
       ],
       "blender_conversion_notes": "Light falloff is Cycles-specific. In Unity, adjust the Light component's Range and Intensity. Cannot be done in ShaderGraph."
-    }
+    },
+    "custom_node_file": "data/custom_nodes/ShaderNodeLightFalloff.json"
   },
   "ShaderNodeArrayInfo": {
     "unity_name": "N/A",
@@ -4357,7 +4427,8 @@
         }
       ],
       "blender_conversion_notes": "Geometry instance data requires custom HLSL in Unity. Use GPU Instancing with instanced properties for per-instance variation."
-    }
+    },
+    "custom_node_file": "data/custom_nodes/ShaderNodeArrayInfo.json"
   },
   "ShaderNodeOutputMaterial": {
     "unity_name": "Master Stack",
@@ -4365,7 +4436,8 @@
     "category": "Output",
     "strategy": "direct",
     "compatibility": "100%",
-    "description": "Material output node (required)"
+    "description": "Material output node (required)",
+    "custom_node_file": "data/custom_nodes/ShaderNodeOutputMaterial.json"
   },
   "ShaderNodeReroute": {
     "unity_name": "N/A",
@@ -4373,7 +4445,8 @@
     "category": "Utility",
     "strategy": "direct",
     "compatibility": "100%",
-    "description": "Wire reroute (pass-through, no conversion needed)"
+    "description": "Wire reroute (pass-through, no conversion needed)",
+    "custom_node_file": "data/custom_nodes/ShaderNodeReroute.json"
   },
   "ShaderNodeGroupInput": {
     "unity_name": "Group Input",
@@ -4381,7 +4454,8 @@
     "category": "Input",
     "strategy": "direct",
     "compatibility": "100%",
-    "description": "Node group input port"
+    "description": "Node group input port",
+    "custom_node_file": "data/custom_nodes/ShaderNodeGroupInput.json"
   },
   "ShaderNodeGroupOutput": {
     "unity_name": "Group Output",
@@ -4389,7 +4463,8 @@
     "category": "Output",
     "strategy": "direct",
     "compatibility": "100%",
-    "description": "Node group output port"
+    "description": "Node group output port",
+    "custom_node_file": "data/custom_nodes/ShaderNodeGroupOutput.json"
   },
   "ShaderNodeFrame": {
     "unity_name": "N/A",
@@ -4397,7 +4472,8 @@
     "category": "Layout",
     "strategy": "direct",
     "compatibility": "100%",
-    "description": "Frame container (organization only, no conversion)"
+    "description": "Frame container (organization only, no conversion)",
+    "custom_node_file": "data/custom_nodes/ShaderNodeFrame.json"
   },
   "ShaderNodeBevel": {
     "unity_name": "Bevel",
@@ -4503,7 +4579,8 @@
         "formula": "N/A \u2014 bake-time only",
         "note": "Samples only affects bake quality. Use Samples \u2265 8 for smooth results; ignored at runtime."
       }
-    ]
+    ],
+    "custom_node_file": "data/custom_nodes/ShaderNodeBevel.json"
   },
   "ShaderNodeShaderToRGB": {
     "unity_name": "N/A",
@@ -4532,7 +4609,8 @@
         }
       ],
       "blender_conversion_notes": "Shader To RGB is Eevee-only and cannot be converted. Rebuild downstream effects using Unity's post-processing stack."
-    }
+    },
+    "custom_node_file": "data/custom_nodes/ShaderNodeShaderToRGB.json"
   },
   "ShaderNodeScript": {
     "unity_name": "N/A",
@@ -4562,7 +4640,8 @@
         }
       ],
       "blender_conversion_notes": "OSL is Cycles-specific. Manually translate the OSL shader code to HLSL and use a Unity Custom Function node."
-    }
+    },
+    "custom_node_file": "data/custom_nodes/ShaderNodeScript.json"
   },
   "ShaderNodeTexSky": {
     "unity_name": "Sky",
@@ -4601,7 +4680,8 @@
         }
       ],
       "blender_conversion_notes": "Export Blender sky as .hdr panorama. Import to Unity as Cubemap. Use Sample Cubemap node for environment-matched sky color sampling."
-    }
+    },
+    "custom_node_file": "data/custom_nodes/ShaderNodeTexSky.json"
   },
   "ShaderNodeVolumeInfo": {
     "unity_name": "N/A",
@@ -4625,7 +4705,8 @@
         }
       ],
       "blender_conversion_notes": "Volume Info is Cycles-only. Cannot be converted to Unity ShaderGraph. Remove from shader."
-    }
+    },
+    "custom_node_file": "data/custom_nodes/ShaderNodeVolumeInfo.json"
   },
   "ShaderNodeNewGeometry": {
     "unity_name": "Geometry",
@@ -4686,7 +4767,8 @@
         }
       ],
       "blender_conversion_notes": "NewGeometry is a multi-output node. Check which outputs are actually connected in the Blender graph and only create the corresponding Unity nodes."
-    }
+    },
+    "custom_node_file": "data/custom_nodes/ShaderNodeNewGeometry.json"
   },
   "ShaderNodeObjectInfo": {
     "unity_name": "Object",
@@ -4725,7 +4807,8 @@
         }
       ],
       "blender_conversion_notes": "ObjectInfo is Blender-specific. Location maps to Object Position. Random can be approximated with a hash of the object world matrix."
-    }
+    },
+    "custom_node_file": "data/custom_nodes/ShaderNodeObjectInfo.json"
   },
   "ShaderNodeCameraData": {
     "unity_name": "N/A",
@@ -4772,7 +4855,8 @@
         }
       ],
       "blender_conversion_notes": "Camera Data is Blender/Cycles specific. Map View Distance to Unity Scene Depth. Orthographic Scale has no Unity ShaderGraph equivalent."
-    }
+    },
+    "custom_node_file": "data/custom_nodes/ShaderNodeCameraData.json"
   },
   "ShaderNodeComboIs": {
     "unity_name": "Integer",
@@ -4780,7 +4864,8 @@
     "category": "Input",
     "strategy": "direct",
     "compatibility": "100%",
-    "description": "Integer constant value"
+    "description": "Integer constant value",
+    "custom_node_file": "data/custom_nodes/ShaderNodeComboIs.json"
   },
   "ShaderNodeBsdfVelvet": {
     "unity_name": "Velvet",
@@ -4833,7 +4918,8 @@
         }
       ],
       "blender_conversion_notes": "Velvet = soft diffuse + Fresnel edge rim. Set Smoothness to 0. The Fresnel edge lit with the velvet color gives the characteristic fabric look."
-    }
+    },
+    "custom_node_file": "data/custom_nodes/ShaderNodeBsdfVelvet.json"
   },
   "ShaderNodeMix": {
     "unity_name": "Mix",
@@ -4841,6 +4927,7 @@
     "category": "Utility",
     "strategy": "direct",
     "compatibility": "100%",
-    "description": "Mix between two values"
+    "description": "Mix between two values",
+    "custom_node_file": "data/custom_nodes/ShaderNodeMix.json"
   }
 }

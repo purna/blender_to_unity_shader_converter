@@ -1,8 +1,73 @@
 {
   "metadata": {
     "source_node": "ShaderNodeVolumeAbsorption",
-    "compatibility": "0%",
-    "description": "Volume absorption shader - volumetric rendering only"
+    "source_engine": "Blender Cycles",
+    "target_engine": "Unity",
+    "target_version": "URP/HDRP",
+    "conversion_rate": "50%",
+    "description": "Volume absorption shader - limited support",
+    "category": "Shader"
   },
-  "note": "Requires volumetric rendering pipeline - not supported in ShaderGraph"
+  "summary": "Volume absorption shader - limited support",
+  "unity_equivalent": "Not directly supported",
+  "implementation_notes": "Use custom shader or Volume shader",
+  "approximation": "Not applicable",
+  "blender_parameters": [
+    {
+      "name": "Color",
+      "type": "Color",
+      "description": "Absorption color",
+      "default": "0.0, 0.0, 0.0, 1.0"
+    },
+    {
+      "name": "Density",
+      "type": "Float",
+      "description": "Density",
+      "default": 1.0
+    }
+  ],
+  "conversion_process": {
+    "step_1": {
+      "name": "Use Volume Shader",
+      "description": "Create volume shader with absorption",
+      "blender_input": "Color, Density",
+      "unity_output": "Volume shader"
+    }
+  },
+  "blender_to_unity_mapping": [
+    {
+      "blender_parameter": "Color",
+      "unity_implementation": "Volume color",
+      "conversion_formula": "Direct mapping",
+      "compatibility_percentage": "50%",
+      "notes": "Set volume absorption color"
+    },
+    {
+      "blender_parameter": "Density",
+      "unity_implementation": "Density",
+      "conversion_formula": "Direct mapping",
+      "compatibility_percentage": "50%",
+      "notes": "Set volume density"
+    }
+  ],
+  "build_instructions": [
+    {
+      "step": 1,
+      "action": "CREATE_VOLUME_SHADER",
+      "nodes": []
+    }
+  ],
+  "compatibility": {
+    "fully_compatible": [],
+    "partially_compatible": ["Color", "Density"],
+    "incompatible": []
+  },
+  "limitations": [
+    "Volume shaders limited in ShaderGraph"
+  ],
+  "unity_recreation": {
+    "description": "Create custom volume shader",
+    "unity_equivalent": "Custom volume shader",
+    "simple_setup": "Create custom volume shader with absorption"
+  }
 }

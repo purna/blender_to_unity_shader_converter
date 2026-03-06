@@ -1,11 +1,60 @@
 {
   "metadata": {
     "source_node": "ShaderNodeBlackbody",
-    "compatibility": "85%",
-    "description": "Temperature color from blackbody radiation - physics-based color"
+    "source_engine": "Blender Cycles",
+    "target_engine": "Unity",
+    "target_version": "URP/HDRP",
+    "conversion_rate": "75%",
+    "description": "Blackbody color temperature - recreate with color nodes",
+    "category": "Converter"
   },
-  "summary": "Temperature color from blackbody radiation - physics-based color",
-  "inputs": "Temperature (Float, Kelvin)",
-  "outputs": "Color (Vector3)",
-  "temperature_range": "500K (red) to 10000K (blue-white)"
+  "summary": "Blackbody color temperature - recreate with color nodes",
+  "unity_equivalent": "Custom Node",
+  "implementation_notes": "Use custom node or approximate with color gradient",
+  "approximation": "Partial - custom node required",
+  "blender_parameters": [
+    {
+      "name": "Temperature",
+      "type": "Float",
+      "description": "Temperature in Kelvin",
+      "default": 6500.0
+    }
+  ],
+  "conversion_process": {
+    "step_1": {
+      "name": "Use Custom Node",
+      "description": "Create custom node for blackbody calculation",
+      "blender_input": "Temperature",
+      "unity_output": "Color"
+    }
+  },
+  "blender_to_unity_mapping": [
+    {
+      "blender_parameter": "Temperature",
+      "unity_implementation": "Custom node",
+      "conversion_formula": "Manual conversion",
+      "compatibility_percentage": "75%",
+      "notes": "Use custom HLSL for blackbody calculation"
+    }
+  ],
+  "build_instructions": [
+    {
+      "step": 1,
+      "action": "CREATE_CUSTOM_BLACKBODY",
+      "nodes": []
+    }
+  ],
+  "compatibility": {
+    "fully_compatible": [],
+    "partially_compatible": ["Temperature"],
+    "incompatible": []
+  },
+  "limitations": [
+    "No built-in blackbody node in ShaderGraph"
+  ],
+  "unity_recreation": {
+    "description": "Create custom node with blackbody algorithm",
+    "unity_equivalent": "Custom node",
+    "simple_setup": "Custom HLSL node with blackbody formula"
+  }
 }

@@ -1,24 +1,102 @@
 {
   "metadata": {
     "source_node": "ShaderNodeBump",
-    "compatibility": "75%",
-    "category": "Vector",
-    "complexity": "High",
-    "description": "Generates normal map from height/grayscale texture using finite differences"
+    "source_engine": "Blender Cycles",
+    "target_engine": "Unity",
+    "target_version": "URP/HDRP",
+    "conversion_rate": "100%",
+    "description": "Bump node for normal mapping",
+    "category": "Input"
   },
-  "summary": "Converts a height map or grayscale texture to normal vectors using bump mapping. Approximates surface detail without actual geometry displacement.",
-  "parameters": {
-    "Strength": "Bump intensity multiplier (0-5 typical)",
-    "Distance": "Finite difference offset for normal calculation",
-    "Height": "Grayscale texture input (0-1)"
+  "summary": "Bump node for normal mapping",
+  "unity_equivalent": "Normal From Height Node",
+  "implementation_notes": "Use Unity's Normal From Height node",
+  "approximation": "1:1 conversion",
+  "blender_parameters": [
+    {
+      "name": "Height",
+      "type": "Float",
+      "description": "Height input",
+      "default": 0.5
+    },
+    {
+      "name": "Distance",
+      "type": "Float",
+      "description": "Distance for bump calculation",
+      "default": 0.05
+    },
+    {
+      "name": "Normal",
+      "type": "Normal",
+      "description": "Normal input",
+      "default": "0.0, 0.0, 1.0"
+    },
+    {
+      "name": "Invert",
+      "type": "Boolean",
+      "description": "Invert height",
+      "default": false
+    }
+  ],
+  "conversion_process": {
+    "step_1": {
+      "name": "Use Normal From Height",
+      "description": "Use Unity's Normal From Height node",
+      "blender_input": "Height, Distance, Normal, Invert",
+      "unity_output": "Normal"
+    }
   },
-  "algorithm": "Bump mapping using height gradient approximation - derivative-based normal generation",
-  "implementation": {
-    "approach": "Custom function or series of offset samples",
-    "formula": "Normal = normalize(cross(ddx(height), ddy(height)))",
-    "unity_nodes": ["CustomFunction with ddx/ddy or manual offset sampling"]
+  "blender_to_unity_mapping": [
+    {
+      "blender_parameter": "Height",
+      "unity_implementation": "Height",
+      "conversion_formula": "Direct mapping",
+      "compatibility_percentage": "100%",
+      "notes": "Connect height input"
+    },
+    {
+      "blender_parameter": "Distance",
+      "unity_implementation": "Scale",
+      "conversion_formula": "Direct mapping",
+      "compatibility_percentage": "100%",
+      "notes": "Set scale parameter"
+    },
+    {
+      "blender_parameter": "Normal",
+      "unity_implementation": "Normal",
+      "conversion_formula": "Direct mapping",
+      "compatibility_percentage": "100%",
+      "notes": "Connect normal input"
+    },
+    {
+      "blender_parameter": "Invert",
+      "unity_implementation": "Invert",
+      "conversion_formula": "Direct mapping",
+      "compatibility_percentage": "100%",
+      "notes": "Set invert option"
+    }
+  ],
+  "build_instructions": [
+    {
+      "step": 1,
+      "action": "CREATE_NORMAL_FROM_HEIGHT",
+      "nodes": [
+        {
+          "name": "Normal From Height",
+          "type": "Normal"
+        }
+      ]
+    }
+  ],
+  "compatibility": {
+    "fully_compatible": ["Height", "Distance", "Normal", "Invert"],
+    "partially_compatible": [],
+    "incompatible": []
   },
-  "complexity": "Requires shader math knowledge - UV offset sampling or built-in derivatives",
-  "compatibility_loss_25_percent": "Exact algorithm differs between Blender and HLSL; visual results similar but not identical",
-  "typical_use": "Rock texture detail, worn surfaces, fabric weave, fine scratches"
+  "limitations": [],
+  "unity_recreation": {
+    "description": "Use Unity's Normal From Height node",
+    "unity_equivalent": "Normal From Height",
+    "simple_setup": "[Height] → [Normal From Height] → [Normal]"
+  }
 }

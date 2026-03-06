@@ -1,8 +1,61 @@
 {
   "metadata": {
     "source_node": "ShaderNodeHairInfo",
-    "compatibility": "20%",
-    "description": "Hair strand information - Blender Eevee/Cycles specific"
+    "source_engine": "Blender Cycles",
+    "target_engine": "Unity",
+    "target_version": "URP/HDRP",
+    "conversion_rate": "50%",
+    "description": "Hair info for strand-based rendering - limited support",
+    "category": "Input"
   },
-  "note": "No hair shader support in Unity - use separate hair shader system"
+  "summary": "Hair info for strand-based rendering - limited support",
+  "unity_equivalent": "Not directly supported",
+  "implementation_notes": "Hair rendering requires custom shader implementation",
+  "approximation": "Manual recreation required",
+  "blender_parameters": [
+    {
+      "name": "Hair Type",
+      "type": "Enum",
+      "description": "Strand, Segment",
+      "default": "Strand"
+    }
+  ],
+  "conversion_process": {
+    "step_1": {
+      "name": "Custom Shader",
+      "description": "Create custom hair shader",
+      "blender_input": "Hair data",
+      "unity_output": "Custom implementation"
+    }
+  },
+  "blender_to_unity_mapping": [
+    {
+      "blender_parameter": "Hair Type",
+      "unity_implementation": "Custom shader",
+      "conversion_formula": "Manual conversion",
+      "compatibility_percentage": "25%",
+      "notes": "No direct equivalent - requires custom shader"
+    }
+  ],
+  "build_instructions": [
+    {
+      "step": 1,
+      "action": "CREATE_HAIR_SHADER",
+      "nodes": []
+    }
+  ],
+  "compatibility": {
+    "fully_compatible": [],
+    "partially_compatible": [],
+    "incompatible": ["Hair Type"]
+  },
+  "limitations": [
+    "No direct ShaderGraph support for hair info",
+    "Requires custom shader implementation"
+  ],
+  "unity_recreation": {
+    "description": "Create custom hair shader",
+    "unity_equivalent": "Custom shader",
+    "simple_setup": "Custom hair shader required"
+  }
 }

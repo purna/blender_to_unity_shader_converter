@@ -1,8 +1,61 @@
 {
   "metadata": {
     "source_node": "ShaderNodeParticleInfo",
-    "compatibility": "10%",
-    "description": "Particle system information - very limited in real-time"
+    "source_engine": "Blender Cycles",
+    "target_engine": "Unity",
+    "target_version": "URP/HDRP",
+    "conversion_rate": "25%",
+    "description": "Particle info - limited support in ShaderGraph",
+    "category": "Input"
   },
-  "note": "Particle data not accessible in ShaderGraph - use particle properties instead"
+  "summary": "Particle info - limited support in ShaderGraph",
+  "unity_equivalent": "Not directly supported",
+  "implementation_notes": "Particle data requires custom implementation",
+  "approximation": "Not applicable",
+  "blender_parameters": [
+    {
+      "name": "Index",
+      "type": "Float",
+      "description": "Particle index",
+      "default": 0
+    }
+  ],
+  "conversion_process": {
+    "step_1": {
+      "name": "Custom Implementation",
+      "description": "Particle data not available in ShaderGraph",
+      "blender_input": "Particle data",
+      "unity_output": "Custom implementation"
+    }
+  },
+  "blender_to_unity_mapping": [
+    {
+      "blender_parameter": "Index",
+      "unity_implementation": "Custom node",
+      "conversion_formula": "Manual conversion",
+      "compatibility_percentage": "0%",
+      "notes": "No direct equivalent"
+    }
+  ],
+  "build_instructions": [
+    {
+      "step": 1,
+      "action": "CUSTOM_IMPLEMENTATION",
+      "nodes": []
+    }
+  ],
+  "compatibility": {
+    "fully_compatible": [],
+    "partially_compatible": [],
+    "incompatible": ["Index"]
+  },
+  "limitations": [
+    "Particle data not available in ShaderGraph",
+    "Requires custom VFX graph or shader"
+  ],
+  "unity_recreation": {
+    "description": "Use VFX Graph or custom shader",
+    "unity_equivalent": "VFX Graph",
+    "simple_setup": "Use VFX Graph for particle systems"
+  }
 }

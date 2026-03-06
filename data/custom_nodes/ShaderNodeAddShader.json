@@ -1,14 +1,76 @@
 {
   "metadata": {
     "source_node": "ShaderNodeAddShader",
-    "compatibility": "90%",
-    "description": "Combines two shaders additively - blend shader properties"
+    "source_engine": "Blender Cycles",
+    "target_engine": "Unity",
+    "target_version": "URP/HDRP",
+    "conversion_rate": "100%",
+    "description": "Add shaders together - direct mapping to Unity",
+    "category": "Shader"
   },
-  "summary": "Combines two shaders additively - blend shader properties",
-  "inputs": [
-    "Shader1",
-    "Shader2"
+  "summary": "Add shaders together - direct mapping to Unity",
+  "unity_equivalent": "Add",
+  "implementation_notes": "Use Unity's Add node for shader addition",
+  "approximation": "1:1 conversion",
+  "blender_parameters": [
+    {
+      "name": "Shader1",
+      "type": "Shader",
+      "description": "First shader",
+      "default": "Shader"
+    },
+    {
+      "name": "Shader2",
+      "type": "Shader",
+      "description": "Second shader",
+      "default": "Shader"
+    }
   ],
-  "implementation": "Add material property values: Color1 + Color2, etc.",
-  "outputs": "Combined shader result"
+  "conversion_process": {
+    "step_1": {
+      "name": "Use Add Node",
+      "description": "Use Unity's Add node for shader addition",
+      "blender_input": "Shader1, Shader2",
+      "unity_output": "Combined shader"
+    }
+  },
+  "blender_to_unity_mapping": [
+    {
+      "blender_parameter": "Shader1",
+      "unity_implementation": "Add node input",
+      "conversion_formula": "Direct mapping",
+      "compatibility_percentage": "100%",
+      "notes": "Connect first shader"
+    },
+    {
+      "blender_parameter": "Shader2",
+      "unity_implementation": "Add node input",
+      "conversion_formula": "Direct mapping",
+      "compatibility_percentage": "100%",
+      "notes": "Connect second shader"
+    }
+  ],
+  "build_instructions": [
+    {
+      "step": 1,
+      "action": "CREATE_ADD_NODE",
+      "nodes": [
+        {
+          "name": "Add",
+          "type": "Add"
+        }
+      ]
+    }
+  ],
+  "compatibility": {
+    "fully_compatible": ["Shader1", "Shader2"],
+    "partially_compatible": [],
+    "incompatible": []
+  },
+  "limitations": [],
+  "unity_recreation": {
+    "description": "Use Unity's Add node for shader addition",
+    "unity_equivalent": "Add node",
+    "simple_setup": "[Shader1, Shader2] → [Add] → [Output]"
+  }
 }

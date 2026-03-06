@@ -1,10 +1,73 @@
 {
   "metadata": {
     "source_node": "ShaderNodeSeparateXYZ",
-    "compatibility": "100%",
-    "description": "Splits vector into X, Y, Z components - direct mapping"
+    "source_engine": "Blender Cycles",
+    "target_engine": "Unity",
+    "target_version": "URP/HDRP",
+    "conversion_rate": "100%",
+    "description": "Splits vector into X, Y, Z components - direct mapping",
+    "category": "Vector"
   },
   "summary": "Splits vector into X, Y, Z components - direct mapping",
-  "inputs": "Vector3 In",
-  "outputs": "X (Float), Y (Float), Z (Float)"
+  "unity_equivalent": "Split (Vector)",
+  "implementation_notes": "Direct mapping to Unity Split node",
+  "approximation": "1:1 conversion",
+  "blender_parameters": [
+    {
+      "name": "Vector",
+      "type": "Vector3",
+      "description": "Input vector",
+      "default": "0.0, 0.0, 0.0"
+    }
+  ],
+  "conversion_process": {
+    "step_1": {
+      "name": "Direct Port",
+      "description": "Splits vector into X, Y, Z components - direct mapping",
+      "blender_input": "Vector3",
+      "unity_output": "X, Y, Z floats"
+    }
+  },
+  "blender_to_unity_mapping": [
+    {
+      "blender_parameter": "Vector",
+      "unity_implementation": "Split node",
+      "conversion_formula": "Direct mapping",
+      "compatibility_percentage": "100%",
+      "notes": "Separate into XYZ components"
+    }
+  ],
+  "build_instructions": [
+    {
+      "step": 1,
+      "action": "CREATE_SPLIT_NODE",
+      "nodes": [
+        {
+          "name": "Split",
+          "type": "Split"
+        }
+      ]
+    },
+    {
+      "step": 2,
+      "action": "CONNECT_VECTOR",
+      "nodes": [
+        {
+          "name": "Vector input",
+          "type": "Vector3"
+        }
+      ]
+    }
+  ],
+  "compatibility": {
+    "fully_compatible": ["Vector"],
+    "partially_compatible": [],
+    "incompatible": []
+  },
+  "limitations": [],
+  "unity_recreation": {
+    "description": "Splits vector into X, Y, Z components",
+    "unity_equivalent": "Split node",
+    "simple_setup": "[Vector] → [Split] → [X, Y, Z]"
+  }
 }

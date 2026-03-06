@@ -1,41 +1,75 @@
 {
   "metadata": {
     "source_node": "ShaderNodeMath",
-    "compatibility": "100%",
-    "category": "Utility",
-    "complexity": "Low",
-    "description": "Universal mathematical operations - perfect 1:1 mapping"
+    "source_engine": "Blender Cycles",
+    "target_engine": "Unity",
+    "target_version": "URP/HDRP",
+    "conversion_rate": "100%",
+    "description": "Math operations - direct mapping to Unity",
+    "category": "Converter"
   },
-  "summary": "All standard math operations (ADD, MULTIPLY, DIVIDE, POWER, etc.) map directly to Unity Math node. No approximations needed.",
-  "blender_to_unity": {
-    "operations": {
-      "ADD": "Add",
-      "SUBTRACT": "Subtract",
-      "MULTIPLY": "Multiply",
-      "DIVIDE": "Divide",
-      "POWER": "Power",
-      "LOGARITHM": "Log",
-      "SQRT": "Sqrt",
-      "ABSOLUTE": "Abs",
-      "MINIMUM": "Min",
-      "MAXIMUM": "Max",
-      "MODULO": "Fmod",
-      "SNAP": "Round (with custom logic)",
-      "FLOOR": "Floor",
-      "CEIL": "Ceil",
-      "FRACTION": "Frac"
+  "summary": "Math operations - direct mapping to Unity",
+  "unity_equivalent": "Math Nodes",
+  "implementation_notes": "Use Unity's math nodes",
+  "approximation": "1:1 conversion",
+  "blender_parameters": [
+    {
+      "name": "Value1",
+      "type": "Float",
+      "description": "First input value",
+      "default": 0.0
+    },
+    {
+      "name": "Value2",
+      "type": "Float",
+      "description": "Second input value",
+      "default": 0.0
+    },
+    {
+      "name": "Operation",
+      "type": "Enum",
+      "description": "Add, Subtract, Multiply, Divide, Power, Log, Sqrt, Sin, Cos, Tan, etc.",
+      "default": "Add"
+    }
+  ],
+  "conversion_process": {
+    "step_1": {
+      "name": "Use Math Node",
+      "description": "Use Unity's math nodes",
+      "blender_input": "Values, Operation",
+      "unity_output": "Result"
     }
   },
-  "node_structure": {
-    "inputs": ["Value1 (Float)", "Value2 (Float)"],
-    "property": "Operation (Enum)",
-    "outputs": ["Result (Float)"],
-    "optional": "Use Clamp (Boolean) - add Clamp(0,1) node if needed"
+  "blender_to_unity_mapping": [
+    {
+      "blender_parameter": "Operation",
+      "unity_implementation": "Math node",
+      "conversion_formula": "Direct mapping",
+      "compatibility_percentage": "100%",
+      "notes": "Select operation in Unity node"
+    }
+  ],
+  "build_instructions": [
+    {
+      "step": 1,
+      "action": "CREATE_MATH_NODE",
+      "nodes": [
+        {
+          "name": "Math operation",
+          "type": "Add/Subtract/Multiply/etc"
+        }
+      ]
+    }
+  ],
+  "compatibility": {
+    "fully_compatible": ["Value1", "Value2", "Operation"],
+    "partially_compatible": [],
+    "incompatible": []
   },
-  "implementation": "Direct - create Math node, set Operation property, wire inputs",
-  "validation": [
-    "Operation name matches Unity Math operations",
-    "Both inputs connected for binary ops",
-    "Single input for unary ops (SQRT, FLOOR, etc.)"
-  ]
+  "limitations": [],
+  "unity_recreation": {
+    "description": "Use Unity's math nodes",
+    "unity_equivalent": "Math nodes",
+    "simple_setup": "[Value1] → [Math Node] → [Output]"
+  }
 }

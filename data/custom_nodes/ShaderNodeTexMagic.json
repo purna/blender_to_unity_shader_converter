@@ -1,20 +1,78 @@
 {
   "metadata": {
     "source_node": "ShaderNodeTexMagic",
-    "compatibility": "40%",
-    "category": "Texture",
-    "complexity": "Very High",
-    "description": "Blender magic texture - complex proprietary algorithm"
+    "source_engine": "Blender Cycles",
+    "target_engine": "Unity",
+    "target_version": "URP/HDRP",
+    "conversion_rate": "50%",
+    "description": "Procedural magic texture - recreate using node graph",
+    "category": "Texture"
   },
-  "summary": "Blender's 'magic' procedural texture generates complex color patterns. Difficult to replicate exactly.",
-  "parameters": {
-    "Vector": "3D input coordinate",
-    "Scale": "Pattern frequency",
-    "Distortion": "Pattern distortion amount"
+  "summary": "Procedural magic texture - recreate using node graph",
+  "unity_equivalent": "Custom Node Graph",
+  "implementation_notes": "Recreate pattern using math, noise, and trigonometric nodes",
+  "approximation": "Manual recreation required",
+  "blender_parameters": [
+    {
+      "name": "Scale",
+      "type": "Float",
+      "description": "Pattern scale",
+      "default": 5.0
+    },
+    {
+      "name": "Distortion",
+      "type": "Float",
+      "description": "Distortion amount",
+      "default": 1.0
+    }
+  ],
+  "conversion_process": {
+    "step_1": {
+      "name": "Create Node Graph",
+      "description": "Recreate magic pattern using math and noise nodes",
+      "blender_input": "Scale, Distortion",
+      "unity_output": "Custom node graph"
+    }
   },
-  "algorithm": "Proprietary Blender algorithm combining sine/cosine with various transforms",
-  "implementation": "Approximation using sin/cos combinations and color interpolation",
-  "complexity": "Very High - exact algorithm not well-documented",
-  "compatibility_loss_60_percent": "Can only approximate - exact algorithm proprietary to Blender",
-  "alternative": "Use other noise textures (Noise, Voronoi, Wave) as substitutes"
+  "blender_to_unity_mapping": [
+    {
+      "blender_parameter": "Scale",
+      "unity_implementation": "Multiply node",
+      "conversion_formula": "Direct mapping",
+      "compatibility_percentage": "50%",
+      "notes": "Adjust scale in recreated graph"
+    },
+    {
+      "blender_parameter": "Distortion",
+      "unity_implementation": "Add/Subtract nodes",
+      "conversion_formula": "Direct mapping",
+      "compatibility_percentage": "50%",
+      "notes": "Adjust distortion in recreated graph"
+    }
+  ],
+  "build_instructions": [
+    {
+      "step": 1,
+      "action": "CREATE_PATTERN_NODES",
+      "nodes": []
+    },
+    {
+      "step": 2,
+      "action": "ADD_DISTORTION",
+      "nodes": []
+    }
+  ],
+  "compatibility": {
+    "fully_compatible": [],
+    "partially_compatible": ["Scale", "Distortion"],
+    "incompatible": []
+  },
+  "limitations": [
+    "Complex pattern requires manual node graph recreation"
+  ],
+  "unity_recreation": {
+    "description": "Recreate magic pattern using mathematical nodes",
+    "unity_equivalent": "Custom node graph",
+    "simple_setup": "Manual node graph recreation required"
+  }
 }

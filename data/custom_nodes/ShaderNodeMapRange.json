@@ -1,22 +1,94 @@
 {
   "metadata": {
     "source_node": "ShaderNodeMapRange",
-    "compatibility": "90%",
-    "category": "Utility",
-    "complexity": "Low",
-    "description": "Remap values from one numeric range to another - direct Unity equivalent"
+    "source_engine": "Blender Cycles",
+    "target_engine": "Unity",
+    "target_version": "URP/HDRP",
+    "conversion_rate": "100%",
+    "description": "Value remapping - direct mapping to Unity",
+    "category": "Converter"
   },
-  "summary": "Maps input value from [FromMin, FromMax] to [ToMin, ToMax]. Formula: out = (in - FromMin) / (FromMax - FromMin) * (ToMax - ToMin) + ToMin",
-  "parameters": {
-    "Value": "Input float to remap",
-    "FromMin": "Source range minimum",
-    "FromMax": "Source range maximum",
-    "ToMin": "Target range minimum",
-    "ToMax": "Target range maximum"
+  "summary": "Value remapping - direct mapping to Unity",
+  "unity_equivalent": "Remap (Value)",
+  "implementation_notes": "Use Unity's Remap node or multiply/add chain",
+  "approximation": "1:1 conversion",
+  "blender_parameters": [
+    {
+      "name": "Value",
+      "type": "Float",
+      "description": "Input value",
+      "default": 0.0
+    },
+    {
+      "name": "From Min",
+      "type": "Float",
+      "description": "Input minimum",
+      "default": 0.0
+    },
+    {
+      "name": "From Max",
+      "type": "Float",
+      "description": "Input maximum",
+      "default": 1.0
+    },
+    {
+      "name": "To Min",
+      "type": "Float",
+      "description": "Output minimum",
+      "default": 0.0
+    },
+    {
+      "name": "To Max",
+      "type": "Float",
+      "description": "Output maximum",
+      "default": 1.0
+    }
+  ],
+  "conversion_process": {
+    "step_1": {
+      "name": "Use Remap",
+      "description": "Use Unity's Remap node",
+      "blender_input": "Value, From Min, From Max, To Min, To Max",
+      "unity_output": "Remapped value"
+    }
   },
-  "unity_equivalent": "Remap node (Add > Math > Remap)",
-  "formula": "output = (input - from_min) / (from_max - from_min) * (to_max - to_min) + to_min",
-  "clamp_mode": "Optional clamping - ensure output stays within [ToMin, ToMax]",
-  "implementation": "Direct 1:1 mapping to Unity Remap node",
-  "compatibility_loss_10_percent": "Blender has interpolation curve option; standard Remap is linear only"
+  "blender_to_unity_mapping": [
+    {
+      "blender_parameter": "From Min/Max",
+      "unity_implementation": "Remap input range",
+      "conversion_formula": "Direct mapping",
+      "compatibility_percentage": "100%",
+      "notes": "Set input range"
+    },
+    {
+      "blender_parameter": "To Min/Max",
+      "unity_implementation": "Remap output range",
+      "conversion_formula": "Direct mapping",
+      "compatibility_percentage": "100%",
+      "notes": "Set output range"
+    }
+  ],
+  "build_instructions": [
+    {
+      "step": 1,
+      "action": "CREATE_REMAP_NODE",
+      "nodes": [
+        {
+          "name": "Remap",
+          "type": "Remap"
+        }
+      ]
+    }
+  ],
+  "compatibility": {
+    "fully_compatible": ["Value", "From Min", "From Max", "To Min", "To Max"],
+    "partially_compatible": [],
+    "incompatible": []
+  },
+  "limitations": [],
+  "unity_recreation": {
+    "description": "Use Unity's Remap node",
+    "unity_equivalent": "Remap node",
+    "simple_setup": "[Value] → [Remap] → [Output]"
+  }
 }

@@ -1,28 +1,76 @@
 {
   "metadata": {
     "source_node": "ShaderNodeNormalMap",
-    "compatibility": "90%",
-    "category": "Vector",
-    "complexity": "Medium",
-    "description": "Converts normal map texture to proper normal vector with strength control"
+    "source_engine": "Blender Cycles",
+    "target_engine": "Unity",
+    "target_version": "URP/HDRP",
+    "conversion_rate": "100%",
+    "description": "Normal map - direct mapping to Unity",
+    "category": "Vector"
   },
-  "summary": "Takes a normal map texture and converts RGB to normal vector in world/object space. Strength parameter controls effect intensity.",
-  "implementation": {
-    "node_type": "NormalFromTexture or NormalStrength",
-    "inputs": ["Texture (RGB)", "Strength (Float)"],
-    "outputs": ["Normal (Vector3)"],
-    "space_options": ["Tangent", "Object", "World"]
-  },
-  "parameter_mapping": {
-    "Color": "Texture asset (sample first, then apply)",
-    "Strength": "Multiply normal effect - formula: Normal = lerp(DefaultNormal, TextureNormal, Strength)",
-    "Space": "Tangent/Object/World space selection"
-  },
-  "typical_setup": [
-    "1. Sample normal map texture (SampleTexture2D with Type=Normal)",
-    "2. Connect RGB output to Normal input",
-    "3. Set Strength property (typically 0.0-2.0)",
-    "4. Output to material Normal input"
+  "summary": "Normal map - direct mapping to Unity",
+  "unity_equivalent": "Normal From Texture",
+  "implementation_notes": "Use Unity's Normal From Texture node",
+  "approximation": "1:1 conversion",
+  "blender_parameters": [
+    {
+      "name": "Space",
+      "type": "Enum",
+      "description": "Tangent, Object, World",
+      "default": "Tangent"
+    },
+    {
+      "name": "Strength",
+      "type": "Float",
+      "description": "Normal strength",
+      "default": 1.0
+    }
   ],
-  "compatibility_loss_10_percent": "Minor differences in OpenGL vs DirectX normal encoding for some edge cases"
+  "conversion_process": {
+    "step_1": {
+      "name": "Use Normal From Texture",
+      "description": "Use Unity's Normal From Texture node",
+      "blender_input": "Normal Map, Space, Strength",
+      "unity_output": "Normal"
+    }
+  },
+  "blender_to_unity_mapping": [
+    {
+      "blender_parameter": "Space",
+      "unity_implementation": "Space selection",
+      "conversion_formula": "Direct mapping",
+      "compatibility_percentage": "100%",
+      "notes": "Select tangent space"
+    },
+    {
+      "blender_parameter": "Strength",
+      "unity_implementation": "Strength multiplier",
+      "conversion_formula": "Direct mapping",
+      "compatibility_percentage": "100%",
+      "notes": "Set normal strength"
+    }
+  ],
+  "build_instructions": [
+    {
+      "step": 1,
+      "action": "CREATE_NORMAL_FROM_TEXTURE",
+      "nodes": [
+        {
+          "name": "Normal From Texture",
+          "type": "Normal From Texture"
+        }
+      ]
+    }
+  ],
+  "compatibility": {
+    "fully_compatible": ["Space", "Strength"],
+    "partially_compatible": [],
+    "incompatible": []
+  },
+  "limitations": [],
+  "unity_recreation": {
+    "description": "Use Unity's Normal From Texture node",
+    "unity_equivalent": "Normal From Texture",
+    "simple_setup": "[Normal Map] → [Normal From Texture] → [Normal]"
+  }
 }

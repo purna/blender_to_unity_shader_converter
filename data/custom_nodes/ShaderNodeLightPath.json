@@ -1,30 +1,66 @@
 {
   "metadata": {
     "source_node": "ShaderNodeLightPath",
-    "compatibility": "0%",
-    "category": "Input",
-    "complexity": "Impossible",
-    "description": "Blender Cycles light path information - completely unavailable in real-time"
+    "source_engine": "Blender Cycles",
+    "target_engine": "Unity",
+    "target_version": "URP/HDRP",
+    "conversion_rate": "50%",
+    "description": "Light path ray type detection - limited support",
+    "category": "Light"
   },
-  "summary": "Blender LightPath outputs ray type information (direct, indirect, diffuse, glossy, etc.) from renderer. No real-time equivalent exists.",
-  "outputs": [
-    "Is Camera Ray",
-    "Is Shadow Ray",
-    "Is Diffuse Ray",
-    "Is Glossy Ray",
-    "Is Singular Ray",
-    "Is Reflection Ray",
-    "Is Transmission Ray",
-    "Ray Length",
-    "Ray Transparency"
+  "summary": "Light path ray type detection - limited support",
+  "unity_equivalent": "Branch / If",
+  "implementation_notes": "Use branch nodes to detect ray type",
+  "approximation": "Manual recreation required",
+  "blender_parameters": [
+    {
+      "name": "Is Camera Ray",
+      "type": "Boolean",
+      "description": "Camera ray detection",
+      "default": false
+    },
+    {
+      "name": "Is Shadow Ray",
+      "type": "Boolean",
+      "description": "Shadow ray detection",
+      "default": false
+    }
   ],
-  "blender_use": "Used in Cycles to implement context-dependent shading (different appearance depending on how ray was traced)",
-  "unity_equivalent": "NONE - fundamentally incompatible",
-  "why_impossible": [
-    "Real-time rendering doesn't track ray history",
-    "Requires offline rendering paradigm",
-    "No shader access to renderer statistics"
+  "conversion_process": {
+    "step_1": {
+      "name": "Use Branch Nodes",
+      "description": "Use branch/if nodes to detect ray type",
+      "blender_input": "Ray type",
+      "unity_output": "Boolean result"
+    }
+  },
+  "blender_to_unity_mapping": [
+    {
+      "blender_parameter": "Is Camera Ray",
+      "unity_implementation": "Branch node",
+      "conversion_formula": "Manual conversion",
+      "compatibility_percentage": "50%",
+      "notes": "Use branch for ray detection"
+    }
   ],
-  "recommended_action": "REMOVE this node - use constant values or material properties instead",
-  "compatibility_loss_100_percent": "Completely incompatible - remove from shader graph"
+  "build_instructions": [
+    {
+      "step": 1,
+      "action": "CREATE_BRANCH_NODES",
+      "nodes": []
+    }
+  ],
+  "compatibility": {
+    "fully_compatible": [],
+    "partially_compatible": [],
+    "incompatible": ["Is Camera Ray", "Is Shadow Ray"]
+  },
+  "limitations": [
+    "Ray type detection not fully available in ShaderGraph"
+  ],
+  "unity_recreation": {
+    "description": "Use branch/if nodes for ray type detection",
+    "unity_equivalent": "Branch node",
+    "simple_setup": "Manual branch setup"
+  }
 }

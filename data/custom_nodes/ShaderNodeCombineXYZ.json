@@ -1,10 +1,85 @@
 {
   "metadata": {
     "source_node": "ShaderNodeCombineXYZ",
-    "compatibility": "100%",
-    "description": "Combines X, Y, Z floats into vector - direct mapping"
+    "source_engine": "Blender Cycles",
+    "target_engine": "Unity",
+    "target_version": "URP/HDRP",
+    "conversion_rate": "100%",
+    "description": "Combines X, Y, Z floats into Vector3 - direct mapping",
+    "category": "Vector"
   },
-  "summary": "Combines X, Y, Z floats into vector - direct mapping",
-  "inputs": "X, Y, Z (Float)",
-  "outputs": "Vector3 Out"
+  "summary": "Combines X, Y, Z floats into Vector3 - direct mapping",
+  "unity_equivalent": "Combine (Vector)",
+  "implementation_notes": "Direct mapping to Unity Combine node",
+  "approximation": "1:1 conversion",
+  "blender_parameters": [
+    {
+      "name": "X",
+      "type": "Float",
+      "description": "X component",
+      "default": 0.0
+    },
+    {
+      "name": "Y",
+      "type": "Float",
+      "description": "Y component",
+      "default": 0.0
+    },
+    {
+      "name": "Z",
+      "type": "Float",
+      "description": "Z component",
+      "default": 0.0
+    }
+  ],
+  "conversion_process": {
+    "step_1": {
+      "name": "Direct Port",
+      "description": "Combines X, Y, Z floats into Vector3 - direct mapping",
+      "blender_input": "X, Y, Z floats",
+      "unity_output": "Vector3"
+    }
+  },
+  "blender_to_unity_mapping": [
+    {
+      "blender_parameter": "X, Y, Z",
+      "unity_implementation": "Combine node",
+      "conversion_formula": "Direct mapping",
+      "compatibility_percentage": "100%",
+      "notes": "Combine into Vector3"
+    }
+  ],
+  "build_instructions": [
+    {
+      "step": 1,
+      "action": "CREATE_COMBINE_NODE",
+      "nodes": [
+        {
+          "name": "Combine",
+          "type": "Combine"
+        }
+      ]
+    },
+    {
+      "step": 2,
+      "action": "CONNECT_COMPONENTS",
+      "nodes": [
+        {
+          "name": "X, Y, Z inputs",
+          "type": "Float"
+        }
+      ]
+    }
+  ],
+  "compatibility": {
+    "fully_compatible": ["X", "Y", "Z"],
+    "partially_compatible": [],
+    "incompatible": []
+  },
+  "limitations": [],
+  "unity_recreation": {
+    "description": "Combines X, Y, Z floats into Vector3",
+    "unity_equivalent": "Combine node",
+    "simple_setup": "[X, Y, Z] → [Combine] → [Vector3]"
+  }
 }

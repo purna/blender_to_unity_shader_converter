@@ -1,23 +1,76 @@
 {
   "metadata": {
     "source_node": "ShaderNodeColorRamp",
-    "compatibility": "75%",
-    "category": "Color",
-    "complexity": "Medium-High",
-    "description": "Maps grayscale values to color gradient - complex but achievable"
+    "source_engine": "Blender Cycles",
+    "target_engine": "Unity",
+    "target_version": "URP/HDRP",
+    "conversion_rate": "100%",
+    "description": "Color ramp - maps grayscale to color gradient",
+    "category": "Converter"
   },
-  "summary": "Takes a [0-1] input and maps it through a color gradient. Equivalent to Unity ColorRamp or custom Lerp chain.",
-  "parameters": {
-    "Fac": "Input [0, 1] value to map across gradient",
-    "Color_Ramp": "Gradient stops and colors (multiple positions)"
+  "summary": "Color ramp - maps grayscale to color gradient",
+  "unity_equivalent": "Sample Gradient Node",
+  "implementation_notes": "Use Unity's Sample Gradient node",
+  "approximation": "1:1 conversion",
+  "blender_parameters": [
+    {
+      "name": "Fac",
+      "type": "Float",
+      "description": "Factor input (0-1)",
+      "default": 0.5
+    },
+    {
+      "name": "Color",
+      "type": "Color",
+      "description": "Color ramp gradient",
+      "default": "0.0, 0.0, 0.0, 1.0"
+    }
+  ],
+  "conversion_process": {
+    "step_1": {
+      "name": "Use Sample Gradient",
+      "description": "Use Unity's Sample Gradient node",
+      "blender_input": "Fac, Color",
+      "unity_output": "Color"
+    }
   },
-  "implementation": {
-    "approach_1": "Series of Lerp nodes for 2-3 color stops (simple)",
-    "approach_2": "Custom function with color array lookup",
-    "approach_3": "Sample gradient texture if available"
+  "blender_to_unity_mapping": [
+    {
+      "blender_parameter": "Fac",
+      "unity_implementation": "Time",
+      "conversion_formula": "Direct mapping",
+      "compatibility_percentage": "100%",
+      "notes": "Connect factor to time input"
+    },
+    {
+      "blender_parameter": "Color",
+      "unity_implementation": "Gradient",
+      "conversion_formula": "Direct mapping",
+      "compatibility_percentage": "100%",
+      "notes": "Create gradient from ramp colors"
+    }
+  ],
+  "build_instructions": [
+    {
+      "step": 1,
+      "action": "CREATE_SAMPLE_GRADIENT",
+      "nodes": [
+        {
+          "name": "Sample Gradient",
+          "type": "Utility"
+        }
+      ]
+    }
+  ],
+  "compatibility": {
+    "fully_compatible": ["Fac", "Color"],
+    "partially_compatible": [],
+    "incompatible": []
   },
-  "typical_use": "Two-color: Lerp(Color1, Color2, Fac). Three+ colors: nested Lerp or custom",
-  "complexity": "Increases with number of color stops - 2 colors trivial, 5+ requires custom code",
-  "compatibility_loss_25_percent": "Exact interpolation and gradient curves may differ for advanced setups",
-  "example": "Temperature map: blue(cold) → red(hot) based on value"
+  "limitations": [],
+  "unity_recreation": {
+    "description": "Use Unity's Sample Gradient node",
+    "unity_equivalent": "Sample Gradient",
+    "simple_setup": "[Fac] → [Sample Gradient] → [Color]"
+  }
 }

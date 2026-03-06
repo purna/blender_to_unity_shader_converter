@@ -6,10 +6,13 @@
     "target_version": "URP/HDRP",
     "conversion_rate": "75%",
     "description": "Fresnel and Facing view-angle blend weights with parameter transformation",
-    "python_interpreter_version": "1.0",
-    "complexity_level": "High",
-    "primary_challenge": "Blend parameter semantic translation and dual-output implementation"
+    "category": "Input",
+    "complexity_level": "High"
   },
+  "summary": "Fresnel and Facing view-angle blend weights with parameter transformation",
+  "unity_equivalent": "Fresnel/Facing",
+  "implementation_notes": "Blend/Fresnel nodes",
+  "approximation": "Fresnel + Facing approximation",
   "node_overview": {
     "blender_description": "Layer Weight outputs two view-angle dependent weights: Fresnel (edge brightness) and Facing (surface orientation relative to view)",
     "blender_outputs": [
@@ -26,7 +29,10 @@
       {
         "name": "Blend",
         "type": "Float",
-        "range": [0.0, 1.0],
+        "range": [
+          0.0,
+          1.0
+        ],
         "semantics": "Controls falloff sharpness between view angles",
         "description": "0.0 = sharp transition (flat), 1.0 = gradual soft transition"
       }
@@ -37,7 +43,10 @@
   "parameter_transformation": {
     "blend_parameter_semantics": {
       "description": "Blender Blend controls the sharpness of the Fresnel/Facing falloff",
-      "blender_range": [0.0, 1.0],
+      "blender_range": [
+        0.0,
+        1.0
+      ],
       "blender_semantics": {
         "0.0": "Sharp transition - Fresnel will go from 0 to 1 very abruptly",
         "0.5": "Default moderate blend - smooth natural Fresnel curve",
@@ -46,7 +55,7 @@
       "unity_mapping": {
         "description": "Transform Blend to Fresnel Power parameter",
         "formula": "FresnelPower = lerp(1.0, 10.0, Blend)",
-        "explanation": "Blend=0.0 → Power=1.0 (very wide, soft falloff), Blend=1.0 → Power=10.0 (very tight, sharp falloff)",
+        "explanation": "Blend=0.0 \u2192 Power=1.0 (very wide, soft falloff), Blend=1.0 \u2192 Power=10.0 (very tight, sharp falloff)",
         "alternate_formula": "FresnelPower = max(0.1, Blend * 10.0)",
         "mathematical_basis": "Fresnel Power controls the exponent in (1 - dot)^Power, affecting curvature"
       },
@@ -110,7 +119,7 @@
         "One Minus",
         "Power (optional, for sharpness)"
       ],
-      "formula": "Facing ≈ 1.0 - saturate(dot(Normal, ViewDir))",
+      "formula": "Facing \u2248 1.0 - saturate(dot(Normal, ViewDir))",
       "extended_formula": "Facing = (1.0 - saturate(dot(Normal, ViewDir)))^Blend_Power",
       "workflow": [
         "Get Normal Vector (geometry normal or custom)",
@@ -201,7 +210,7 @@
         "node_id": "blend_to_power",
         "node_type": "Multiply",
         "category": "Operator",
-        "label": "Blend × 9.0",
+        "label": "Blend \u00d7 9.0",
         "inputs": [
           {
             "name": "A",
@@ -354,7 +363,7 @@
         "from_output": "Out",
         "to_node": "add_power_offset",
         "to_input": "A",
-        "description": "Blend × 9.0 to add node"
+        "description": "Blend \u00d7 9.0 to add node"
       },
       {
         "connection_id": "conn_4",
@@ -549,7 +558,7 @@
         "from_output": "Out",
         "to_node": "one_minus",
         "to_input": "In",
-        "description": "Invert: dot 0 → 1, dot 1 → 0"
+        "description": "Invert: dot 0 \u2192 1, dot 1 \u2192 0"
       },
       {
         "connection_id": "conn_5",
@@ -585,8 +594,14 @@
       "transformation": {
         "formula": "Power = lerp(1.0, 10.0, Blend)",
         "expanded": "Power = 1.0 + (Blend * 9.0)",
-        "range_in": [0.0, 1.0],
-        "range_out": [1.0, 10.0]
+        "range_in": [
+          0.0,
+          1.0
+        ],
+        "range_out": [
+          1.0,
+          10.0
+        ]
       },
       "compatibility_percentage": 85,
       "implementation_approach": "CustomFunction node with dynamic power",
@@ -599,11 +614,14 @@
       "transformation": {
         "formula": "Facing = (1.0 - abs(dot(N, V)))^Blend",
         "direct_mapping": true,
-        "range_in": [0.0, 1.0],
-        "range_out": [exponent value]
+        "range_in": [
+          0.0,
+          1.0
+        ],
+        "range_out": 0.0
       },
       "compatibility_percentage": 70,
-      "implementation_approach": "Dot Product → OneMinus → Power node chain",
+      "implementation_approach": "Dot Product \u2192 OneMinus \u2192 Power node chain",
       "limitation": "Exact Blender behavior requires custom function"
     },
     {
@@ -622,7 +640,10 @@
         "name": "Blend",
         "type": "Float",
         "default": 0.5,
-        "range": [0, 1],
+        "range": [
+          0,
+          1
+        ],
         "description": "Falloff sharpness"
       }
     },
@@ -645,8 +666,8 @@
       "action": "CREATE_TRANSFORMATION_CHAIN",
       "chain": [
         "Blend Property",
-        "Multiply node: Blend × 9.0",
-        "Add node: (Blend × 9.0) + 1.0",
+        "Multiply node: Blend \u00d7 9.0",
+        "Add node: (Blend \u00d7 9.0) + 1.0",
         "Result = Power value [1.0, 10.0]"
       ]
     },
@@ -660,15 +681,15 @@
       "step": 5,
       "action": "WIRE_POWER_TRANSFORMATION",
       "connections": [
-        "Blend → Multiply (9.0)",
-        "Multiply out → Add (1.0)",
-        "Add out → CustomFresnel (Power input)"
+        "Blend \u2192 Multiply (9.0)",
+        "Multiply out \u2192 Add (1.0)",
+        "Add out \u2192 CustomFresnel (Power input)"
       ]
     },
     {
       "step": 6,
       "action": "OUTPUT_FRESNEL",
-      "connection": "CustomFresnel output → Master or next stage"
+      "connection": "CustomFresnel output \u2192 Master or next stage"
     }
   ],
   "build_instructions_facing": [
@@ -694,10 +715,10 @@
       "step": 3,
       "action": "WIRE_GEOMETRY_CHAIN",
       "connections": [
-        "Normal → Dot (A)",
-        "ViewDir → Dot (B)",
-        "Dot out → Absolute",
-        "Absolute out → OneMinus"
+        "Normal \u2192 Dot (A)",
+        "ViewDir \u2192 Dot (B)",
+        "Dot out \u2192 Absolute",
+        "Absolute out \u2192 OneMinus"
       ]
     },
     {
@@ -706,14 +727,14 @@
       "note": "Optional: apply Blend as Power exponent",
       "chain": [
         "Power node",
-        "OneMinus out → Power (Base)",
-        "Blend → Power (Exponent)"
+        "OneMinus out \u2192 Power (Base)",
+        "Blend \u2192 Power (Exponent)"
       ]
     },
     {
       "step": 5,
       "action": "OUTPUT_FACING",
-      "connection": "Power output → Master or next stage"
+      "connection": "Power output \u2192 Master or next stage"
     }
   ],
   "python_interpreter_config": {
@@ -727,9 +748,9 @@
       "step_2_identify_outputs": "Determine which outputs are used (Fresnel, Facing, or both)",
       "step_3_extract_blend": "Extract Blend parameter value from node",
       "step_4_select_strategy": [
-        "If Fresnel only → Use CustomFunction + parameter transformation",
-        "If Facing only → Use Dot + OneMinus + Power chain",
-        "If both → Generate both shader variants"
+        "If Fresnel only \u2192 Use CustomFunction + parameter transformation",
+        "If Facing only \u2192 Use Dot + OneMinus + Power chain",
+        "If both \u2192 Generate both shader variants"
       ],
       "step_5_generate_nodes": "Create appropriate nodes with parameter mappings",
       "step_6_calculate_power": "compute_power = 1.0 + (blend * 9.0)",
@@ -890,7 +911,7 @@
       "        builder.connect('custom_fresnel', 'master', 'Emission or target')",
       "    ",
       "    if facing_connected:",
-      "        # Build facing chain: Dot → OneMinus → Power",
+      "        # Build facing chain: Dot \u2192 OneMinus \u2192 Power",
       "        builder.create_node('DotProduct')",
       "        builder.create_node('OneMinus')",
       "        builder.create_node('Power')",
@@ -905,5 +926,16 @@
       "    else:",
       "        print('Validation failed!')"
     ]
+  },
+  "unity_recreation": {
+    "description": "Fresnel and Facing view-angle blend weights",
+    "unity_equivalent": "Fresnel Effect node + custom math",
+    "node_location": "Input \u2192 Fresnel Effect",
+    "simple_setup": "[Fresnel Effect] \u2500\u2500\u2192 [Base Color] or [Emission]\\n[Fresnel Effect] \u2500\u2500\u2192 [Smoothness] (invert for darker edges)",
+    "blender_to_unity_mapping": {
+      "Fresnel": "Fresnel Effect node (Fresnel: 1-Power, outputs 0-1 based on view angle)",
+      "Facing": "Create using: OneMinus(Dot(Product(Normal, ViewDirection)))"
+    },
+    "detailed_formula": "Facing = pow(1 - dot(normal, viewDir), blend)"
   }
 }

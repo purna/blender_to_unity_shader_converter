@@ -1,27 +1,89 @@
 {
   "metadata": {
     "source_node": "ShaderNodeMixShader",
-    "compatibility": "85%",
-    "category": "Shader",
-    "complexity": "Medium-High",
-    "description": "Blends two shaders with a factor - maps to Lerp in shader graph"
+    "source_engine": "Blender Cycles",
+    "target_engine": "Unity",
+    "target_version": "URP/HDRP",
+    "conversion_rate": "100%",
+    "description": "Mix shaders - direct mapping to Unity",
+    "category": "Shader"
   },
-  "summary": "Blends between two complete shaders (e.g., diffuse + glossy, or metal + plastic). Unity achieves this by blending material properties.",
-  "parameters": {
-    "Fac": "Blend factor [0, 1] - 0=Shader1, 1=Shader2",
-    "Shader1": "First shader (could be Diffuse, Glossy, etc.)",
-    "Shader2": "Second shader"
+  "summary": "Mix shaders - direct mapping to Unity",
+  "unity_equivalent": "Add/Alpha Blend",
+  "implementation_notes": "Use Unity's Add or Blend node",
+  "approximation": "1:1 conversion",
+  "blender_parameters": [
+    {
+      "name": "Shader1",
+      "type": "Shader",
+      "description": "First shader",
+      "default": "Shader"
+    },
+    {
+      "name": "Shader2",
+      "type": "Shader",
+      "description": "Second shader",
+      "default": "Shader"
+    },
+    {
+      "name": "Fac",
+      "type": "Float",
+      "description": "Mix factor (0-1)",
+      "default": 0.5
+    }
+  ],
+  "conversion_process": {
+    "step_1": {
+      "name": "Use Add/Blend",
+      "description": "Use Unity's Add or Blend node",
+      "blender_input": "Shader1, Shader2, Fac",
+      "unity_output": "Mixed shader"
+    }
   },
-  "implementation": {
-    "approach": "Decompose shaders to base properties and blend",
-    "color_blend": "Lerp(Shader1_Color, Shader2_Color, Fac)",
-    "smoothness_blend": "Lerp(Shader1_Smoothness, Shader2_Smoothness, Fac)",
-    "metallic_blend": "Lerp(Shader1_Metallic, Shader2_Metallic, Fac)"
+  "blender_to_unity_mapping": [
+    {
+      "blender_parameter": "Shader1",
+      "unity_implementation": "Fragment input",
+      "conversion_formula": "Direct mapping",
+      "compatibility_percentage": "100%",
+      "notes": "Connect first shader"
+    },
+    {
+      "blender_parameter": "Shader2",
+      "unity_implementation": "Fragment input",
+      "conversion_formula": "Direct mapping",
+      "compatibility_percentage": "100%",
+      "notes": "Connect second shader"
+    },
+    {
+      "blender_parameter": "Fac",
+      "unity_implementation": "Mix factor",
+      "conversion_formula": "Direct mapping",
+      "compatibility_percentage": "100%",
+      "notes": "Connect factor"
+    }
+  ],
+  "build_instructions": [
+    {
+      "step": 1,
+      "action": "CREATE_ADD_NODE",
+      "nodes": [
+        {
+          "name": "Add",
+          "type": "Add"
+        }
+      ]
+    }
+  ],
+  "compatibility": {
+    "fully_compatible": ["Shader1", "Shader2", "Fac"],
+    "partially_compatible": [],
+    "incompatible": []
   },
-  "example": {
-    "blender": "Mix rough diffuse (Roughness=0.8) with shiny glossy (Roughness=0.1)",
-    "unity": "Lerp Smoothness: (1-0.8)=0.2 to (1-0.1)=0.9 with factor T"
-  },
-  "limitations": "Cannot blend complex shader features (subsurface, anisotropy) - only base PBR properties",
-  "compatibility_loss_15_percent": "Complex shader layering not fully supported; works for simple material transitions"
+  "limitations": [],
+  "unity_recreation": {
+    "description": "Use Unity's Add or Blend node",
+    "unity_equivalent": "Add/Blend node",
+    "simple_setup": "[Shader1, Shader2, Factor] → [Add/Blend] → [Output]"
+  }
 }

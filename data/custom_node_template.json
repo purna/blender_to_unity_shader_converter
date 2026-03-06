@@ -1,0 +1,63 @@
+{
+  "metadata": {
+    "source_node": "{{SOURCE_NODE}}",
+    "source_engine": "Blender Cycles",
+    "target_engine": "Unity",
+    "target_version": "URP/HDRP",
+    "conversion_rate": "{{CONVERSION_RATE}}",
+    "description": "{{DESCRIPTION}}",
+    "category": "{{CATEGORY}}"
+  },
+  "summary": "{{SUMMARY}}",
+  "unity_equivalent": "{{UNITY_EQUIVALENT}}",
+  "implementation_notes": "{{IMPLEMENTATION_NOTES}}",
+  "approximation": "{{APPROXIMATION}}",
+  "blender_parameters": [
+    {
+      "name": "{{PARAM1_NAME}}",
+      "type": "{{PARAM1_TYPE}}",
+      "description": "{{PARAM1_DESC}}",
+      "default": "{{PARAM1_DEFAULT}}"
+    }
+  ],
+  "conversion_process": {
+    "step_1": {
+      "name": "{{STEP1_NAME}}",
+      "description": "{{STEP1_DESCRIPTION}}",
+      "blender_input": "{{STEP1_BLENDER_INPUT}}",
+      "unity_output": "{{STEP1_UNITY_OUTPUT}}"
+    }
+  },
+  "blender_to_unity_mapping": [
+    {
+      "blender_parameter": "{{BLENDER_PARAM}}",
+      "unity_implementation": "{{UNITY_IMPL}}",
+      "conversion_formula": "{{FORMULA}}",
+      "compatibility_percentage": "{{COMPAT}}",
+      "notes": "{{NOTES}}"
+    }
+  ],
+  "build_instructions": [
+    {
+      "step": 1,
+      "action": "{{ACTION}}",
+      "nodes": [
+        {
+          "name": "{{NODE_NAME}}",
+          "type": "{{NODE_TYPE}}"
+        }
+      ]
+    }
+  ],
+  "compatibility": {
+    "fully_compatible": [],
+    "partially_compatible": [],
+    "incompatible": []
+  },
+  "limitations": [],
+  "unity_recreation": {
+    "description": "{{UNITY_RECREATION_DESC}}",
+    "unity_equivalent": "{{UNITY_RECREATION_EQUIV}}",
+    "simple_setup": "{{SIMPLE_SETUP}}"
+  }
+}

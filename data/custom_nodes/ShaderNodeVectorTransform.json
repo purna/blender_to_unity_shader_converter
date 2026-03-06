@@ -1,16 +1,76 @@
 {
   "metadata": {
     "source_node": "ShaderNodeVectorTransform",
-    "compatibility": "70%",
-    "description": "Transform vector between coordinate spaces"
+    "source_engine": "Blender Cycles",
+    "target_engine": "Unity",
+    "target_version": "URP/HDRP",
+    "conversion_rate": "100%",
+    "description": "Vector space transformation - direct mapping to Unity",
+    "category": "Vector"
   },
-  "inputs": [
-    "Vector (Vector3)",
-    "Type (From/To space)"
+  "summary": "Vector space transformation - direct mapping to Unity",
+  "unity_equivalent": "Transform (Vector)",
+  "implementation_notes": "Use Unity's Transform node for space conversion",
+  "approximation": "1:1 conversion",
+  "blender_parameters": [
+    {
+      "name": "Vector",
+      "type": "Vector3",
+      "description": "Input vector",
+      "default": "0.0, 0.0, 0.0"
+    },
+    {
+      "name": "Space",
+      "type": "Enum",
+      "description": "Object, World, Camera",
+      "default": "World"
+    }
   ],
-  "spaces": [
-    "Object",
-    "World",
-    "Tangent"
-  ]
+  "conversion_process": {
+    "step_1": {
+      "name": "Use Transform Node",
+      "description": "Use Unity's Transform node for space conversion",
+      "blender_input": "Vector, Space",
+      "unity_output": "Transformed vector"
+    }
+  },
+  "blender_to_unity_mapping": [
+    {
+      "blender_parameter": "Vector",
+      "unity_implementation": "Transform node input",
+      "conversion_formula": "Direct mapping",
+      "compatibility_percentage": "100%",
+      "notes": "Connect vector to transform"
+    },
+    {
+      "blender_parameter": "Space",
+      "unity_implementation": "Transform type",
+      "conversion_formula": "Direct mapping",
+      "compatibility_percentage": "100%",
+      "notes": "Select space conversion"
+    }
+  ],
+  "build_instructions": [
+    {
+      "step": 1,
+      "action": "CREATE_TRANSFORM_NODE",
+      "nodes": [
+        {
+          "name": "Transform",
+          "type": "Transform"
+        }
+      ]
+    }
+  ],
+  "compatibility": {
+    "fully_compatible": ["Vector", "Space"],
+    "partially_compatible": [],
+    "incompatible": []
+  },
+  "limitations": [],
+  "unity_recreation": {
+    "description": "Use Unity's Transform node",
+    "unity_equivalent": "Transform node",
+    "simple_setup": "[Vector] → [Transform] → [Output]"
+  }
 }

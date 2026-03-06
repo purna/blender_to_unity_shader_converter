@@ -8,8 +8,14 @@
     "description": "2D texture sampling with full UV/sampler state control and asset migration strategy",
     "python_interpreter_version": "1.0",
     "complexity_level": "Medium",
-    "primary_challenge": "Texture asset reference resolution and sampler state mapping"
+    "primary_challenge": "Texture asset reference resolution and sampler state mapping",
+    "category": "Texture",
+    "compatibility": "95%"
   },
+  "summary": "2D texture sampling with full UV/sampler state control and asset migration strategy",
+  "unity_equivalent": "Sample Texture 2D",
+  "implementation_notes": "Direct mapping",
+  "approximation": "Core texture sampling",
   "asset_migration": {
     "blender_to_unity_texture_flow": {
       "step_1_export_from_blender": {
@@ -101,7 +107,10 @@
         "label": "UV Scale",
         "property_name": "_UVScale",
         "property_type": "Vector2",
-        "default_value": [1.0, 1.0],
+        "default_value": [
+          1.0,
+          1.0
+        ],
         "outputs": [
           {
             "name": "Out",
@@ -117,7 +126,10 @@
         "label": "UV Offset",
         "property_name": "_UVOffset",
         "property_type": "Vector2",
-        "default_value": [0.0, 0.0],
+        "default_value": [
+          0.0,
+          0.0
+        ],
         "outputs": [
           {
             "name": "Out",
@@ -130,7 +142,7 @@
         "node_id": "multiply_scale",
         "node_type": "Multiply",
         "category": "Operator",
-        "label": "UV × Scale",
+        "label": "UV \u00d7 Scale",
         "inputs": [
           {
             "name": "A",
@@ -272,7 +284,12 @@
         "label": "Color Output",
         "property_name": "_BaseColor",
         "property_type": "Color",
-        "default_value": [1.0, 1.0, 1.0, 1.0],
+        "default_value": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
         "outputs": [
           {
             "name": "Out",
@@ -286,7 +303,7 @@
         "node_id": "multiply_tint",
         "node_type": "Multiply",
         "category": "Operator",
-        "label": "Texture × Tint",
+        "label": "Texture \u00d7 Tint",
         "inputs": [
           {
             "name": "A",
@@ -393,7 +410,9 @@
     {
       "blender_parameter": "Image",
       "unity_implementation": "texture_property",
-      "unity_nodes": ["Property (Texture2D)"],
+      "unity_nodes": [
+        "Property (Texture2D)"
+      ],
       "conversion_formula": "texture_property = Find(Assets/Textures, blender_image_name)",
       "compatibility_percentage": 100,
       "challenges": [
@@ -431,7 +450,9 @@
     {
       "blender_parameter": "Interpolation",
       "unity_implementation": "sampler_state (Filter Mode)",
-      "unity_nodes": ["SamplerState"],
+      "unity_nodes": [
+        "SamplerState"
+      ],
       "blender_values": [
         {
           "blender": "Linear",
@@ -493,7 +514,9 @@
     {
       "blender_parameter": "Extension",
       "unity_implementation": "sampler_state (Wrap Mode)",
-      "unity_nodes": ["SamplerState"],
+      "unity_nodes": [
+        "SamplerState"
+      ],
       "blender_values": [
         {
           "blender": "Repeat",
@@ -571,28 +594,51 @@
           "name": "Main Texture",
           "type": "Texture2D",
           "property": "_MainTex",
-          "location": [100, 300]
+          "location": [
+            100,
+            300
+          ]
         },
         {
           "name": "Base Color",
           "type": "Color",
           "property": "_BaseColor",
-          "default": [1, 1, 1, 1],
-          "location": [100, 200]
+          "default": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "location": [
+            100,
+            200
+          ]
         },
         {
           "name": "UV Scale",
           "type": "Vector2",
           "property": "_UVScale",
-          "default": [1, 1],
-          "location": [100, 100]
+          "default": [
+            1,
+            1
+          ],
+          "location": [
+            100,
+            100
+          ]
         },
         {
           "name": "UV Offset",
           "type": "Vector2",
           "property": "_UVOffset",
-          "default": [0, 0],
-          "location": [100, 0]
+          "default": [
+            0,
+            0
+          ],
+          "location": [
+            100,
+            0
+          ]
         }
       ]
     },
@@ -604,7 +650,10 @@
           "name": "UV Coordinates",
           "type": "UV",
           "uv_channel": 0,
-          "location": [100, 400]
+          "location": [
+            100,
+            400
+          ]
         }
       ]
     },
@@ -616,7 +665,10 @@
         "type": "SamplerState",
         "filter_mode": "Linear",
         "wrap_mode": "Repeat",
-        "location": [300, 200],
+        "location": [
+          300,
+          200
+        ],
         "note": "Configure based on Blender Interpolation and Extension settings"
       }
     },
@@ -625,14 +677,20 @@
       "action": "CREATE_UV_TRANSFORMATION",
       "nodes": [
         {
-          "name": "Multiply (UV × Scale)",
+          "name": "Multiply (UV \u00d7 Scale)",
           "type": "Multiply",
-          "location": [300, 400]
+          "location": [
+            300,
+            400
+          ]
         },
         {
           "name": "Add (UV + Offset)",
           "type": "Add",
-          "location": [500, 400]
+          "location": [
+            500,
+            400
+          ]
         }
       ]
     },
@@ -643,38 +701,44 @@
         "name": "Sample Texture 2D",
         "type": "SampleTexture2D",
         "type_setting": "Default (or Normal if normal map)",
-        "location": [700, 300]
+        "location": [
+          700,
+          300
+        ]
       }
     },
     {
       "step": 7,
       "action": "CREATE_TINT_MULTIPLIER",
       "node": {
-        "name": "Multiply (Texture × Tint)",
+        "name": "Multiply (Texture \u00d7 Tint)",
         "type": "Multiply",
-        "location": [900, 300]
+        "location": [
+          900,
+          300
+        ]
       }
     },
     {
       "step": 8,
       "action": "WIRE_UV_CHAIN",
       "connections": [
-        "UV → Multiply (A)",
-        "UV Scale → Multiply (B)",
-        "Multiply Out → Add (A)",
-        "UV Offset → Add (B)",
-        "Add Out → Sample Texture 2D (UV)"
+        "UV \u2192 Multiply (A)",
+        "UV Scale \u2192 Multiply (B)",
+        "Multiply Out \u2192 Add (A)",
+        "UV Offset \u2192 Add (B)",
+        "Add Out \u2192 Sample Texture 2D (UV)"
       ]
     },
     {
       "step": 9,
       "action": "WIRE_TEXTURE_CHAIN",
       "connections": [
-        "Main Texture → Sample Texture 2D (Texture)",
-        "Sampler State → Sample Texture 2D (Sampler)",
-        "Sample Texture 2D (RGBA) → Multiply Tint (A)",
-        "Base Color → Multiply Tint (B)",
-        "Multiply Tint Out → Master (Base Color)"
+        "Main Texture \u2192 Sample Texture 2D (Texture)",
+        "Sampler State \u2192 Sample Texture 2D (Sampler)",
+        "Sample Texture 2D (RGBA) \u2192 Multiply Tint (A)",
+        "Base Color \u2192 Multiply Tint (B)",
+        "Multiply Tint Out \u2192 Master (Base Color)"
       ]
     },
     {
@@ -685,20 +749,20 @@
           "blender_setting": "Interpolation",
           "action": "Set Filter Mode",
           "rules": [
-            "Linear → Linear",
-            "Closest → Point",
-            "Cubic → Trilinear",
-            "Smart → Linear"
+            "Linear \u2192 Linear",
+            "Closest \u2192 Point",
+            "Cubic \u2192 Trilinear",
+            "Smart \u2192 Linear"
           ]
         },
         {
           "blender_setting": "Extension",
           "action": "Set Wrap Mode",
           "rules": [
-            "Repeat → Repeat",
-            "Extend → Clamp",
-            "Clip → Clamp",
-            "Mirror → Mirror"
+            "Repeat \u2192 Repeat",
+            "Extend \u2192 Clamp",
+            "Clip \u2192 Clamp",
+            "Mirror \u2192 Mirror"
           ]
         }
       ]
@@ -762,8 +826,8 @@
     "key_functions": {
       "find_texture_asset": "Recursively search Assets folder, return path or None",
       "parse_blender_texture_metadata": "Extract interpolation, extension, projection from Blender node",
-      "map_interpolation_to_sampler": "Linear/Closest/Cubic/Smart → Point/Linear/Trilinear",
-      "map_extension_to_wrap": "Repeat/Extend/Clip/Mirror → Repeat/Clamp/Clamp/Mirror",
+      "map_interpolation_to_sampler": "Linear/Closest/Cubic/Smart \u2192 Point/Linear/Trilinear",
+      "map_extension_to_wrap": "Repeat/Extend/Clip/Mirror \u2192 Repeat/Clamp/Clamp/Mirror",
       "detect_texture_type": "Check filename suffix to determine if Normal/Color/Data",
       "validate_projection": "Warn if projection != Flat (Box/Sphere/Tube not supported)"
     },

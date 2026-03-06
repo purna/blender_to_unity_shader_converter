@@ -6,8 +6,14 @@
     "target_version": "URP/HDRP",
     "conversion_rate": "30%",
     "description": "Object info node conversion with fallbacks for missing features",
-    "python_interpreter_version": "1.0"
+    "python_interpreter_version": "1.0",
+    "category": "Input",
+    "compatibility": "65%"
   },
+  "summary": "Object info node conversion with fallbacks for missing features",
+  "unity_equivalent": "Object property",
+  "implementation_notes": "Script-based property",
+  "approximation": "Requires C# script",
   "shader_graph": {
     "name": "ObjectInfo_Shader",
     "type": "UniversalRenderPipeline/Lit",
@@ -159,7 +165,9 @@
     {
       "blender_output": "Location",
       "unity_implementation": "position_node",
-      "unity_nodes": ["Position"],
+      "unity_nodes": [
+        "Position"
+      ],
       "conversion_notes": "Direct mapping. Object space Position in Unity = Blender ObjectInfo Location",
       "compatibility_percentage": 100,
       "alternative_spaces": [
@@ -189,7 +197,9 @@
     {
       "blender_output": "Object Index",
       "unity_implementation": "integer_index",
-      "unity_nodes": ["Integer (constant)"],
+      "unity_nodes": [
+        "Integer (constant)"
+      ],
       "conversion_notes": "Unity has no dynamic object index. Must be set per-instance via Material Property Block.",
       "compatibility_percentage": 10,
       "implementation_requirement": "C# Script: GetComponent<Renderer>().SetPropertyBlock(materialPropertyBlock)"
@@ -205,7 +215,9 @@
     {
       "blender_output": "Random",
       "unity_implementation": "random_node",
-      "unity_nodes": ["CustomFunction"],
+      "unity_nodes": [
+        "CustomFunction"
+      ],
       "conversion_notes": "Pseudo-random based on world position hash. Deterministic but appears random.",
       "compatibility_percentage": 85,
       "formula": "frac(sin(dot(worldPos, float3(12.9898, 78.233, 45.164))) * 43758.5453)",
@@ -294,7 +306,10 @@
   ],
   "python_interpreter_config": {
     "script_type": "ShaderGraphBuilder",
-    "required_libraries": ["numpy", "json"],
+    "required_libraries": [
+      "numpy",
+      "json"
+    ],
     "expected_output": "Unity Shader Graph YAML/JSON serialized format",
     "parsing_strategy": {
       "nodes": "Iterate through shader_graph.nodes array, create node objects",
@@ -385,5 +400,13 @@
       "else:",
       "    print('Validation failed')"
     ]
+  },
+  "unity_recreation": {
+    "description": "Object-level information (random, index)",
+    "unity_equivalent": "Limited - use Object ID node if available",
+    "available": {
+      "Object Index": "Object ID node (if supported)",
+      "Random": "Not available in Shader Graph"
+    }
   }
 }

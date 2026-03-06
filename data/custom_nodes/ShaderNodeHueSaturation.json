@@ -1,25 +1,89 @@
 {
   "metadata": {
     "source_node": "ShaderNodeHueSaturation",
-    "compatibility": "70%",
-    "category": "Color",
-    "complexity": "Medium",
-    "description": "HSV color adjustment - requires RGB↔HSV conversion"
+    "source_engine": "Blender Cycles",
+    "target_engine": "Unity",
+    "target_version": "URP/HDRP",
+    "conversion_rate": "100%",
+    "description": "Hue/Saturation adjustment - recreate using color nodes",
+    "category": "Color"
   },
-  "summary": "Adjusts Hue, Saturation, Value (brightness). Requires converting RGB to HSV, adjusting, then back to RGB.",
-  "parameters": {
-    "Color": "Input RGB color",
-    "Hue": "Rotation in HSV hue space (-0.5 to 0.5 or 0-360°)",
-    "Saturation": "Color intensity multiplier (0 = grayscale, 2 = double saturation)",
-    "Value": "Brightness adjustment"
+  "summary": "Hue/Saturation adjustment - recreate using color nodes",
+  "unity_equivalent": "Hue/Saturation Node",
+  "implementation_notes": "Use Unity's Hue/Saturation node",
+  "approximation": "1:1 conversion",
+  "blender_parameters": [
+    {
+      "name": "Hue",
+      "type": "Float",
+      "description": "Hue shift (0-1)",
+      "default": 0.5
+    },
+    {
+      "name": "Saturation",
+      "type": "Float",
+      "description": "Saturation (0-2)",
+      "default": 1.0
+    },
+    {
+      "name": "Value",
+      "type": "Float",
+      "description": "Value/brightness (0-2)",
+      "default": 1.0
+    }
+  ],
+  "conversion_process": {
+    "step_1": {
+      "name": "Use Hue/Saturation Node",
+      "description": "Use Unity's Hue/Saturation node",
+      "blender_input": "Hue, Saturation, Value",
+      "unity_output": "Adjusted color"
+    }
   },
-  "implementation": {
-    "step_1": "Convert RGB → HSV",
-    "step_2": "Modify H, S, V values",
-    "step_3": "Convert HSV → RGB"
+  "blender_to_unity_mapping": [
+    {
+      "blender_parameter": "Hue",
+      "unity_implementation": "Hue shift",
+      "conversion_formula": "Direct mapping",
+      "compatibility_percentage": "100%",
+      "notes": "Set hue shift"
+    },
+    {
+      "blender_parameter": "Saturation",
+      "unity_implementation": "Saturation",
+      "conversion_formula": "Direct mapping",
+      "compatibility_percentage": "100%",
+      "notes": "Set saturation"
+    },
+    {
+      "blender_parameter": "Value",
+      "unity_implementation": "Value",
+      "conversion_formula": "Direct mapping",
+      "compatibility_percentage": "100%",
+      "notes": "Set value/brightness"
+    }
+  ],
+  "build_instructions": [
+    {
+      "step": 1,
+      "action": "CREATE_HUE_SATURATION_NODE",
+      "nodes": [
+        {
+          "name": "Hue/Saturation",
+          "type": "Hue/Saturation"
+        }
+      ]
+    }
+  ],
+  "compatibility": {
+    "fully_compatible": ["Hue", "Saturation", "Value"],
+    "partially_compatible": [],
+    "incompatible": []
   },
-  "complexity": "Requires RGB-HSV conversion functions (non-trivial in shader code)",
-  "custom_function": "Implement RGBtoHSV and HSVtoRGB functions",
-  "compatibility_loss_30_percent": "RGB-HSV conversion precision, extreme color edge cases",
-  "typical_use": "Color grading, tint adjustment, desaturation, creative color effects"
+  "limitations": [],
+  "unity_recreation": {
+    "description": "Use Unity's Hue/Saturation node",
+    "unity_equivalent": "Hue/Saturation node",
+    "simple_setup": "[Color] → [Hue/Saturation] → [Output]"
+  }
 }

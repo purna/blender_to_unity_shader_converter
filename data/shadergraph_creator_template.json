@@ -1,0 +1,151 @@
+{
+  "metadata": {
+    "source_node": "{{SOURCE_NODE}}",
+    "source_engine": "Blender Cycles",
+    "target_engine": "Unity",
+    "target_version": "URP/HDRP",
+    "conversion_rate": "{{CONVERSION_RATE}}",
+    "description": "{{DESCRIPTION}}",
+    "python_interpreter_version": "1.0",
+    "category": "{{CATEGORY}}",
+    "complexity_level": "{{COMPLEXITY}}"
+  },
+  "summary": "{{SUMMARY}}",
+  "unity_equivalent": "{{UNITY_EQUIVALENT}}",
+  "implementation_notes": "{{IMPLEMENTATION_NOTES}}",
+  "procedural_pattern_overview": {
+    "blender_algorithm": {
+      "description": "{{ALGORITHM_DESC}}",
+      "formula": "{{FORMULA}}",
+      "step_by_step": [
+        {
+          "step": 1,
+          "operation": "{{OPERATION}}",
+          "input": "{{INPUT}}",
+          "output": "{{OUTPUT}}",
+          "purpose": "{{PURPOSE}}"
+        }
+      ]
+    }
+  },
+  "blender_parameters": [
+    {
+      "name": "{{PARAM_NAME}}",
+      "type": "{{PARAM_TYPE}}",
+      "description": "{{PARAM_DESC}}",
+      "default": "{{PARAM_DEFAULT}}",
+      "range": "{{PARAM_RANGE}}"
+    }
+  ],
+  "shader_graph": {
+    "name": "{{SHADER_NAME}}",
+    "type": "UniversalRenderPipeline/Lit",
+    "description": "{{SHADER_DESC}}",
+    "target_output": "{{TARGET_OUTPUT}}",
+    "nodes": [
+      {
+        "node_id": "{{NODE_ID}}",
+        "node_type": "{{NODE_TYPE}}",
+        "category": "{{NODE_CATEGORY}}",
+        "label": "{{NODE_LABEL}}",
+        "property_type": "{{PROP_TYPE}}",
+        "default_value": "{{NODE_DEFAULT}}",
+        "inputs": [
+          {
+            "name": "{{IN_NAME}}",
+            "type": "{{IN_TYPE}}"
+          }
+        ],
+        "outputs": [
+          {
+            "name": "{{OUT_NAME}}",
+            "type": "{{OUT_TYPE}}"
+          }
+        ],
+        "custom_function": {
+          "name": "{{CF_NAME}}",
+          "code": "{{CF_CODE}}"
+        },
+        "description": "{{NODE_DESC}}"
+      }
+    ],
+    "connections": [
+      {
+        "connection_id": "conn_1",
+        "from_node": "{{FROM_NODE}}",
+        "from_output": "{{FROM_OUT}}",
+        "to_node": "{{TO_NODE}}",
+        "to_input": "{{TO_IN}}",
+        "description": "{{CONN_DESC}}"
+      }
+    ]
+  },
+  "mathematical_formula_implementation": {
+    "blender_formula": "{{BLENDER_FORMULA}}",
+    "unity_equivalent": "{{UNITY_FORMULA}}",
+    "step_by_step_nodes": [
+      {
+        "step": 1,
+        "operation": "{{MATH_OP}}",
+        "nodes": ["{{MATH_NODE}}"],
+        "input": "{{MATH_INPUT}}",
+        "output": "{{MATH_OUTPUT}}"
+      }
+    ]
+  },
+  "build_instructions": [
+    {
+      "step": 1,
+      "action": "{{ACTION}}",
+      "nodes": [
+        {
+          "name": "{{BUILD_NODE_NAME}}",
+          "type": "{{BUILD_NODE_TYPE}}",
+          "location": [0, 0]
+        }
+      ],
+      "note": "{{BUILD_NOTE}}"
+    }
+  ],
+  "blender_to_unity_mapping": [
+    {
+      "blender_parameter": "{{MAP_PARAM}}",
+      "unity_implementation": "{{MAP_IMPL}}",
+      "unity_nodes": ["{{MAP_NODE}}"],
+      "conversion_formula": "{{MAP_FORMULA}}",
+      "compatibility_percentage": "{{MAP_COMPAT}}",
+      "notes": "{{MAP_NOTES}}"
+    }
+  ],
+  "validation_checks": [
+    {
+      "check_id": "v1",
+      "name": "{{CHECK_NAME}}",
+      "description": "{{CHECK_DESC}}"
+    }
+  ],
+  "visual_characteristics": {
+    "blender_appearance": {
+      "description": "{{BLENDER_VISUAL}}"
+    },
+    "unity_approximation": {
+      "description": "{{UNITY_VISUAL}}"
+    }
+  },
+  "limitations_and_notes": {
+    "what_is_lost": [
+      {
+        "feature": "{{LOST_FEATURE}}",
+        "reason": "{{LOST_REASON}}",
+        "impact": "{{LOST_IMPACT}}"
+      }
+    ],
+    "best_practices": ["{{BEST_PRACTICE}}"],
+    "conversion_rate_explanation": "{{RATE_EXPLANATION}}"
+  },
+  "unity_recreation": {
+    "description": "{{UNITY_RECREATION_DESC}}",
+    "unity_equivalent": "{{UNITY_RECREATION_EQUIV}}",
+    "simple_setup": "{{SIMPLE_SETUP}}"
+  }
+}

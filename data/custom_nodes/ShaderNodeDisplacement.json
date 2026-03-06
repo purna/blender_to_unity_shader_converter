@@ -1,24 +1,89 @@
 {
   "metadata": {
     "source_node": "ShaderNodeDisplacement",
-    "compatibility": "60%",
-    "category": "Vector",
-    "complexity": "High",
-    "description": "Vertex displacement from heightmap - works in geometry passes"
+    "source_engine": "Blender Cycles",
+    "target_engine": "Unity",
+    "target_version": "URP/HDRP",
+    "conversion_rate": "75%",
+    "description": "Displacement mapping - use displacement node in ShaderGraph",
+    "category": "Vector"
   },
-  "summary": "Displaces mesh vertices along normals. Requires tessellation or displacement pass (not standard ShaderGraph).",
-  "parameters": {
-    "Height": "Grayscale displacement value",
-    "Midlevel": "Reference height (0.5 typical)",
-    "Scale": "Displacement magnitude",
-    "Normal": "Surface normal direction"
+  "summary": "Displacement mapping - use displacement node in ShaderGraph",
+  "unity_equivalent": "Displacement (Vertex)",
+  "implementation_notes": "Use Unity's Displacement node or normal map approximation",
+  "approximation": "Partial - vertex displacement limited in ShaderGraph",
+  "blender_parameters": [
+    {
+      "name": "Space",
+      "type": "Enum",
+      "description": "Object, World, Local",
+      "default": "Object"
+    },
+    {
+      "name": "Midlevel",
+      "type": "Float",
+      "description": "Mid-level displacement",
+      "default": 0.5
+    },
+    {
+      "name": "Scale",
+      "type": "Float",
+      "description": "Displacement scale",
+      "default": 1.0
+    }
+  ],
+  "conversion_process": {
+    "step_1": {
+      "name": "Use Displacement Node",
+      "description": "Use Unity's Displacement or normal map approximation",
+      "blender_input": "Height, Space, Scale",
+      "unity_output": "Vertex displacement"
+    }
   },
-  "implementation_approach": {
-    "option_1": "Geometry/Vertex Displacement pass (advanced)",
-    "option_2": "Parallax occlusion mapping (approximation)",
-    "option_3": "Tessellation shader (if available)"
+  "blender_to_unity_mapping": [
+    {
+      "blender_parameter": "Height",
+      "unity_implementation": "Displacement node",
+      "conversion_formula": "Direct mapping",
+      "compatibility_percentage": "75%",
+      "notes": "Use displacement node in vertex stage"
+    },
+    {
+      "blender_parameter": "Scale",
+      "unity_implementation": "Displacement amplitude",
+      "conversion_formula": "Direct mapping",
+      "compatibility_percentage": "75%",
+      "notes": "Set displacement amplitude"
+    }
+  ],
+  "build_instructions": [
+    {
+      "step": 1,
+      "action": "CREATE_DISPLACEMENT_NODE",
+      "nodes": [
+        {
+          "name": "Displacement",
+          "type": "Displacement"
+        }
+      ]
+    },
+    {
+      "step": 2,
+      "action": "CONNECT_HEIGHT_MAP",
+      "nodes": []
+    }
+  ],
+  "compatibility": {
+    "fully_compatible": [],
+    "partially_compatible": ["Height", "Scale"],
+    "incompatible": []
   },
-  "limitation": "Standard ShaderGraph doesn't support vertex modification - requires custom Vertex modifier",
-  "workaround": "Use normal-based parallax as visual approximation instead of true displacement",
-  "compatibility_loss_40_percent": "True displacement requires vertex processing; ShaderGraph alone cannot modify geometry"
+  "limitations": [
+    "Vertex displacement requires specific shader setup"
+  ],
+  "unity_recreation": {
+    "description": "Use Unity's Displacement node in vertex stage",
+    "unity_equivalent": "Displacement node",
+    "simple_setup": "[Height] → [Displacement] → [Vertex Position]"
+  }
 }

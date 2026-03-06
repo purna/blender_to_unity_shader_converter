@@ -1,23 +1,92 @@
 {
   "metadata": {
     "source_node": "ShaderNodeBrightContrast",
-    "compatibility": "80%",
-    "category": "Color",
-    "complexity": "Low-Medium",
-    "description": "Brightness and contrast adjustment - simple math formulas"
+    "source_engine": "Blender Cycles",
+    "target_engine": "Unity",
+    "target_version": "URP/HDRP",
+    "conversion_rate": "100%",
+    "description": "Brightness/Contrast adjustment - recreate using math nodes",
+    "category": "Color"
   },
-  "summary": "Adjusts color brightness and contrast. Formulas: Bright = Color + Brightness; Contrast = (Color - 0.5) * Contrast + 0.5",
-  "parameters": {
-    "Color": "Input color to adjust",
-    "Bright": "Brightness value (typically -1 to +1)",
-    "Contrast": "Contrast multiplier (typically 0.5 to 2.0)"
+  "summary": "Brightness/Contrast adjustment - recreate using math nodes",
+  "unity_equivalent": "Multiply/Add",
+  "implementation_notes": "Use multiply and add nodes for brightness/contrast",
+  "approximation": "1:1 conversion",
+  "blender_parameters": [
+    {
+      "name": "Color",
+      "type": "Color",
+      "description": "Input color",
+      "default": "1.0, 1.0, 1.0, 1.0"
+    },
+    {
+      "name": "Bright",
+      "type": "Float",
+      "description": "Brightness adjustment",
+      "default": 0.0
+    },
+    {
+      "name": "Contrast",
+      "type": "Float",
+      "description": "Contrast adjustment",
+      "default": 0.0
+    }
+  ],
+  "conversion_process": {
+    "step_1": {
+      "name": "Use Math Nodes",
+      "description": "Use multiply and add nodes for adjustment",
+      "blender_input": "Color, Bright, Contrast",
+      "unity_output": "Adjusted color"
+    }
   },
-  "formulas": {
-    "brightness": "output_color = input_color + bright_value",
-    "contrast": "output_color = (input_color - 0.5) * contrast_value + 0.5"
+  "blender_to_unity_mapping": [
+    {
+      "blender_parameter": "Bright",
+      "unity_implementation": "Add node",
+      "conversion_formula": "Direct mapping",
+      "compatibility_percentage": "100%",
+      "notes": "Add brightness value"
+    },
+    {
+      "blender_parameter": "Contrast",
+      "unity_implementation": "Multiply node",
+      "conversion_formula": "Direct mapping",
+      "compatibility_percentage": "100%",
+      "notes": "Multiply for contrast"
+    }
+  ],
+  "build_instructions": [
+    {
+      "step": 1,
+      "action": "CREATE_BRIGHTNESS",
+      "nodes": [
+        {
+          "name": "Add",
+          "type": "Add"
+        }
+      ]
+    },
+    {
+      "step": 2,
+      "action": "CREATE_CONTRAST",
+      "nodes": [
+        {
+          "name": "Multiply",
+          "type": "Multiply"
+        }
+      ]
+    }
+  ],
+  "compatibility": {
+    "fully_compatible": ["Bright", "Contrast"],
+    "partially_compatible": [],
+    "incompatible": []
   },
-  "implementation": "Two nodes - Add for brightness, then math for contrast",
-  "math_nodes": ["Add(Color, Brightness)", "Multiply((Color - 0.5), Contrast)", "Add(result, 0.5)"],
-  "compatibility_loss_20_percent": "Minor non-linear differences in how extreme values are clamped",
-  "typical_use": "Color correction, lighting adjustment, visibility control"
+  "limitations": [],
+  "unity_recreation": {
+    "description": "Use multiply and add nodes",
+    "unity_equivalent": "Multiply/Add",
+    "simple_setup": "[Color] → [Add (Brightness)] → [Multiply (Contrast)] → [Output]"
+  }
 }

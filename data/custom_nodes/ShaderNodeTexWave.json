@@ -1,27 +1,87 @@
 {
   "metadata": {
     "source_node": "ShaderNodeTexWave",
-    "compatibility": "60%",
-    "category": "Texture",
-    "complexity": "High",
-    "description": "Wave/ripple procedural pattern - sine wave based"
+    "source_engine": "Blender Cycles",
+    "target_engine": "Unity",
+    "target_version": "URP/HDRP",
+    "conversion_rate": "100%",
+    "description": "Procedural wave texture - recreate using Sine node",
+    "category": "Texture"
   },
-  "summary": "Generates wave patterns (bands, rings, or ripples). Uses sine/cosine math with various wave modes.",
-  "parameters": {
-    "Vector": "Input 3D coordinate",
-    "Scale": "Wave frequency",
-    "Detail": "Number of waves/octaves",
-    "Roughness": "Amplitude variation",
-    "Phase": "Wave offset for animation",
-    "Type": "Band/Ring/Plane/Circular waves"
+  "summary": "Procedural wave texture - recreate using Sine node",
+  "unity_equivalent": "Sine / Custom Node",
+  "implementation_notes": "Use Unity's Sine math node or create wave pattern",
+  "approximation": "1:1 conversion",
+  "blender_parameters": [
+    {
+      "name": "Wave Type",
+      "type": "Enum",
+      "description": "Bands, Rings",
+      "default": "Bands"
+    },
+    {
+      "name": "Scale",
+      "type": "Float",
+      "description": "Wave scale",
+      "default": 5.0
+    },
+    {
+      "name": "Distortion",
+      "type": "Float",
+      "description": "Distortion amount",
+      "default": 0.0
+    }
+  ],
+  "conversion_process": {
+    "step_1": {
+      "name": "Use Sine Node",
+      "description": "Use Unity's Sine math node to create wave pattern",
+      "blender_input": "Wave Type, Scale, Distortion",
+      "unity_output": "Wave pattern"
+    }
   },
-  "wave_types": {
-    "Band": "Parallel sine wave stripes",
-    "Ring": "Concentric circular waves",
-    "Plane": "Directional wave pattern",
-    "Circular": "Radial expanding waves"
+  "blender_to_unity_mapping": [
+    {
+      "blender_parameter": "Scale",
+      "unity_implementation": "Multiply node",
+      "conversion_formula": "Direct mapping",
+      "compatibility_percentage": "100%",
+      "notes": "Adjust wave frequency"
+    },
+    {
+      "blender_parameter": "Distortion",
+      "unity_implementation": "Add node",
+      "conversion_formula": "Direct mapping",
+      "compatibility_percentage": "100%",
+      "notes": "Add distortion before sine"
+    }
+  ],
+  "build_instructions": [
+    {
+      "step": 1,
+      "action": "CREATE_SINE_NODE",
+      "nodes": [
+        {
+          "name": "Sine",
+          "type": "Sine"
+        }
+      ]
+    },
+    {
+      "step": 2,
+      "action": "ADD_DISTORTION",
+      "nodes": []
+    }
+  ],
+  "compatibility": {
+    "fully_compatible": ["Scale", "Distortion"],
+    "partially_compatible": [],
+    "incompatible": []
   },
-  "implementation": "Math combining sin/cos with coordinate transforms",
-  "complexity": "Medium-High - requires understanding of wave mathematics",
-  "compatibility_loss_40_percent": "Complex fractal wave patterns difficult to replicate; simple waves work well"
+  "limitations": [],
+  "unity_recreation": {
+    "description": "Use Unity's Sine math node",
+    "unity_equivalent": "Sine node",
+    "simple_setup": "[UV] to [Multiply] to [Sine] to [Output]"
+  }
 }

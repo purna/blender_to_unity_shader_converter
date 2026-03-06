@@ -1,674 +1,78 @@
 {
   "metadata": {
-    "source_node": "ShaderNodeBsdfVelvet",
+    "source_node": "ShaderNodeVelvet",
     "source_engine": "Blender Cycles",
     "target_engine": "Unity",
     "target_version": "URP/HDRP",
-    "conversion_rate": "50%",
-    "description": "Velvet/fabric shader approximation using diffuse base + Fresnel edge rim",
-    "python_interpreter_version": "1.0",
-    "shader_type": "PBR Surface Shader",
-    "material_type": "Fabric/Velvet"
+    "conversion_rate": "75%",
+    "description": "Velvet shader - recreate using shader properties",
+    "category": "Shader"
   },
+  "summary": "Velvet shader - recreate using shader properties",
+  "unity_equivalent": "Fragment Node / Custom Shader",
+  "implementation_notes": "Use Unity shader with velvet properties or custom approximation",
+  "approximation": "Partial - use shader properties",
   "blender_parameters": [
     {
       "name": "Color",
-      "type": "RGBA",
-      "description": "Base fabric color",
-      "default": [0.8, 0.8, 0.8, 1.0]
+      "type": "Color",
+      "description": "Velvet color",
+      "default": "0.5, 0.5, 0.5, 1.0"
     },
     {
-      "name": "Normal",
-      "type": "Vector",
-      "description": "Surface normal for fabric directional characteristics",
-      "default": [0.0, 0.0, 1.0]
+      "name": "Sigma",
+      "type": "Float",
+      "description": "Velvet roughness",
+      "default": 0.5
     }
   ],
-  "shader_graph": {
-    "name": "VelvetFabric_Shader",
-    "type": "UniversalRenderPipeline/Lit",
-    "description": "Approximates Blender Velvet BSDF by combining diffuse base with Fresnel-driven edge sheen",
-    "target_output": "Master (Base Color + Smoothness + Normal)",
-    "nodes": [
-      {
-        "node_id": "input_color",
-        "node_type": "Property",
-        "category": "Input",
-        "label": "Fabric Color",
-        "property_type": "Color",
-        "default_value": [0.8, 0.8, 0.8, 1.0],
-        "outputs": [
-          {
-            "name": "Color",
-            "type": "Vector4"
-          }
-        ],
-        "description": "Main fabric base color input"
-      },
-      {
-        "node_id": "input_normal",
-        "node_type": "Property",
-        "category": "Input",
-        "label": "Normal Map",
-        "property_type": "Texture2D",
-        "outputs": [
-          {
-            "name": "RGB",
-            "type": "Vector3"
-          }
-        ],
-        "description": "Optional normal map for fabric weave detail"
-      },
-      {
-        "node_id": "normal_from_texture",
-        "node_type": "NormalFromTexture",
-        "category": "Utility",
-        "label": "Normal From Height",
-        "inputs": [
-          {
-            "name": "In",
-            "type": "Vector3"
-          }
-        ],
-        "outputs": [
-          {
-            "name": "Out",
-            "type": "Vector3"
-          }
-        ],
-        "description": "Convert texture to proper normal vector"
-      },
-      {
-        "node_id": "fresnel_effect",
-        "node_type": "Fresnel",
-        "category": "Lighting",
-        "label": "Fresnel (Edge Glow)",
-        "inputs": [
-          {
-            "name": "Normal",
-            "type": "Vector3"
-          }
-        ],
-        "outputs": [
-          {
-            "name": "Out",
-            "type": "Float"
-          }
-        ],
-        "properties": [
-          {
-            "name": "Power",
-            "type": "Float",
-            "default": 2.0,
-            "description": "Controls falloff intensity at edges - higher = sharper rim"
-          }
-        ],
-        "description": "Fresnel effect creates rim lighting for fabric edge glow"
-      },
-      {
-        "node_id": "fresnel_color",
-        "node_type": "Property",
-        "category": "Input",
-        "label": "Fresnel Color",
-        "property_type": "Color",
-        "default_value": [1.0, 1.0, 1.0, 1.0],
-        "outputs": [
-          {
-            "name": "Color",
-            "type": "Vector4"
-          }
-        ],
-        "description": "Edge rim color - typically lighter or more saturated than base"
-      },
-      {
-        "node_id": "fresnel_intensity",
-        "node_type": "Property",
-        "category": "Input",
-        "label": "Edge Rim Intensity",
-        "property_type": "Float",
-        "default_value": 0.5,
-        "min_value": 0.0,
-        "max_value": 1.0,
-        "outputs": [
-          {
-            "name": "Out",
-            "type": "Float"
-          }
-        ],
-        "description": "Controls how strong the edge glow appears"
-      },
-      {
-        "node_id": "multiply_fresnel_color",
-        "node_type": "Multiply",
-        "category": "Operator",
-        "label": "Fresnel x Color",
-        "inputs": [
-          {
-            "name": "A",
-            "type": "Vector4"
-          },
-          {
-            "name": "B",
-            "type": "Float"
-          }
-        ],
-        "outputs": [
-          {
-            "name": "Out",
-            "type": "Vector4"
-          }
-        ],
-        "description": "Multiply Fresnel edge effect by rim color"
-      },
-      {
-        "node_id": "multiply_fresnel_intensity",
-        "node_type": "Multiply",
-        "category": "Operator",
-        "label": "Rim x Intensity",
-        "inputs": [
-          {
-            "name": "A",
-            "type": "Vector4"
-          },
-          {
-            "name": "B",
-            "type": "Float"
-          }
-        ],
-        "outputs": [
-          {
-            "name": "Out",
-            "type": "Vector4"
-          }
-        ],
-        "description": "Scale rim effect by intensity parameter"
-      },
-      {
-        "node_id": "add_base_rim",
-        "node_type": "Add",
-        "category": "Operator",
-        "label": "Base + Rim",
-        "inputs": [
-          {
-            "name": "A",
-            "type": "Vector4"
-          },
-          {
-            "name": "B",
-            "type": "Vector4"
-          }
-        ],
-        "outputs": [
-          {
-            "name": "Out",
-            "type": "Vector4"
-          }
-        ],
-        "description": "Combine base color with Fresnel rim lighting"
-      },
-      {
-        "node_id": "smoothness_value",
-        "node_type": "Property",
-        "category": "Input",
-        "label": "Smoothness",
-        "property_type": "Float",
-        "default_value": 0.0,
-        "min_value": 0.0,
-        "max_value": 1.0,
-        "outputs": [
-          {
-            "name": "Out",
-            "type": "Float"
-          }
-        ],
-        "description": "Surface smoothness - velvet has low smoothness (0.0-0.2 recommended)"
-      },
-      {
-        "node_id": "metallic_value",
-        "node_type": "Property",
-        "category": "Input",
-        "label": "Metallic",
-        "property_type": "Float",
-        "default_value": 0.0,
-        "min_value": 0.0,
-        "max_value": 1.0,
-        "outputs": [
-          {
-            "name": "Out",
-            "type": "Float"
-          }
-        ],
-        "description": "Metallic value - keep at 0 for fabric"
-      }
-    ],
-    "connections": [
-      {
-        "connection_id": "conn_1",
-        "from_node": "input_normal",
-        "from_output": "RGB",
-        "to_node": "normal_from_texture",
-        "to_input": "In",
-        "description": "Convert normal texture to proper normal vector"
-      },
-      {
-        "connection_id": "conn_2",
-        "from_node": "normal_from_texture",
-        "from_output": "Out",
-        "to_node": "fresnel_effect",
-        "to_input": "Normal",
-        "description": "Normal feeds into Fresnel calculation"
-      },
-      {
-        "connection_id": "conn_3",
-        "from_node": "fresnel_effect",
-        "from_output": "Out",
-        "to_node": "multiply_fresnel_color",
-        "to_input": "B",
-        "description": "Fresnel scalar multiplies rim color"
-      },
-      {
-        "connection_id": "conn_4",
-        "from_node": "fresnel_color",
-        "from_output": "Color",
-        "to_node": "multiply_fresnel_color",
-        "to_input": "A",
-        "description": "Rim color feeds into multiplication"
-      },
-      {
-        "connection_id": "conn_5",
-        "from_node": "multiply_fresnel_color",
-        "from_output": "Out",
-        "to_node": "multiply_fresnel_intensity",
-        "to_input": "A",
-        "description": "Colored Fresnel multiplied by intensity"
-      },
-      {
-        "connection_id": "conn_6",
-        "from_node": "fresnel_intensity",
-        "from_output": "Out",
-        "to_node": "multiply_fresnel_intensity",
-        "to_input": "B",
-        "description": "Intensity parameter controls rim strength"
-      },
-      {
-        "connection_id": "conn_7",
-        "from_node": "input_color",
-        "from_output": "Color",
-        "to_node": "add_base_rim",
-        "to_input": "A",
-        "description": "Base fabric color feeds into final add"
-      },
-      {
-        "connection_id": "conn_8",
-        "from_node": "multiply_fresnel_intensity",
-        "from_output": "Out",
-        "to_node": "add_base_rim",
-        "to_input": "B",
-        "description": "Rim effect adds to base color"
-      },
-      {
-        "connection_id": "conn_9",
-        "from_node": "add_base_rim",
-        "from_output": "Out",
-        "to_node": "master_node",
-        "to_input": "Base Color",
-        "description": "Final combined color to material output"
-      },
-      {
-        "connection_id": "conn_10",
-        "from_node": "smoothness_value",
-        "from_output": "Out",
-        "to_node": "master_node",
-        "to_input": "Smoothness",
-        "description": "Low smoothness for velvet appearance"
-      },
-      {
-        "connection_id": "conn_11",
-        "from_node": "normal_from_texture",
-        "from_output": "Out",
-        "to_node": "master_node",
-        "to_input": "Normal",
-        "description": "Normal map connected to material"
-      },
-      {
-        "connection_id": "conn_12",
-        "from_node": "metallic_value",
-        "from_output": "Out",
-        "to_node": "master_node",
-        "to_input": "Metallic",
-        "description": "Keep metallic at 0 for fabric"
-      }
-    ]
+  "conversion_process": {
+    "step_1": {
+      "name": "Use Custom Shader",
+      "description": "Create shader with velvet-like appearance",
+      "blender_input": "Color, Sigma",
+      "unity_output": "Shader properties"
+    }
   },
   "blender_to_unity_mapping": [
     {
-      "blender_input": "Color",
-      "unity_implementation": "input_color",
-      "unity_nodes": ["Property (Color)"],
-      "conversion_formula": "BaseColor = Blender_Color",
-      "compatibility_percentage": 100,
-      "notes": "Direct mapping - base fabric color"
+      "blender_parameter": "Color",
+      "unity_implementation": "Base Color",
+      "conversion_formula": "Direct mapping",
+      "compatibility_percentage": "75%",
+      "notes": "Set base color"
     },
     {
-      "blender_input": "Normal",
-      "unity_implementation": [
-        "input_normal",
-        "normal_from_texture"
-      ],
-      "unity_nodes": [
-        "Property (Texture2D)",
-        "NormalFromTexture"
-      ],
-      "conversion_formula": "Unity_Normal = NormalFromTexture(Blender_Normal)",
-      "compatibility_percentage": 95,
-      "notes": "Blender normal maps may need space conversion"
-    },
-    {
-      "blender_feature": "Velvet Edge Sheen",
-      "unity_implementation": [
-        "fresnel_effect",
-        "fresnel_color",
-        "fresnel_intensity",
-        "multiply_fresnel_color",
-        "multiply_fresnel_intensity",
-        "add_base_rim"
-      ],
-      "unity_nodes": [
-        "Fresnel",
-        "Property (Color)",
-        "Property (Float)",
-        "Multiply",
-        "Multiply",
-        "Add"
-      ],
-      "conversion_formula": "EdgeSheen = (Color + Fresnel * RimColor * Intensity)",
-      "compatibility_percentage": 60,
-      "notes": "Fresnel approximates velvet edge glow but is not physically identical",
-      "blender_approximation": "Velvet shader produces soft diffuse with edge curvature glow. Fresnel provides edge-only lighting which mimics this effect visually."
-    },
-    {
-      "blender_feature": "Velvet Smoothness",
-      "unity_implementation": "smoothness_value",
-      "unity_nodes": ["Property (Float)"],
-      "conversion_formula": "Smoothness = 0.0 (recommended for velvet)",
-      "compatibility_percentage": 100,
-      "notes": "Velvet has no specular highlights, so smoothness kept at 0"
+      "blender_parameter": "Sigma",
+      "unity_implementation": "Smoothness/Roughness",
+      "conversion_formula": "Manual conversion",
+      "compatibility_percentage": "50%",
+      "notes": "Adjust shader properties"
     }
   ],
   "build_instructions": [
     {
       "step": 1,
-      "action": "CREATE_PROPERTY_NODES",
-      "nodes": [
-        {
-          "name": "Fabric Color",
-          "type": "Color",
-          "default": [0.8, 0.8, 0.8, 1.0]
-        },
-        {
-          "name": "Normal Map",
-          "type": "Texture2D"
-        },
-        {
-          "name": "Fresnel Color",
-          "type": "Color",
-          "default": [1.0, 1.0, 1.0, 1.0]
-        },
-        {
-          "name": "Edge Rim Intensity",
-          "type": "Float",
-          "default": 0.5,
-          "range": [0, 1]
-        },
-        {
-          "name": "Smoothness",
-          "type": "Float",
-          "default": 0.0,
-          "range": [0, 1]
-        },
-        {
-          "name": "Metallic",
-          "type": "Float",
-          "default": 0.0,
-          "range": [0, 1]
-        }
-      ],
-      "note": "Create all property inputs - these become exposed shader parameters"
+      "action": "CREATE_CUSTOM_SHADER",
+      "nodes": []
     },
     {
       "step": 2,
-      "action": "CREATE_UTILITY_NODES",
-      "nodes": [
-        {
-          "name": "Normal From Texture",
-          "type": "NormalFromTexture",
-          "location": [300, 400]
-        },
-        {
-          "name": "Fresnel Effect",
-          "type": "Fresnel",
-          "location": [500, 300],
-          "power": 2.0
-        }
-      ],
-      "note": "Add nodes for texture processing and Fresnel edge detection"
-    },
-    {
-      "step": 3,
-      "action": "CREATE_MATH_NODES",
-      "nodes": [
-        {
-          "name": "Fresnel x Color",
-          "type": "Multiply",
-          "location": [700, 350]
-        },
-        {
-          "name": "Rim x Intensity",
-          "type": "Multiply",
-          "location": [700, 250]
-        },
-        {
-          "name": "Base + Rim",
-          "type": "Add",
-          "location": [900, 300]
-        }
-      ],
-      "note": "Create math operators to combine effects"
-    },
-    {
-      "step": 4,
-      "action": "WIRE_NORMAL_CHAIN",
-      "connections": [
-        "Normal Map → Normal From Texture",
-        "Normal From Texture → Fresnel Effect",
-        "Normal From Texture → Master Node (Normal)"
-      ],
-      "note": "Wire normal texture processing"
-    },
-    {
-      "step": 5,
-      "action": "WIRE_COLOR_CHAIN",
-      "connections": [
-        "Fabric Color → Base + Rim (A)",
-        "Fresnel Color → Fresnel x Color (A)",
-        "Fresnel Effect → Fresnel x Color (B)",
-        "Fresnel x Color → Rim x Intensity (A)",
-        "Edge Rim Intensity → Rim x Intensity (B)",
-        "Rim x Intensity → Base + Rim (B)",
-        "Base + Rim → Master Node (Base Color)"
-      ],
-      "note": "Wire the complete color/shading chain"
-    },
-    {
-      "step": 6,
-      "action": "WIRE_MATERIAL_PROPERTIES",
-      "connections": [
-        "Smoothness → Master Node (Smoothness)",
-        "Metallic → Master Node (Metallic)"
-      ],
-      "note": "Connect material property values"
-    },
-    {
-      "step": 7,
-      "action": "CONFIGURE_MASTER_NODE",
-      "properties": [
-        {
-          "property": "Surface Type",
-          "value": "Opaque"
-        },
-        {
-          "property": "Blend Mode",
-          "value": "Alpha"
-        },
-        {
-          "property": "Cull Mode",
-          "value": "Back"
-        }
-      ],
-      "note": "Set material output properties"
-    },
-    {
-      "step": 8,
-      "action": "VALIDATE_SHADER",
-      "checks": [
-        "All nodes connected",
-        "No floating inputs",
-        "Smoothness <= 0.2 for velvet effect",
-        "Metallic = 0.0"
-      ],
-      "note": "Verify shader integrity"
+      "action": "SET_VELVET_PROPERTIES",
+      "nodes": []
     }
   ],
-  "python_interpreter_config": {
-    "script_type": "ShaderGraphBuilder",
-    "required_libraries": [
-      "json",
-      "yaml",
-      "numpy"
-    ],
-    "parsing_strategy": {
-      "step_1": "Load JSON and validate against schema",
-      "step_2": "Parse blender_to_unity_mapping to understand conversion philosophy",
-      "step_3": "Create node objects from shader_graph.nodes array",
-      "step_4": "Establish connections using shader_graph.connections array",
-      "step_5": "Assign property defaults and constraints",
-      "step_6": "Validate connection types match (Float to Float, Vector4 to Vector4, etc.)",
-      "step_7": "Export to Unity ShaderGraph YAML or JSON format"
-    },
-    "key_functions": {
-      "create_node": "Takes node_id, node_type, properties; returns node object",
-      "connect_nodes": "Takes from_node, from_output, to_node, to_input; validates type compatibility",
-      "validate_shader": "Runs all checks from build_instructions.validate_shader",
-      "export_to_unity": "Serializes graph to Unity-compatible format"
-    },
-    "error_handling": {
-      "type_mismatch": "Raise error if output type != input type (e.g., Float to Vector3)",
-      "missing_connection": "Warn if input node has no source",
-      "invalid_property": "Validate property values against min/max ranges",
-      "circular_dependency": "Detect and prevent circular node connections"
-    }
+  "compatibility": {
+    "fully_compatible": ["Color"],
+    "partially_compatible": ["Sigma"],
+    "incompatible": []
   },
-  "visual_characteristics": {
-    "blender_appearance": {
-      "surface": "Soft, non-reflective diffuse",
-      "edge_behavior": "Gentle brightening at shallow view angles",
-      "specular": "Minimal to none",
-      "typical_materials": "Velvet, felt, rough fabric, suede"
-    },
-    "unity_approximation": {
-      "surface": "Base color with Fresnel edge glow",
-      "edge_behavior": "Fresnel node brightens edges based on view angle",
-      "specular": "Smoothness = 0 removes specular highlights",
-      "visual_quality": "Good approximation for fabric materials"
-    },
-    "material_parameters_guide": {
-      "fabric_color": "Main material color (0.4-0.9 range for realism)",
-      "fresnel_color": "Edge glow color (usually white or tinted)",
-      "edge_rim_intensity": "0.0-0.5 for subtle; 0.5-1.0 for dramatic edges",
-      "smoothness": "Keep 0.0-0.2 for velvet appearance",
-      "normal_map": "Fine weave or directional fabric texture adds realism"
-    }
-  },
-  "limitations_and_notes": {
-    "what_is_lost": [
-      {
-        "feature": "Physical accuracy of Velvet BSDF",
-        "reason": "Blender Velvet uses physically-based scattering model; Fresnel is geometric-only",
-        "impact": "Visual appearance is approximated but not physically accurate",
-        "severity": "Medium - acceptable for game graphics"
-      },
-      {
-        "feature": "Subsurface scattering behavior",
-        "reason": "Velvet BSDF has soft light penetration; Fresnel doesn't model this",
-        "impact": "Thin fabrics may not look translucent",
-        "severity": "Low - most velvet doesn't require SSS"
-      },
-      {
-        "feature": "Directional weave characteristics",
-        "reason": "Velvet anisotropy not fully captured by Fresnel alone",
-        "impact": "May lose subtle directional light behavior",
-        "workaround": "Use high-detail normal maps to compensate"
-      }
-    ],
-    "best_practices": [
-      "Use subtle Fresnel color - match base color slightly brightened",
-      "Keep Smoothness at 0.0 for true velvet; up to 0.15 for fabric blends",
-      "Apply a fine-detail normal map from fabric weave texture",
-      "Test in linear color space for accurate lighting",
-      "Use with area lights for best edge glow visualization"
-    ],
-    "conversion_rate_explanation": "50% because while all major visual features are present (diffuse base + edge sheen), the physical accuracy of the BSDF model is not preserved. The approximation works well visually but diverges from Blender's scattering model."
-  },
-  "example_python_usage": {
-    "description": "How a Python script would build this shader",
-    "pseudo_code": [
-      "import json",
-      "from shader_graph_builder import ShaderGraphBuilder",
-      "",
-      "# Load configuration",
-      "with open('shader_graph_solution_Velvet.json', 'r') as f:",
-      "    config = json.load(f)",
-      "",
-      "# Initialize builder",
-      "builder = ShaderGraphBuilder()",
-      "builder.set_shader_name(config['shader_graph']['name'])",
-      "builder.set_target_type(config['shader_graph']['type'])",
-      "",
-      "# Step 1: Create all property nodes",
-      "for node_data in config['shader_graph']['nodes']:",
-      "    if node_data['node_type'] == 'Property':",
-      "        builder.create_property(",
-      "            name=node_data['label'],",
-      "            prop_type=node_data['property_type'],",
-      "            default=node_data['default_value']",
-      "        )",
-      "",
-      "# Step 2: Create utility and math nodes",
-      "for node_data in config['shader_graph']['nodes']:",
-      "    if node_data['node_type'] in ['Fresnel', 'Multiply', 'Add', 'NormalFromTexture']:",
-      "        builder.create_node(",
-      "            node_type=node_data['node_type'],",
-      "            node_id=node_data['node_id'],",
-      "            label=node_data['label']",
-      "        )",
-      "",
-      "# Step 3: Establish connections",
-      "for conn in config['shader_graph']['connections']:",
-      "    builder.connect(",
-      "        from_node=conn['from_node'],",
-      "        from_output=conn['from_output'],",
-      "        to_node=conn['to_node'],",
-      "        to_input=conn['to_input']",
-      "    )",
-      "",
-      "# Step 4: Validate",
-      "validation_results = builder.validate(config['python_interpreter_config']['error_handling'])",
-      "if not validation_results['success']:",
-      "    print(f\"Validation errors: {validation_results['errors']}\")",
-      "    exit(1)",
-      "",
-      "# Step 5: Export",
-      "builder.export_to_unity('VelvetFabric.shadergraph')"
-    ]
+  "limitations": [
+    "No direct velvet shader in Unity"
+  ],
+  "unity_recreation": {
+    "description": "Create custom shader with velvet appearance",
+    "unity_equivalent": "Custom shader",
+    "simple_setup": "Create custom shader with appropriate BRDF"
   }
 }

@@ -1,31 +1,89 @@
 {
   "metadata": {
     "source_node": "ShaderNodeMixRGB",
-    "compatibility": "90%",
-    "category": "Color",
-    "complexity": "Low-Medium",
-    "description": "Color blending with multiple modes - nearly complete Unity equivalents"
+    "source_engine": "Blender Cycles",
+    "target_engine": "Unity",
+    "target_version": "URP/HDRP",
+    "conversion_rate": "100%",
+    "description": "Mix colors - direct mapping to Unity",
+    "category": "Color"
   },
-  "summary": "Blends two colors using various blend modes (Mix, Darken, Lighten, etc.). Most modes map directly; Screen/Overlay/Soft Light have minor shader differences.",
-  "blender_modes_to_unity": {
-    "Mix": "Lerp",
-    "Darken": "Min(Color1, Color2)",
-    "Multiply": "Color1 * Color2",
-    "Burn": "1 - (1-Color1)/(Color2+0.001)",
-    "Lighten": "Max(Color1, Color2)",
-    "Screen": "1 - (1-Color1)*(1-Color2)",
-    "Dodge": "Color1 / (1-Color2+0.001)",
-    "Add": "Color1 + Color2",
-    "Overlay": "Conditional blend (custom function)",
-    "Soft Light": "Conditional blend (custom function)",
-    "Linear Light": "Color1 + 2*Color2 - 1"
+  "summary": "Mix colors - direct mapping to Unity",
+  "unity_equivalent": "Lerp (Color)",
+  "implementation_notes": "Use Unity's Lerp node for colors",
+  "approximation": "1:1 conversion",
+  "blender_parameters": [
+    {
+      "name": "Color1",
+      "type": "Color",
+      "description": "First color",
+      "default": "0.0, 0.0, 0.0, 1.0"
+    },
+    {
+      "name": "Color2",
+      "type": "Color",
+      "description": "Second color",
+      "default": "1.0, 1.0, 1.0, 1.0"
+    },
+    {
+      "name": "Fac",
+      "type": "Float",
+      "description": "Mix factor (0-1)",
+      "default": 0.5
+    }
+  ],
+  "conversion_process": {
+    "step_1": {
+      "name": "Use Lerp Node",
+      "description": "Use Unity's Lerp node for colors",
+      "blender_input": "Color1, Color2, Fac",
+      "unity_output": "Mixed color"
+    }
   },
-  "parameters": {
-    "Fac": "Blend factor [0, 1]",
-    "Color1": "First color",
-    "Color2": "Second color",
-    "Mode": "Blend operation"
+  "blender_to_unity_mapping": [
+    {
+      "blender_parameter": "Color1",
+      "unity_implementation": "A input",
+      "conversion_formula": "Direct mapping",
+      "compatibility_percentage": "100%",
+      "notes": "Connect Color1"
+    },
+    {
+      "blender_parameter": "Color2",
+      "unity_implementation": "B input",
+      "conversion_formula": "Direct mapping",
+      "compatibility_percentage": "100%",
+      "notes": "Connect Color2"
+    },
+    {
+      "blender_parameter": "Fac",
+      "unity_implementation": "T input",
+      "conversion_formula": "Direct mapping",
+      "compatibility_percentage": "100%",
+      "notes": "Connect factor"
+    }
+  ],
+  "build_instructions": [
+    {
+      "step": 1,
+      "action": "CREATE_LERP_NODE",
+      "nodes": [
+        {
+          "name": "Lerp",
+          "type": "Lerp"
+        }
+      ]
+    }
+  ],
+  "compatibility": {
+    "fully_compatible": ["Color1", "Color2", "Fac"],
+    "partially_compatible": [],
+    "incompatible": []
   },
-  "implementation_notes": "Most modes use standard math; Overlay and Soft Light require custom functions for exact match",
-  "compatibility_loss_5_percent": "Overlay and Soft Light shader precision differences"
+  "limitations": [],
+  "unity_recreation": {
+    "description": "Use Unity's Lerp node for colors",
+    "unity_equivalent": "Lerp node",
+    "simple_setup": "[Color1, Color2, Factor] → [Lerp] → [Output]"
+  }
 }

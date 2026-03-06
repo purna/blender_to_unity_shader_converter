@@ -1,27 +1,76 @@
 {
   "metadata": {
     "source_node": "ShaderNodeTexVoronoi",
-    "compatibility": "50%",
-    "category": "Texture",
-    "complexity": "Very High",
-    "description": "Voronoi diagram procedural - complex algorithm required"
+    "source_engine": "Blender Cycles",
+    "target_engine": "Unity",
+    "target_version": "URP/HDRP",
+    "conversion_rate": "100%",
+    "description": "Procedural Voronoi texture - direct mapping to Unity",
+    "category": "Texture"
   },
-  "summary": "Generates Voronoi patterns (cellular). Requires advanced procedural implementation. Very difficult to replicate exactly.",
-  "parameters": {
-    "Vector": "3D input coordinate",
-    "Scale": "Cell size",
-    "Detail": "Number of octaves",
-    "Roughness": "Amplitude variation",
-    "Lacunarity": "Frequency scaling",
-    "Offset": "Coordinate offset",
-    "Feature": "Distance/Color/Position outputs"
+  "summary": "Procedural Voronoi texture - direct mapping to Unity",
+  "unity_equivalent": "Voronoi (Procedural)",
+  "implementation_notes": "Use Unity's built-in Voronoi node",
+  "approximation": "1:1 conversion",
+  "blender_parameters": [
+    {
+      "name": "Scale",
+      "type": "Float",
+      "description": "Pattern scale",
+      "default": 5.0
+    },
+    {
+      "name": "Randomness",
+      "type": "Float",
+      "description": "Randomness factor",
+      "default": 1.0
+    }
+  ],
+  "conversion_process": {
+    "step_1": {
+      "name": "Use Voronoi Node",
+      "description": "Use Unity's built-in Voronoi node",
+      "blender_input": "Scale, Randomness",
+      "unity_output": "Voronoi pattern"
+    }
   },
-  "features": {
-    "Distance": "Distance to nearest Voronoi cell",
-    "Color": "Cellular color noise",
-    "Position": "Voronoi cell center position"
+  "blender_to_unity_mapping": [
+    {
+      "blender_parameter": "Scale",
+      "unity_implementation": "Scale property",
+      "conversion_formula": "Direct mapping",
+      "compatibility_percentage": "100%",
+      "notes": "Set scale on Voronoi node"
+    },
+    {
+      "blender_parameter": "Randomness",
+      "unity_implementation": "Randomness property",
+      "conversion_formula": "Direct mapping",
+      "compatibility_percentage": "100%",
+      "notes": "Set randomness"
+    }
+  ],
+  "build_instructions": [
+    {
+      "step": 1,
+      "action": "CREATE_VORONOI_NODE",
+      "nodes": [
+        {
+          "name": "Voronoi",
+          "type": "Voronoi"
+        }
+      ]
+    }
+  ],
+  "compatibility": {
+    "fully_compatible": ["Scale", "Randomness"],
+    "partially_compatible": [],
+    "incompatible": []
   },
-  "implementation": "Requires Voronoi cell generation algorithm (complex shader math)",
-  "complexity": "Very High - involves distance field calculations and cell identification",
-  "compatibility_loss_50_percent": "Voronoi algorithm is non-trivial; approximations exist but don't match exactly"
+  "limitations": [],
+  "unity_recreation": {
+    "description": "Use Unity's built-in Voronoi node",
+    "unity_equivalent": "Voronoi node",
+    "simple_setup": "[Voronoi Node] → [Output]"
+  }
 }
